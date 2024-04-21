@@ -1,85 +1,94 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <section>
+    <!-- Obere Tastatur -->
+    <div class="keyboard" style="pointer-events: none;">
+      <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
+      <div></div>
+      <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
+      <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
     </div>
-  </header>
-
-  <RouterView />
+  </section>
+  <section>
+    <!-- Untere Tastatur -->
+    <div class="keyboard lower">
+      <div v-for="key in keys1" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+      <div></div>
+      <div v-for="key in keys2" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+      <div v-for="key in keys3" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+    </div>
+  </section>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+export default {
+  data() {
+    return {
+      keys1: ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O'],
+      keys2: ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'],
+      keys3: ['P', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', 'L'],
+      highlightedKeyUpper: null,
+      highlightedKeyLower: null,
+    };
+  },
+  methods: {
+    highlightUpper(key) {
+      this.highlightedKeyUpper = key;
+    },
+    highlightLower(key) {
+      this.highlightedKeyUpper = key; // Setzen Sie die obere Hervorhebung entsprechend
+      this.highlightedKeyLower = key;
+      // Löschen Sie die Hervorhebung nach einer kurzen Verzögerung (z. B. 500 Millisekunden)
+      setTimeout(() => {
+        this.highlightedKeyUpper = null;
+        this.highlightedKeyLower = null;
+      }, 500);
+    },
+    handleKeyPress(event) {
+      const key = event.key.toUpperCase();
+      if (this.keys1.includes(key) || this.keys2.includes(key) || this.keys3.includes(key)) {
+        this.highlightLower(key);
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleKeyPress);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyPress);
+  },
+};
+</script>
+
+<style>
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+  justify-content: center;
 }
 
-.logo {
+.lower .key.highlighted {
+  background-color: #ccc;
+}
+
+.key {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.highlighted {
+  background-color: yellow;
+}
+#app{
   display: block;
-  margin: 0 auto 2rem;
 }
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+section{
+  padding: 2rem;
 }
 </style>
