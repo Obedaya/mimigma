@@ -33,3 +33,10 @@ a,
     padding: 0 2rem;
   }
 }
+
+#app{
+  display: block;
+}
+section{
+  padding: 2rem;
+}

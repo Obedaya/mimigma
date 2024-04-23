@@ -1,94 +1,20 @@
 <template>
-  <section>
-    <!-- Obere Tastatur -->
-    <div class="keyboard" style="pointer-events: none;">
-      <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-      <div></div>
-      <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-      <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-    </div>
-  </section>
-  <section>
-    <!-- Untere Tastatur -->
-    <div class="keyboard lower">
-      <div v-for="key in keys1" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-      <div></div>
-      <div v-for="key in keys2" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-      <div v-for="key in keys3" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-    </div>
-  </section>
+  <div id="app">
+    <!-- Hier werden Tastatur + Leuchtbrett eingebunden -->
+    <Keyboard />
+  </div>
 </template>
 
+
+
 <script>
+// Import von Tastatur-Komponente, welche oben genutzt wird
+import Keyboard from './components/Keyboard.vue';
+
 export default {
-  data() {
-    return {
-      keys1: ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O'],
-      keys2: ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'],
-      keys3: ['P', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', 'L'],
-      highlightedKeyUpper: null,
-      highlightedKeyLower: null,
-    };
-  },
-  methods: {
-    highlightUpper(key) {
-      this.highlightedKeyUpper = key;
-    },
-    highlightLower(key) {
-      this.highlightedKeyUpper = key; // Setzen Sie die obere Hervorhebung entsprechend
-      this.highlightedKeyLower = key;
-      // Löschen Sie die Hervorhebung nach einer kurzen Verzögerung (z. B. 500 Millisekunden)
-      setTimeout(() => {
-        this.highlightedKeyUpper = null;
-        this.highlightedKeyLower = null;
-      }, 500);
-    },
-    handleKeyPress(event) {
-      const key = event.key.toUpperCase();
-      if (this.keys1.includes(key) || this.keys2.includes(key) || this.keys3.includes(key)) {
-        this.highlightLower(key);
-      }
-    },
-  },
-  mounted() {
-    window.addEventListener('keydown', this.handleKeyPress);
-  },
-  beforeDestroy() {
-    window.removeEventListener('keydown', this.handleKeyPress);
+  name: 'App',
+  components: {
+    Keyboard,
   },
 };
 </script>
-
-<style>
-.keyboard {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 5px;
-  justify-content: center;
-}
-
-.lower .key.highlighted {
-  background-color: #ccc;
-}
-
-.key {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #ccc;
-  margin: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.highlighted {
-  background-color: yellow;
-}
-#app{
-  display: block;
-}
-section{
-  padding: 2rem;
-}
-</style>
