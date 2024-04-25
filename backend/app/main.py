@@ -1,4 +1,5 @@
 from typing import Union
+import os
 from fastapi import FastAPI, HTTPException # Importiere Klassen aus dem FastAPI-Framework und die HTTPException-Klasse für Fehlerbehandlung.
 from sqlalchemy import create_engine, Column, Integer, String # Importiere Funktionen und Klassen aus SQLAlchemy für ORM.
 from sqlalchemy.ext.declarative import declarative_base # Importiere Funktion für Basisdeklaration von Modellen in SQLAlchemy.
@@ -6,7 +7,10 @@ from sqlalchemy.orm import sessionmaker # Importiere die sessionmaker-Funktion, 
 
 app = FastAPI()
 
-DATABASE_URL = "postgresql://db_user:db_pass@db/enigma_db"
+#DATABASE_URL = "postgresql://db_user:db_pass@db/enigma_db"
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -18,6 +22,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
 
+# Create all tables in the db automatically based on the model 
 Base.metadata.create_all(bind=engine)
 
 @app.on_event("startup")
