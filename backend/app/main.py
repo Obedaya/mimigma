@@ -1,9 +1,9 @@
 from typing import Union
 import os
-from fastapi import FastAPI, HTTPException # Importiere Klassen aus dem FastAPI-Framework und die HTTPException-Klasse für Fehlerbehandlung.
-from sqlalchemy import create_engine, Column, Integer, String # Importiere Funktionen und Klassen aus SQLAlchemy für ORM.
-from sqlalchemy.ext.declarative import declarative_base # Importiere Funktion für Basisdeklaration von Modellen in SQLAlchemy.
-from sqlalchemy.orm import sessionmaker # Importiere die sessionmaker-Funktion, um Datenbanksitzungen zu erstellen.
+from fastapi import FastAPI, HTTPException 
+from sqlalchemy import create_engine, Column, Integer, String 
+from sqlalchemy.ext.declarative import declarative_base # import function for base declaration 
+from sqlalchemy.orm import sessionmaker
 
 app = FastAPI()
 
@@ -22,7 +22,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
 
-# Create all tables in the db automatically based on the model 
+# Will create all tables in the db automatically  
 Base.metadata.create_all(bind=engine)
 
 @app.on_event("startup")
@@ -39,6 +39,7 @@ async def startup_event():
             db.commit()
     finally:
         db.close()
+
 @app.get("/users/")
 def read_users():
     db = SessionLocal()
