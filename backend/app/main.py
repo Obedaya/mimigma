@@ -22,16 +22,18 @@ Base.metadata.create_all(bind=engine)
 
 @app.on_event("startup")
 async def startup_event():
-    # Initial User Setup
     db = SessionLocal()
-    db.add_all([
-        User(name="Alice"),
-        User(name="Bob"),
-        User(name="Mallory")
-        ])
-    db.commit()
-    db.close()
-
+    try:
+        # Check if there are any users already
+        if db.query(User).count() == 0:
+            db.add_all([
+                User(name="Alice"),
+                User(name="Bob"),
+                User(name="Mallory")
+            ])
+            db.commit()
+    finally:
+        db.close()
 @app.get("/users/")
 def read_users():
     db = SessionLocal()
