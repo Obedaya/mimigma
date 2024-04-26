@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY user_db_connect.py /usr/src/app/user_db_connect.py
-COPY user_config.json /usr/src/app/user_config.json
+COPY user_db_connect.py /usr/src/app/
+COPY user_config.json /usr/src/app/
 
 
 CMD ["python", "user_db_connect.py"]
