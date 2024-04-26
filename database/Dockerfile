@@ -11,5 +11,4 @@ COPY user_db_connect.py /usr/src/app/user_db_connect.py
 COPY user_config.json /usr/src/app/user_config.json
 
 
-# For some other command
-# CMD ["python", "user_db_connect.py"]
+CMD ["python", "user_db_connect.py"]
