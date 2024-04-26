@@ -53,7 +53,7 @@ def read_json_file(file_name):
 
 
 if __name__ == "__main__":
-    json_file = "users.json"  # Your JSON file name
+    json_file = "user_config.json"
     users = read_json_file(json_file)
     if users:
         insert_users(users)
