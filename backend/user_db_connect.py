@@ -9,7 +9,7 @@ def connect_to_postgresql():
             dbname="enigma_db",
             user="db_user",
             password="db_pass",
-            host="172.25.0.2",
+            host="db",
             port="5432"
         )
         return connection
