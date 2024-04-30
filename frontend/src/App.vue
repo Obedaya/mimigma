@@ -1,10 +1,11 @@
 <template>
   <div id="app">
     <!-- Hier werden Tastatur + Leuchtbrett + Rotorenpanel eingebunden -->
-    
+    <Rotorpanel/>
     <Keyboard />
     <Plugboard/>
-    <Rotorpanel/>
+    
+    
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import Rotorpanel from './components/Rotorpanel.vue';
 export default {
   name: 'App',
   components: {
+    
     Keyboard,
     Plugboard,
     Rotorpanel,
