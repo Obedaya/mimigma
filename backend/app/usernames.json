@@ -1,0 +1,22 @@
+{
+    "users": [
+        {
+            "name": "Alice",
+            "surname": "Wonderland",
+            "email": "alice@example.com",
+            "password": "hashed_password"
+        },
+        {
+            "name": "Bob",
+            "surname": "Builder",
+            "email": "bob@example.com",
+            "password": "hashed_password"
+        },
+        {
+            "name": "Mallory",
+            "surname": "Malicious",
+            "email": "mallory@example.com",
+            "password": "hashed_password"
+        }
+    ]
+}
