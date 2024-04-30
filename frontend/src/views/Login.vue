@@ -44,15 +44,13 @@
   };
   </script>
   
-  <style scoped>
-
+  <style>
   body {
     background-color: #2a2a2a !important;
   }
   
   .website-title {
     font-size: 100px;
-
     text-align: center;
     color: #00fddc;
     margin-bottom: 120px;
@@ -66,7 +64,7 @@
   
   .login-container {
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     border-radius: 5px;
   }
   
@@ -78,7 +76,7 @@
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
-    color: white;
+    color: #cccccc;
   }
   
   .error-text {
@@ -102,6 +100,13 @@
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 5px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+  }
+  
+  .form-input:focus {
+    border-color: #00fddc;
+    outline: 2px solid #00fddc;
   }
   
   .login-button {
