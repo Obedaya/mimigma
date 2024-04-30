@@ -37,11 +37,11 @@
       highlightLower(key) {
         this.highlightedKeyUpper = key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
         this.highlightedKeyLower = key;
-        // Löschen Sie die Hervorhebung nach einer kurzen Verzögerung (hier 500 Millisekunden)
+        // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek Millisekunden)
         setTimeout(() => {
           this.highlightedKeyUpper = null;
           this.highlightedKeyLower = null;
-        }, 500);
+        }, 1200);
       },
       handleKeyPress(event) {
         const key = event.key.toUpperCase();
@@ -68,7 +68,8 @@
   }
   
   .lower .key.highlighted {
-    background-color: #ccc;
+    background-color: #2a2a2a;
+    color: white;
   }
   
   .key {
@@ -84,6 +85,7 @@
   
   .highlighted {
     background-color: yellow;
+    color: #2a2a2a;
   }
   </style>
   
