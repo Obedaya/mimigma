@@ -33,7 +33,7 @@ class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    surname = Column(String, index=True)
+    username = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
@@ -55,7 +55,7 @@ async def startup_event():
             db.add_all([
                 User(
                     name=user["name"],
-                    surname=user["surname"],
+                    username=user["username"],
                     email=user["email"],
                     password=user["password"]
                     ) for user in user_data  
@@ -69,7 +69,7 @@ def read_users():
     db = SessionLocal()
     try:
         users = db.query(User).all()
-        return [{"name": user.name, "surname": user.surname, "email": user.email} for user in users]
+        return [{"name": user.name, "username": user.username, "email": user.email} for user in users]
     finally:
         db.close()
 
