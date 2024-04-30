@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <!-- Hier werden Tastatur + Leuchtbrett + Rotorenpanel eingebunden -->
-    
-    <Keyboard />
-    <Plugboard/>
-    <Rotorpanel/>
+    <RouterView/>
   </div>
 </template>
 
@@ -13,6 +10,7 @@
 import Keyboard from './components/Keyboard.vue';
 import Plugboard from './components/Plugboard.vue';
 import Rotorpanel from './components/Rotorpanel.vue';
+import { RouterLink, RouterView } from 'vue-router'
 
 export default {
   name: 'App',
