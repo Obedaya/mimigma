@@ -72,13 +72,17 @@ async def startup_event():
 
 # Stephane : Endpoint to check user Login
 @app.post("/login/")
-async def login(username: str, password: str, db: Session = Depends(get_db)):
-    hashed_password = hash_password(password)
-    user = db.query(User).filter(User.username == username, User.password == hashed_password).first()
-    if user:
-        return {"message": "Login successful"}
-    else:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+async def login(username: str, password: str):
+    db = SessionLocal()
+    try:
+        hashed_password = hash_password(password)
+        user = db.query(User).filter(User.username == username, User.password == hashed_password).first()
+        if user:
+            return {"message": "Login successful"}
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+    finally:
+        db.close()
 
 @app.get("/users/")
 def read_users():
