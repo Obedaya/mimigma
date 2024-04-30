@@ -1,5 +1,6 @@
 from typing import Union
 import os, time, json
+import hashlib
 from fastapi import FastAPI, HTTPException 
 from sqlalchemy import create_engine, Column, Integer, String 
 from sqlalchemy.ext.declarative import declarative_base # import function for base declaration 
@@ -42,6 +43,11 @@ def read_user_data():
         data = json.load(file)
     return data["users"]
 
+# Stephane : hash fonction SHA256
+def hash_password(password: str) -> str:
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    return hashed_password
+
 @app.on_event("startup")
 async def startup_event():
     check_db_connection(engine)
@@ -57,12 +63,22 @@ async def startup_event():
                     name=user["name"],
                     username=user["username"],
                     email=user["email"],
-                    password=user["password"]
+                    password=hash_password(user["password"])
                     ) for user in user_data  
                 ])
             db.commit()
     finally:
         db.close()
+
+# Stephane : Endpoint to check user Login
+@app.post("/login/")
+async def login(username: str, password: str, db: Session = Depends(get_db)):
+    hashed_password = hash_password(password)
+    user = db.query(User).filter(User.username == username, User.password == hashed_password).first()
+    if user:
+        return {"message": "Login successful"}
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
 
 @app.get("/users/")
 def read_users():
