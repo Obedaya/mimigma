@@ -2,19 +2,19 @@
     "users": [
         {
             "name": "Alice",
-            "surname": "Wonderland",
+            "username": "Wonderland",
             "email": "alice@example.com",
             "password": "hashed_password"
         },
         {
             "name": "Bob",
-            "surname": "Builder",
+            "username": "Builder",
             "email": "bob@example.com",
             "password": "hashed_password"
         },
         {
             "name": "Mallory",
-            "surname": "Malicious",
+            "username": "Malicious",
             "email": "mallory@example.com",
             "password": "hashed_password"
         }
