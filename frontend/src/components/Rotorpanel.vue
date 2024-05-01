@@ -14,7 +14,11 @@
   export default {
     data() {
       return {
-        
+        rotors: [
+        { next: 'B', current: 'A', prev: 'Z' },
+        { next: 'B', current: 'A', prev: 'Z' },
+        { next: 'B', current: 'A', prev: 'Z' }
+      ]
       };
     },
     methods: {
