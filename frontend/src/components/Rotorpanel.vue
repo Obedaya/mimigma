@@ -1,22 +1,10 @@
 <template>
   <section>
-    <div class="rotor_panel">
-      <div class="rotor" ref="rotor1">
-        <div class="nextletter" @click="rotateRotor('rotor1')">B</div>
-        <div class="currentletter" @click="rotateRotor('rotor1')">A</div>
-        <div class="prevletter" @click="rotateRotor('rotor1')">Z</div>
-      </div>
-
-      <div class="rotor" ref="rotor2">
-        <div class="nextletter" @click="rotateRotor('rotor2')">B</div>
-        <div class="currentletter" @click="rotateRotor('rotor2')">A</div>
-        <div class="prevletter" @click="rotateRotor('rotor2')">Z</div>
-      </div>
-
-      <div class="rotor" ref="rotor3">
-        <div class="nextletter" @click="rotateRotor('rotor3')">B</div>
-        <div class="currentletter" @click="rotateRotor('rotor3')">A</div>
-        <div class="prevletter" @click="rotateRotor('rotor3')">Z</div>
+    <div class = "rotor_panel">
+      <div v-for = "(rotor, index) in rotors" :key = "index" :ref = "'rotor' + (index, 1)" class = "rotor">
+        <div class="nextletter" @click="rotateRotor('rotor' + (index + 1), 'next')">{{ rotor.next }}</div>
+        <div class="currentletter" @click="rotateRotor('rotor' + (index + 1), 'current')">{{ rotor.current }}</div>
+        <div class="prevletter" @click="rotateRotor('rotor' + (index + 1), 'prev')">{{ rotor.prev }}</div>
       </div>
     </div>
   </section>
