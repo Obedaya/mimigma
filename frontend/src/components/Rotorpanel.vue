@@ -1,23 +1,22 @@
 <template>
-
   <section>
     <div class="rotor_panel">
-      <div class="rotor" id="rotor1">
-        <div class="nextletter" id="rotor1next">B</div>
-        <div class="currentletter" id="rotor1current">A</div>
-        <div class="prevletter" id="rotor1prev">Z</div>
+      <div class="rotor" ref="rotor1">
+        <div class="nextletter" @click="rotateRotor('rotor1')">B</div>
+        <div class="currentletter" @click="rotateRotor('rotor1')">A</div>
+        <div class="prevletter" @click="rotateRotor('rotor1')">Z</div>
       </div>
 
-      <div class="rotor" id="rotor2">
-        <div class="nextletter" id="rotor1next">B</div>
-        <div class="currentletter" id="rotor1current">A</div>
-        <div class="prevletter" id="rotor1prev">Z</div>
+      <div class="rotor" ref="rotor2">
+        <div class="nextletter" @click="rotateRotor('rotor2')">B</div>
+        <div class="currentletter" @click="rotateRotor('rotor2')">A</div>
+        <div class="prevletter" @click="rotateRotor('rotor2')">Z</div>
       </div>
 
-      <div class="rotor" id="rotor3">
-        <div class="nextletter" id="rotor1next">B</div>
-        <div class="currentletter" id="rotor1current">A</div>
-        <div class="prevletter" id="rotor1prev">Z</div>
+      <div class="rotor" ref="rotor3">
+        <div class="nextletter" @click="rotateRotor('rotor3')">B</div>
+        <div class="currentletter" @click="rotateRotor('rotor3')">A</div>
+        <div class="prevletter" @click="rotateRotor('rotor3')">Z</div>
       </div>
     </div>
   </section>
@@ -26,17 +25,29 @@
 <script>
   export default {
     data() {
-      return {};
+      return {
+        alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        rotors: {
+          rotor1: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+          rotor2: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+          rotor3: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+      }
+      };
     },
-    methods: {}
+    methods: {
+      rotateRotor(rotorId) {
+      const rotor = this.rotors[rotorId];
+      // Drehlogik: Der erste Buchstabe wird nach hinten verschoben und der letzte Buchstabe wird zum ersten
+      const rotatedRotor = rotor.substring(1) + rotor.charAt(0);
+      this.rotors[rotorId] = rotatedRotor;
+      
+    }
+    }
   };
 </script>
 
 <style>
-  body {
-    background-color: black;
-  }
-
+  
   .rotor_panel {
     display: flex;
     justify-content: center;
@@ -50,7 +61,7 @@
     user-select: none;
     cursor: pointer;
     box-sizing: border-box;
-    float: left;
+    /*float: left;*/
     margin: 0px 20px;
     width: 23px;
     height: 130px;
