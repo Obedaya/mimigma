@@ -39,7 +39,7 @@ class User(Base):
     password = Column(String)
 
 def read_user_data():
-    with open ("app/usernames.json", "r") as file:
+    with open ("app/users_config.json", "r") as file:
         data = json.load(file)
     return data["users"]
 
