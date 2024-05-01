@@ -1,7 +1,7 @@
 from typing import Union
 import os, time, json
 import hashlib
-from fastapi import FastAPI, HTTPException 
+from fastapi import FastAPI, HTTPException, Request
 from sqlalchemy import create_engine, Column, Integer, String 
 from sqlalchemy.ext.declarative import declarative_base # import function for base declaration 
 from sqlalchemy.orm import sessionmaker
@@ -72,7 +72,9 @@ async def startup_event():
 
 # Stephane : Endpoint to check user Login
 @app.post("/login/")
-async def login(username: str, password: str):
+async def login(request: Request):
+    username = request.query_params.get("username")
+    password = request.query_params.get("password")
     db = SessionLocal()
     try:
         hashed_password = hash_password(password)
