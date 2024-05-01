@@ -17,6 +17,12 @@
             "username": "Malicious",
             "email": "mallory@example.com",
             "password": "hashed_password"
+        },
+        {
+            "name": "Administrator",
+            "username": "admin",
+            "email": "admin@example.com",
+            "password": "password"
         }
     ]
 }
