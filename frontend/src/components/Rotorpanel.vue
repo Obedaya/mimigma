@@ -22,8 +22,11 @@
       };
     },
     methods: {
-      
+      rotateRotor(rotorRef, direction) {
+      const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
+      const rotor = this.rotors[rotorIndex];
     }
+  }
   };
 </script>
 
