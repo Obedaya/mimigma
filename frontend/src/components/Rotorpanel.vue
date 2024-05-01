@@ -26,15 +26,18 @@
       const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
       const rotor = this.rotors[rotorIndex];
     
-    switch(direction) {
-        case 'next':
+      switch(direction) {
+        case 'down':
+          rotor.prev = rotor.current;
+          rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
           break;
-        case 'current':
-          rotor.current = String.fromCharCode(((rotor.current.charCodeAt(0) - 65 + 25) % 26) + 65);
-          break;
-        case 'prev':
+        case 'up':
+          rotor.next = rotor.current;
+          rotor.current = rotor.prev;
           rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
+          break;
+        case 'none':
           break;
       }
     }
