@@ -7,24 +7,6 @@
             "password": "kelilan"
         },
         {
-            "name": "Alice",
-            "username": "Wonderland",
-            "email": "alice@example.com",
-            "password": "hashed_password"
-        },
-        {
-            "name": "Bob",
-            "username": "Builder",
-            "email": "bob@example.com",
-            "password": "hashed_password"
-        },
-        {
-            "name": "Mallory",
-            "username": "Malicious",
-            "email": "mallory@example.com",
-            "password": "hashed_password"
-        },
-        {
             "name": "Administrator",
             "username": "admin",
             "email": "admin@example.com",
