@@ -82,7 +82,7 @@ async def login(request: Request):
         if user:
             return {"message": "Login successful"}
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+            raise HTTPException(status_code=401, detail="Invalid username or password")
     finally:
         db.close()
 
