@@ -14,22 +14,11 @@
   export default {
     data() {
       return {
-        alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        rotors: {
-          rotor1: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-          rotor2: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-          rotor3: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      }
+        
       };
     },
     methods: {
-      rotateRotor(rotorId) {
-      const rotor = this.rotors[rotorId];
-      // Drehlogik: Der erste Buchstabe wird nach hinten verschoben und der letzte Buchstabe wird zum ersten
-      const rotatedRotor = rotor.substring(1) + rotor.charAt(0);
-      this.rotors[rotorId] = rotatedRotor;
       
-    }
     }
   };
 </script>
