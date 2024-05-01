@@ -25,9 +25,22 @@
       rotateRotor(rotorRef, direction) {
       const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
       const rotor = this.rotors[rotorIndex];
+    
+    switch(direction) {
+        case 'next':
+          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+          break;
+        case 'current':
+          rotor.current = String.fromCharCode(((rotor.current.charCodeAt(0) - 65 + 25) % 26) + 65);
+          break;
+        case 'prev':
+          rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
+          break;
+      }
     }
-  }
+  }    
   };
+
 </script>
 
 <style>
