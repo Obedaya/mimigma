@@ -27,17 +27,17 @@
       const rotor = this.rotors[rotorIndex];
     
       switch(direction) {
-        case 'down':
+        case 'next':
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
           break;
-        case 'up':
+        case 'prev':
           rotor.next = rotor.current;
           rotor.current = rotor.prev;
           rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
           break;
-        case 'none':
+        case 'current':
           break;
       }
     }
