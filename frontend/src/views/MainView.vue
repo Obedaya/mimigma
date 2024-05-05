@@ -3,22 +3,23 @@
       <Rotorpanel />
       <Keyboard />
       <Plugboard />
-      <RouterView/>
+      <!-- <RouterView/> -->
     </div>
   </template>
   
-  <script>
-  import Keyboard from '../components/Keyboard.vue';
-  import Plugboard from '../components/Plugboard.vue';
-  import Rotorpanel from '../components/Rotorpanel.vue';
-  import { RouterLink, RouterView } from 'vue-router'
-  
-  export default {
-    components: {
-      Keyboard,
-      Plugboard,
-      Rotorpanel
-    }
-  };
-  </script>
-  
+<script>
+import Keyboard from '../components/Keyboard.vue';
+import Plugboard from '../components/Plugboard.vue';
+import Rotorpanel from '../components/Rotorpanel.vue';
+import { RouterLink, RouterView } from 'vue-router'
+
+export default {
+  // name: 'App',
+  components: {
+    Keyboard,
+    Plugboard,
+    Rotorpanel
+  }
+};
+</script>
+

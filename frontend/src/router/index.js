@@ -13,12 +13,12 @@ const router = createRouter({
     {
       path: '/main',
       name: 'main',
-      component: MainView,
-      children: [
+      component: MainView //,
+      /*children: [
         { path: 'keyboard', component: () => import('../components/Keyboard.vue') },
         { path: 'plugboard', component: () => import('../components/Plugboard.vue') },
         { path: 'rotorpanel', component: () => import('../components/Rotorpanel.vue') }
-      ]
+      ]*/
     }
   ]
 });
