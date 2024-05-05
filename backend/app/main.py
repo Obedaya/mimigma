@@ -2,11 +2,25 @@ from typing import Union
 import os, time, json
 import hashlib
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, Column, Integer, String 
 from sqlalchemy.ext.declarative import declarative_base # import function for base declaration 
 from sqlalchemy.orm import sessionmaker
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:8080",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
