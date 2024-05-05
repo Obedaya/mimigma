@@ -30,17 +30,26 @@
         showErrorBorder: false
       };
     },
+    
     methods: {
-        login() {
-            if (this.username === 'admin' && this.password === 'password') {
-            // if successful navigate to main
+      async login() {
+        try {
+          const response = await fetch(`http://localhost:9000/login/?username=${this.username}&password=${this.password}`, {
+            method: 'POST'
+          });
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log(responseData);
             this.$router.push({ name: 'main' });
-            } else {
-            // error
+          } else {
             this.showErrorBorder = true;
-            }
+            console.error('Login failed:', response.status);
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
-        }
+      }
+    }
   };
   </script>
   
