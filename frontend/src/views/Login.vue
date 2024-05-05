@@ -102,6 +102,9 @@
     border-radius: 5px;
     background-color: #2a2a2a;
     color: #ffffff;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: 100%;
   }
   
   .form-input:focus {
