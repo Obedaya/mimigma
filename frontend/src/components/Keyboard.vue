@@ -1,25 +1,31 @@
 <template>
-    <section>
-      <!-- Obere Tastatur -->
-      <div class="keyboard" style="pointer-events: none;">
-        <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-        <div></div>
-        <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-        <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">{{ key }}</div>
-      </div>
-    </section>
-    <section>
-      <!-- Untere Tastatur -->
-      <div class="keyboard lower">
-        <div v-for="key in keys1" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-        <div></div>
-        <div v-for="key in keys2" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-        <div v-for="key in keys3" :key="key" @click="highlightLower(key)" :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-      </div>
-    </section>
-  </template>
-  
-  <script>
+  <section>
+    <!-- Obere Tastatur -->
+    <div class="keyboard" style="pointer-events: none;">
+      <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+        {{ key }}</div>
+      <div></div>
+      <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+        {{ key }}</div>
+      <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+        {{ key }}</div>
+    </div>
+  </section>
+  <section>
+    <!-- Untere Tastatur -->
+    <div class="keyboard lower">
+      <div v-for="key in keys1" :key="key" @click="highlightLower(key)"
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+      <div></div>
+      <div v-for="key in keys2" :key="key" @click="highlightLower(key)"
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+      <div v-for="key in keys3" :key="key" @click="highlightLower(key)"
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+    </div>
+  </section>
+</template>
+
+<script>
   export default {
     data() {
       return {
@@ -35,7 +41,8 @@
         this.highlightedKeyUpper = key;
       },
       highlightLower(key) {
-        this.highlightedKeyUpper = key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
+        this.highlightedKeyUpper =
+        key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
         this.highlightedKeyLower = key;
         // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek Millisekunden)
         setTimeout(() => {
@@ -57,21 +64,21 @@
       window.removeEventListener('keydown', this.handleKeyPress);
     },
   };
-  </script>
-  
-  <style>
+</script>
+
+<style>
   .keyboard {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 5px;
     justify-content: center;
   }
-  
+
   .lower .key.highlighted {
-    background-color: #2a2a2a;
+    background-color: grey;
     color: white;
   }
-  
+
   .key {
     width: 50px;
     height: 50px;
@@ -82,10 +89,9 @@
     align-items: center;
     cursor: pointer;
   }
-  
+
   .highlighted {
     background-color: yellow;
     color: #2a2a2a;
   }
-  </style>
-  
+</style>

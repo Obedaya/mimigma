@@ -45,4 +45,16 @@ section{
 }
 .col{
   padding: 1rem;
+align-content: center;
+}
+
+.mimigma{
+  width: 100%;
+
+}
+.icons{
+  width: 50%;
+
+  margin-left: 25%;
+
 }

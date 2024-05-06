@@ -2,24 +2,30 @@
   <div class="container">
     <!--row 1-->
     <div class="row">
-      <div class="col">
+      <div class="col-3" style="align-self: center;">
 
-        <div class="col-6" style='display: inline-block;'>USER</div>
+        <div class="col-6" style='display: inline-block;'>
+          <img class="icons" src="../../nutzer.png">
 
-        <div class="col-6" style='display: inline-block;'>SETTINGS</div>
+        </div>
+
+        <div class="col-6" style='display: inline-block;'>
+          <img class="icons" src="../../zahnrad.png">
+        </div>
 
       </div>
       <div class="col-6">
         <Rotorpanel />
 
       </div>
-      <div class="col">
+      <div class="col-3">
       </div>
     </div>
     <!--row 2-->
     <div class="row">
       <div class="col">
-
+        <!--Mimigma-Bild-->
+        <img class="mimigma" src="../../mimigma.png">
       </div>
       <div class="col-6">
         <Keyboard />
