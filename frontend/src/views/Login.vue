@@ -34,7 +34,7 @@
     methods: {
       async login() {
         try {
-          const response = await fetch(`http://localhost:9000/login/?username=${this.username}&password=${this.password}`, {
+          const response = await fetch(`http://localhost:9000/login?username=${this.username}&password=${this.password}`, {
             method: 'POST'
           });
           if (response.ok) {
