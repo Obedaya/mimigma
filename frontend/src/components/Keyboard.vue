@@ -44,11 +44,21 @@
         this.highlightedKeyUpper =
         key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
         this.highlightedKeyLower = key;
+        this.sendKeyToBackend(key); // Send the pressed key to the backend
         // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek Millisekunden)
         setTimeout(() => {
           this.highlightedKeyUpper = null;
           this.highlightedKeyLower = null;
         }, 1200);
+      },
+      async sendKeyToBackend(key) {
+        try {
+          const response = await fetch(`http://localhost:9000/input?key=${key}`, {
+            method: 'POST',
+          });
+        } catch (error) {
+          console.error('Error sending key to backend:', error);
+        }
       },
       handleKeyPress(event) {
         const key = event.key.toUpperCase();
