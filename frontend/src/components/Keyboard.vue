@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  //TODO EventBus 
+  //import { EventBus } from '@/EventBus.js'; //HERE
   export default {
     data() {
       return {
@@ -56,6 +58,7 @@
           const response = await fetch(`http://localhost:9000/input?key=${key}`, {
             method: 'POST',
           });
+          // EventBus.$emit('keySentToBackend'); // HERE
         } catch (error) {
           console.error('Error sending key to backend:', error);
         }
