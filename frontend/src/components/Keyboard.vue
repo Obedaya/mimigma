@@ -42,10 +42,10 @@
       },
       highlightLower(key) {
         this.highlightedKeyUpper =
-        key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
+          key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
         this.highlightedKeyLower = key;
         this.sendKeyToBackend(key); // Send the pressed key to the backend
-        // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek Millisekunden)
+        // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek )
         setTimeout(() => {
           this.highlightedKeyUpper = null;
           this.highlightedKeyLower = null;
@@ -101,7 +101,8 @@
   }
 
   .highlighted {
-    background-color: yellow;
+    background-color: rgb(255, 239, 160);
     color: #2a2a2a;
+    font-weight: bold;
   }
 </style>

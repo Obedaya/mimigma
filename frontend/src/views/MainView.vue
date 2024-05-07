@@ -4,14 +4,11 @@
     <div class="row">
       <div class="col-3" style="align-self: center;">
 
-        <div class="col-6" style='display: inline-block;'>
-          <img class="icons" src="../../nutzer.png">
+        <!-- User Settings Icon + Modal-->
+        <Usersettings />
 
-        </div>
-
-        <div class="col-6" style='display: inline-block;'>
-          <img class="icons" src="../../zahnrad.png">
-        </div>
+        <!-- Enigma Settings Icon + Modal-->
+        <Settings />
 
       </div>
       <div class="col-6">
@@ -51,12 +48,15 @@
       </div>
     </div>
   </div>
-</template>
 
+
+</template>
 <script>
   import Keyboard from '../components/Keyboard.vue';
   import Plugboard from '../components/Plugboard.vue';
   import Rotorpanel from '../components/Rotorpanel.vue';
+  import Usersettings from '../components/Usersettings.vue';
+  import Settings from '../components/Settings.vue';
   import {
     RouterLink,
     RouterView
@@ -67,7 +67,9 @@
     components: {
       Keyboard,
       Plugboard,
-      Rotorpanel
+      Rotorpanel,
+      Usersettings,
+      Settings
     }
   };
 </script>
