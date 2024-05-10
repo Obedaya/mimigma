@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .database import engine, check_db_connection
 from .models import Base, User
 from .utils import read_user_data, hash_password
-from .routes import users, login, general, items
+from .routes import users, login, general, items, rotor, ring, plugboard, lamp, reflector
 from .init_db import init_db 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -26,6 +26,11 @@ app.include_router(users.router)
 app.include_router(login.router)
 app.include_router(general.router)
 app.include_router(items.router)
+app.include_router(rotor.router)
+app.include_router(ring.router)
+app.include_router(plugboard.router)
+app.include_router(lamp.router)
+app.include_router(reflector.router)
 
 @app.on_event("startup")
 async def startup_event():
