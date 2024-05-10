@@ -6,6 +6,8 @@ services:
       - 8080:8080
   backend:
     build: ./backend
+      # volumes:
+      # - ./backend:/code  # Mount so I can see the changes reflect immediately inside the container
     ports:
       - 9000:9000
     environment:
