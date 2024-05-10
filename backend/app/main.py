@@ -22,10 +22,10 @@ app.add_middleware(
 )
 
 #include routes in the app
-app.include_router(users.router)
-app.include_router(login.router)
 app.include_router(general.router)
 app.include_router(items.router)
+app.include_router(users.router)
+app.include_router(login.router)
 app.include_router(rotor.router)
 app.include_router(ring.router)
 app.include_router(plugboard.router)
