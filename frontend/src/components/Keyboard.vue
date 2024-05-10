@@ -14,12 +14,12 @@
   <section>
     <!-- Untere Tastatur -->
     <div class="keyboard lower">
-      <div v-for="key in keys1" :key="key" @click="highlightLower(key)"
+      <div v-for="key in keys1" :key="key" 
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
       <div></div>
-      <div v-for="key in keys2" :key="key" @click="highlightLower(key)"
+      <div v-for="key in keys2" :key="key"
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
-      <div v-for="key in keys3" :key="key" @click="highlightLower(key)"
+      <div v-for="key in keys3" :key="key" 
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
     </div>
   </section>
@@ -37,19 +37,29 @@
       };
     },
     methods: {
-      highlightUpper(key) {
+      highlightLowerKeyboard(key) {
         this.highlightedKeyUpper = key;
-      },
-      highlightLower(key) {
-        this.highlightedKeyUpper =
-          key; // Hier abändern, wenn Verschlüsselung steht; das ist der Punkt, wo entschieden wird, welcher Buchstabe gehighlighted wird
         this.highlightedKeyLower = key;
-        this.sendKeyToBackend(key); // Send the pressed key to the backend
-        // Löschen des Highlights nach einer kurzen Verzögerung (hier 1,2sek )
+      },
+      highlightLowerMouse(key) {
+        this.highlightLowerKeyboard(key);
         setTimeout(() => {
-          this.highlightedKeyUpper = null;
-          this.highlightedKeyLower = null;
-        }, 1200);
+          this.resetHighlight();
+        }, 1000); // Abwählen der virtuellen Taste nach 1 Sekunde
+      },
+      resetHighlight() {
+        this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
+        this.highlightedKeyUpper = null;
+        this.highlightedKeyLower = null;
+      },
+      handleKeyPress(event) {
+        const key = event.key.toUpperCase();
+        if (this.keys1.includes(key) || this.keys2.includes(key) || this.keys3.includes(key)) {
+          this.highlightLowerKeyboard(key);
+        }
+      },
+      handleKeyUp() {
+        this.resetHighlight();
       },
       async sendKeyToBackend(key) {
         try {
@@ -60,21 +70,34 @@
           console.error('Error sending key to backend:', error);
         }
       },
-      handleKeyPress(event) {
-        const key = event.key.toUpperCase();
-        if (this.keys1.includes(key) || this.keys2.includes(key) || this.keys3.includes(key)) {
-          this.highlightLower(key);
-        }
-      },
     },
     mounted() {
       window.addEventListener('keydown', this.handleKeyPress);
+      window.addEventListener('keyup', this.handleKeyUp);
+
+      // Eventlistener für click auf die Tasten der unteren Tastatur hinzufügen
+      const lowerKeys = document.querySelectorAll('.lower .key');
+      lowerKeys.forEach(key => {
+        key.addEventListener('click', () => {
+          this.highlightLowerMouse(key.textContent);
+        });
+      });
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.handleKeyPress);
+      window.removeEventListener('keyup', this.handleKeyUp);
+
+      // Eventlistener für click auf die Tasten der unteren Tastatur entfernen
+      const lowerKeys = document.querySelectorAll('.lower .key');
+      lowerKeys.forEach(key => {
+        key.removeEventListener('click', () => {
+          this.highlightLowerMouse(key.textContent);
+        });
+      });
     },
   };
 </script>
+
 
 <style>
   .keyboard {
