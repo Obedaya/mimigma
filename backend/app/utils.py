@@ -1,9 +1,16 @@
-import json, hashlib
+import json, hashlib, logging
 
 def read_user_data():
-    with open("app/users_config.json", "r") as file:
-        data = json.load(file)
-    return data["users"]
+    try:
+        with open("app/users_config.json", "r") as file:
+            data = json.load(file)
+        return data["users"]
+    except FileNotFoundError:
+        logging.error("File not found: users_config.json")
+        return []
+    except json.JSONDecodeError:
+        logging.error("Error decoding JSON from the file")
+        return []
 
 # Stephane : hash fonction SHA256
 def hash_password(password: str) -> str:
