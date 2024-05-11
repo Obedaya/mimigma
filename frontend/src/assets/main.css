@@ -33,28 +33,31 @@ a,
   }
 }
 
-#app{
+#app {
   display: block;
 }
-section{
+
+section {
   padding: 1rem;
 }
 
-.border-white{
+.border-white {
   height: 100%;
 }
-.col{
+
+.col {
   padding: 1rem;
-align-content: center;
+  align-content: center;
 }
 
-.mimigma{
+.mimigma {
   width: 100%;
 
 }
-.icons{
-  width: 50%;
 
+.icons {
+  width: 50%;
+  cursor: pointer;
   margin-left: 25%;
 
 }

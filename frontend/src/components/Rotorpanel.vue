@@ -1,7 +1,7 @@
 <template>
   <section>
-    <div class = "rotor_panel">
-      <div v-for = "(rotor, index) in rotors" :key = "index" :ref = "'rotor' + (index, 1)" class = "rotor">
+    <div class="rotor_panel">
+      <div v-for="(rotor, index) in rotors" :key="index" :ref="'rotor' + (index, 1)" class="rotor">
         <div class="nextletter" @click="rotateRotor('rotor' + (index + 1), 'next')">{{ rotor.next }}</div>
         <div class="currentletter" @click="rotateRotor('rotor' + (index + 1), 'current')">{{ rotor.current }}</div>
         <div class="prevletter" @click="rotateRotor('rotor' + (index + 1), 'prev')">{{ rotor.prev }}</div>
@@ -14,40 +14,49 @@
   export default {
     data() {
       return {
-        rotors: [
-        { next: 'B', current: 'A', prev: 'Z' },
-        { next: 'B', current: 'A', prev: 'Z' },
-        { next: 'B', current: 'A', prev: 'Z' }
-      ]
+        rotors: [{
+            next: 'B',
+            current: 'A',
+            prev: 'Z'
+          },
+          {
+            next: 'B',
+            current: 'A',
+            prev: 'Z'
+          },
+          {
+            next: 'B',
+            current: 'A',
+            prev: 'Z'
+          }
+        ]
       };
     },
     methods: {
       rotateRotor(rotorRef, direction) {
-      const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
-      const rotor = this.rotors[rotorIndex];
-    
-      switch(direction) {
-        case 'next':
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          break;
-        case 'prev':
-          rotor.next = rotor.current;
-          rotor.current = rotor.prev;
-          rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
-          break;
-        case 'current':
-          break;
+        const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
+        const rotor = this.rotors[rotorIndex];
+
+        switch (direction) {
+          case 'next':
+            rotor.prev = rotor.current;
+            rotor.current = rotor.next;
+            rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+            break;
+          case 'prev':
+            rotor.next = rotor.current;
+            rotor.current = rotor.prev;
+            rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
+            break;
+          case 'current':
+            break;
+        }
       }
     }
-  }    
   };
-
 </script>
 
 <style>
-  
   .rotor_panel {
     display: flex;
     justify-content: center;

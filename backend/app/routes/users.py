@@ -5,7 +5,7 @@ from ..models import User
 
 router = APIRouter()
 
-@router.get("/users")
+@router.get("/users", tags=["User Management"])
 def read_users():
     db = SessionLocal()
     try:
