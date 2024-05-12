@@ -42,6 +42,7 @@
       highlightLowerKeyboard(key) {
         this.highlightedKeyUpper = key;
         this.highlightedKeyLower = key;
+        this.sendKeyToBackend(key); // Send the pressed key to the backend
       },
       highlightLowerMouse(key) {
         this.highlightLowerKeyboard(key);
@@ -50,7 +51,7 @@
         }, 1000); // Abwählen der virtuellen Taste nach 1 Sekunde
       },
       resetHighlight() {
-        this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
+        // this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
         this.highlightedKeyUpper = null;
         this.highlightedKeyLower = null;
       },
@@ -64,15 +65,24 @@
         this.resetHighlight();
       },
       async sendKeyToBackend(key) {
+        console.log("Sent data to backend: ",key);
         try {
-          const response = await fetch(`http://localhost:9000/input?key=${key}`, {
-            method: 'POST',
-          });
-          // EventBus.$emit('keySentToBackend'); // HERE
+          this.connection.send(key);
+          // const response = await fetch(`http://localhost:9000/input?key=${key}`, {
+          //  method: 'POST',
+          // });
         } catch (error) {
-          console.error('Error sending key to backend:', error);
+          console.error('Error sending key to backend: ', error);
         }
       },
+    },
+    created() {
+      console.log("Keyboard starting connection to WebSocket Server...")
+      this.connection = new WebSocket("ws://localhost:9000/ws")
+      this.connection.onopen = (event) => {
+        // console.log(event)
+        console.log("Keyboard successfully connected to the websocket server...")
+    }
     },
     mounted() {
       window.addEventListener('keydown', this.handleKeyPress);

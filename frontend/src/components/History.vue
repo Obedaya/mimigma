@@ -1,34 +1,55 @@
 <template>
   <section>
     <div>
-      <div class="output-field">Output will appear here</div>
+      <div >{{ output }}</div>
     </div>
   </section>
 </template>
 
 <script>
-  //TODO EventBus
-  //import { EventBus } from '@/EventBus.js'; // HERE
+// import VueNativeSock from 'vue-native-websocket';
 
-  export default {
-    
-    /* created() {
-      EventBus.$on('keySentToBackend', () => {
-        this.fetchData();
-      });
-    },*/ // HERE
-    methods: {
-      async fetchData() {
-        try {
-          const response = await fetch('http://localhost:9000/output');
-          const data = await response.json();
-          // Update the content of the div
-          document.querySelector('.output-field').innerText = data;
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      }
+//var ws = new WebSocket("ws://localhost:9000/ws");
+export default {
+  data() {
+    return {
+      output: 'Backend not yet connected, please wait...',
+    };
+  },
+  created: function() {
+    console.log("History starting connection to WebSocket Server")
+    this.connection = new WebSocket("ws://localhost:9000/ws")
+
+    this.connection.onmessage = (event) => {
+      // console.log(event);
+      console.log("Event has been received: ", event);
+      this.output = event.data;
     }
-  };
+
+    this.connection.onopen = function(event) {
+      console.log(event)
+      console.log("History successfully connected to the websocket server...")
+    }
+  }
+
+    
+}
+//   created() {
+//     this.$options.sockets.onmessage = (event) => {
+//       const data = JSON.parse(event.data);
+//       if (data.hasOwnProperty('output')) {
+//         this.output = data.output;
+//       }
+//     };
+//   },
+//   mounted() {
+//     this.connectWebSocket();
+//   },
+//   methods: {
+//     connectWebSocket() {
+//       this.$options.sockets.connect('ws://localhost:9000/ws');
+//     }
+//   }
+};
 </script>
 

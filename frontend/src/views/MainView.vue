@@ -30,7 +30,9 @@
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div class="border border-white"></div>
+        <div class="border border-white">
+          <History />
+        </div>
       </div>
     </div>
     <!--row 3-->
@@ -57,6 +59,7 @@
   import Rotorpanel from '../components/Rotorpanel.vue';
   import Usersettings from '../components/Usersettings.vue';
   import Settings from '../components/Settings.vue';
+  import History from '../components/History.vue';
   import {
     RouterLink,
     RouterView
@@ -69,7 +72,8 @@
       Plugboard,
       Rotorpanel,
       Usersettings,
-      Settings
+      Settings,
+      History
     }
   };
 </script>
