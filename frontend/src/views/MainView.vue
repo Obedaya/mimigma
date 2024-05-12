@@ -43,8 +43,6 @@
 
       </div>
       <div class="col">
-        <!--INPUT-->
-        <div class="border border-white"></div>
       </div>
     </div>
   </div>
