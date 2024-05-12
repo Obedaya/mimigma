@@ -2,7 +2,7 @@
     <div class="col-6" style='display: inline-block;'>
         <!-- Button trigger modal -->
         <div data-bs-toggle="modal" data-bs-target="#UserModal">
-            <img class="icons" src="../../nutzer.png">
+            <img class="icons" src="../assets/nutzer.png">
         </div>
         <!-- Modal -->
         <div class="modal fade" id="UserModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">

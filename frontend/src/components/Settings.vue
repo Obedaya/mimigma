@@ -3,7 +3,7 @@
 
         <!-- Button trigger modal -->
         <div data-bs-toggle="modal" data-bs-target="#SettingsModal">
-            <img class="icons" src="../../zahnrad.png">
+            <img class="icons" src="../assets/zahnrad.png">
         </div>
         <!-- Modal -->
         <div class="modal fade" id="SettingsModal" tabindex="-1" aria-labelledby="SettingsModalLabel"

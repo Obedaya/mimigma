@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col">
         <!--Mimigma-Bild-->
-        <img class="mimigma" src="../../mimigma.png">
+        <img class="mimigma" src="../assets/mimigma.png">
       </div>
       <div class="col-6">
         <Keyboard />
