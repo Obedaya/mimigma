@@ -4,6 +4,8 @@ services:
     build: ./frontend
     ports:
       - 8080:8080
+    volumes:
+      - ./frontend:/app
   backend:
     build: ./backend
     ports:
@@ -18,3 +20,16 @@ services:
       - POSTGRES_USER=db_user
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
+  cypress:
+    build:
+      context: ./frontend
+      dockerfile: Cypress.Dockerfile
+    depends_on:
+      - frontend
+    environment:
+      - CYPRESS_baseUrl=http://frontend:8080
+    volumes:
+      - ./frontend/cypress:/e2e/cypress
+    profiles:
+      - testing
+    entrypoint: [ "bun", "cypress", "run" ]
