@@ -5,7 +5,11 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';
 import App from './App.vue';
+import axios from 'axios';
 // import App from './views/MainView.vue';
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:9000"
 
 const app = createApp(App);
 

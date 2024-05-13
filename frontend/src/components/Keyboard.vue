@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import axios from "axios";
   //TODO EventBus 
   //import { EventBus } from '@/EventBus.js'; //HERE
   export default {
@@ -64,25 +65,16 @@
       handleKeyUp() {
         this.resetHighlight();
       },
-      async sendKeyToBackend(key) {
-        console.log("Sent data to backend: ",key);
-        try {
-          this.connection.send(key);
-          // const response = await fetch(`http://localhost:9000/input?key=${key}`, {
-          //  method: 'POST',
-          // });
-        } catch (error) {
-          console.error('Error sending key to backend: ', error);
-        }
+      sendKeyToBackend(key) {
+        axios.post(`http://localhost:9000/keyboard/${key}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.$emit('key', key);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
       },
-    },
-    created() {
-      console.log("Keyboard starting connection to WebSocket Server...")
-      this.connection = new WebSocket("ws://localhost:9000/ws")
-      this.connection.onopen = (event) => {
-        // console.log(event)
-        console.log("Keyboard successfully connected to the websocket server...")
-    }
     },
     mounted() {
       window.addEventListener('keydown', this.handleKeyPress);

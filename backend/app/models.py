@@ -11,3 +11,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
+class Key(Base):
+    __tablename__ = "keys"
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String, index=True)

@@ -25,13 +25,13 @@
         <img class="mimigma" src="../../mimigma.png">
       </div>
       <div class="col-6">
-        <Keyboard />
+        <Keyboard @key="update"/>
 
       </div>
       <div class="col">
         <!-- HISTORY-->
         <div class="border border-white">
-          <History />
+          <History :current_key="currentKey"/>
         </div>
       </div>
     </div>
@@ -66,6 +66,11 @@
   } from 'vue-router'
 
   export default {
+    data() {
+      return {
+        currentKey: "",
+      };
+    },
     // name: 'App',
     components: {
       Keyboard,
@@ -74,6 +79,12 @@
       Usersettings,
       Settings,
       History
+    },
+    methods: {
+      update(key) {
+        this.currentKey = key;
+        console.log(key);
+      }
     }
   };
 </script>
