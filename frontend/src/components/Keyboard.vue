@@ -43,7 +43,7 @@ import axios from "axios";
       highlightLowerKeyboard(key) {
         this.highlightedKeyUpper = key;
         this.highlightedKeyLower = key;
-        this.sendKeyToBackend(key); // Send the pressed key to the backend
+        // this.sendKeyToBackend(key); // Send the pressed key to the backend
       },
       highlightLowerMouse(key) {
         this.highlightLowerKeyboard(key);
@@ -52,7 +52,7 @@ import axios from "axios";
         }, 1000); // Abwählen der virtuellen Taste nach 1 Sekunde
       },
       resetHighlight() {
-        // this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
+        this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
         this.highlightedKeyUpper = null;
         this.highlightedKeyLower = null;
       },
