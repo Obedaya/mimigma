@@ -4,6 +4,8 @@ services:
     build: ./frontend
     ports:
       - 8080:8080
+    volumes:
+      - ./frontend:/app
   backend:
     build: ./backend
     ports:
@@ -25,7 +27,7 @@ services:
     depends_on:
       - frontend
     environment:
-      - CYPRESS_baseUrl=http://localhost:8080
+      - CYPRESS_baseUrl=http://frontend:8080
     volumes:
-      - ./frontend/tests:/e2e
+      - ./frontend/cypress:/e2e/cypress
     entrypoint: [ "bun", "cypress", "run" ]
