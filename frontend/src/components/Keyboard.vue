@@ -63,7 +63,7 @@
       },
       async sendKeyToBackend(key) {
         try {
-          const response = await fetch(`http://localhost:9000/input?key=${key}`, {
+          const response = await fetch(`http://localhost:9000/keyboard/${key}`, {
             method: 'POST',
           });
         } catch (error) {
