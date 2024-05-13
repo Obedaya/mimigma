@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import axios from "axios";
+  //TODO EventBus 
+  //import { EventBus } from '@/EventBus.js'; //HERE
   export default {
     data() {
       return {
@@ -40,6 +43,7 @@
       highlightLowerKeyboard(key) {
         this.highlightedKeyUpper = key;
         this.highlightedKeyLower = key;
+        this.sendKeyToBackend(key); // Send the pressed key to the backend
       },
       highlightLowerMouse(key) {
         this.highlightLowerKeyboard(key);
@@ -48,7 +52,7 @@
         }, 1000); // Abwählen der virtuellen Taste nach 1 Sekunde
       },
       resetHighlight() {
-        this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
+        // this.sendKeyToBackend(this.highlightedKeyUpper); // Send the pressed key to the backend
         this.highlightedKeyUpper = null;
         this.highlightedKeyLower = null;
       },
@@ -61,14 +65,15 @@
       handleKeyUp() {
         this.resetHighlight();
       },
-      async sendKeyToBackend(key) {
-        try {
-          const response = await fetch(`http://localhost:9000/input?key=${key}`, {
-            method: 'POST',
+      sendKeyToBackend(key) {
+        axios.post(`http://localhost:9000/keyboard/${key}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.$emit('key', key);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
           });
-        } catch (error) {
-          console.error('Error sending key to backend:', error);
-        }
       },
     },
     mounted() {

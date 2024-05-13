@@ -25,12 +25,14 @@
         <img class="mimigma" src="../assets/mimigma.png">
       </div>
       <div class="col-6">
-        <Keyboard />
+        <Keyboard @key="update"/>
 
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div class="border border-white"></div>
+        <div class="border border-white">
+          <History :current_key="currentKey"/>
+        </div>
       </div>
     </div>
     <!--row 3-->
@@ -55,19 +57,32 @@
   import Rotorpanel from '../components/Rotorpanel.vue';
   import Usersettings from '../components/Usersettings.vue';
   import Settings from '../components/Settings.vue';
+  import History from '../components/History.vue';
   import {
     RouterLink,
     RouterView
   } from 'vue-router'
 
   export default {
+    data() {
+      return {
+        currentKey: "",
+      };
+    },
     // name: 'App',
     components: {
       Keyboard,
       Plugboard,
       Rotorpanel,
       Usersettings,
-      Settings
+      Settings,
+      History
+    },
+    methods: {
+      update(key) {
+        this.currentKey = key;
+        console.log(key);
+      }
     }
   };
 </script>
