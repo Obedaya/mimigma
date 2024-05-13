@@ -28,6 +28,10 @@ cd mimigma
 docker-compose up --build
 ```
 
+With testing enabled:
+```bash
+docker-compose --profile testing up --build
+```
 ## CI/CD Pipeline
 
 ### Triggering Deployments with Git Tags
