@@ -9,5 +9,8 @@ export default defineConfig({
     videosFolder: 'cypress/videos',
     fixturesFolder: 'cypress/fixtures',
     supportFile: 'cypress/support/index.js',
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    apiURL: 'http://backend:9000',
   },
 });

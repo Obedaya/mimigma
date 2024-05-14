@@ -2,12 +2,12 @@
   <section>
     <!-- Obere Tastatur -->
     <div class="keyboard" style="pointer-events: none;">
-      <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+      <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
         {{ key }}</div>
       <div></div>
-      <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+      <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
         {{ key }}</div>
-      <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper }">
+      <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
         {{ key }}</div>
     </div>
   </section>
@@ -15,12 +15,12 @@
     <!-- Untere Tastatur -->
     <div class="keyboard lower">
       <div v-for="key in keys1" :key="key" 
-        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }">{{ key }}</div>
       <div></div>
       <div v-for="key in keys2" :key="key"
-        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }">{{ key }}</div>
       <div v-for="key in keys3" :key="key" 
-        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower }">{{ key }}</div>
+        :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }">{{ key }}</div>
     </div>
   </section>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div>
+    <div id="output">
       <div :key="output">{{ current_key }}</div>
     </div>
   </section>
