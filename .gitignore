@@ -36,5 +36,5 @@ yarn-error.log*
 Thumbs.db
 
 # Test results
-./frontend/cypress/screenshots/
-./frontend/cypress/videos/
+./frontend/cypress/screenshots/*
+./frontend/cypress/videos/*
