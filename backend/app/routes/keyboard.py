@@ -5,7 +5,7 @@ from ..models import Key
 
 router = APIRouter()
 
-@router.post("/keyboard/{key}", tags=["Keyboard"])
+@router.post("/keyboard", tags=["Keyboard"])
 def post_keyboard(key: str):
     db = SessionLocal()
     try:

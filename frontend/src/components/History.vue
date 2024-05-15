@@ -18,7 +18,7 @@ export default {
   methods: {
     // Send a key press event to the backend
     getKey() {
-      axios.get("http://localhost:9000/keyboard")
+      axios.get("/keyboard")
         .then(response => {
           console.log("Received data from backend: ", response.data);
           this.key = response.data;

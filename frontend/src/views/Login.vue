@@ -22,6 +22,7 @@
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
     data() {
       return {
@@ -32,25 +33,18 @@
     },
 
     methods: {
-      async login() {
-        try {
-          const response = await fetch(
-            `http://localhost:9000/login?username=${this.username}&password=${this.password}`, {
-              method: 'POST'
-            });
-          if (response.ok) {
-            const responseData = await response.json();
-            console.log(responseData);
-            this.$router.push({
-              name: 'main'
-            });
+      login() {
+        axios.post(`/login?username=${this.username}&password=${this.password}`)
+        .then(response => {
+          if (response.data.message === "Login successful") {
+            this.$router.push('/main');
           } else {
             this.showErrorBorder = true;
-            console.error('Login failed:', response.status);
           }
-        } catch (error) {
-          console.error('Error:', error);
-        }
+        })
+        .catch(error => {
+          console.error('Error while fetching data: ', error);
+        });
       }
     }
   };

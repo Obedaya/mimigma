@@ -66,7 +66,7 @@ import axios from "axios";
         this.resetHighlight();
       },
       sendKeyToBackend(key) {
-        axios.post(`http://localhost:9000/keyboard/${key}`)
+        axios.post(`/keyboard?key=${key}`)
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('key', key);

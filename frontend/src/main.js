@@ -8,8 +8,10 @@ import App from './App.vue';
 import axios from 'axios';
 // import App from './views/MainView.vue';
 
+const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:9000"
+axios.defaults.baseURL = apiEndpoint;
 
 const app = createApp(App);
 

@@ -7,9 +7,7 @@ router = APIRouter()
 
 # Stephane : Endpoint to check user Login
 @router.post("/login", tags=["User Management"])
-async def login(request: Request):
-    username = request.query_params.get("username")
-    password = request.query_params.get("password")
+async def login(username: str, password: str):
     db = SessionLocal()
     try:
         hashed_password = hash_password(password)
