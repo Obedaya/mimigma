@@ -38,5 +38,3 @@ Thumbs.db
 # Test results
 ./frontend/cypress/screenshots/*
 ./frontend/cypress/videos/*
-
-.env
