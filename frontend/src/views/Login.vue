@@ -35,107 +35,113 @@
     methods: {
       login() {
         axios.post(`/login?username=${this.username}&password=${this.password}`)
-        .then(response => {
-          if (response.data.message === "Login successful") {
-            this.$router.push('/main');
-          } else {
-            this.showErrorBorder = true;
-          }
-        })
-        .catch(error => {
-          console.error('Error while fetching data: ', error);
-        });
+            .then(response => {
+              console.log(response.data)
+              if (response.status === 200) {
+                this.$router.push('/main');
+              } else {
+                this.showErrorBorder = true;
+              }
+            })
+            .catch(error => {
+              if (error.response.status === 401) {
+                this.showErrorBorder = true;
+                console.log('Login failed')
+              } else {
+                console.error('Error while fetching data: ', error);
+              }
+            });
       }
     }
   };
 </script>
 
 <style>
-  body {
-    background-color: #2a2a2a !important;
-  }
+body {
+  background-color: #2a2a2a !important;
+}
 
-  .website-title {
-    font-size: 100px;
-    text-align: center;
-    color: #00fddc;
-    margin-bottom: 120px;
-    margin-top: 0px;
-  }
+.website-title {
+  font-size: 100px;
+  text-align: center;
+  color: #00fddc;
+  margin-bottom: 120px;
+  margin-top: 0px;
+}
 
-  .container-wrapper {
-    max-width: 238px;
-    margin: 0 auto;
-  }
+.container-wrapper {
+  max-width: 238px;
+  margin: 0 auto;
+}
 
-  .login-container {
-    padding: 20px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-  }
+.login-container {
+  padding: 20px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
 
-  .error-border {
-    border-color: #ff5666;
-  }
+.error-border {
+  border-color: #ff5666;
+}
 
-  .login-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #cccccc;
-  }
+.login-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #cccccc;
+}
 
-  .error-text {
-    color: #ff5666;
-  }
+.error-text {
+  color: #ff5666;
+}
 
-  .login-form {
-    display: flex;
-    flex-direction: column;
-  }
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
 
-  .form-group {
-    margin-bottom: 15px;
-  }
+.form-group {
+  margin-bottom: 15px;
+}
 
-  .form-label {
-    margin-bottom: 5px;
-  }
+.form-label {
+  margin-bottom: 5px;
+}
 
-  .form-input {
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    color: #ffffff;
-    width: -moz-available;
-    /* WebKit-based browsers will ignore this. */
-    width: -webkit-fill-available;
-    /* Mozilla-based browsers will ignore this. */
-    width: 100%;
-  }
+.form-input {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  width: -moz-available;
+  /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;
+  /* Mozilla-based browsers will ignore this. */
+  width: 100%;
+}
 
-  .form-input:focus {
-    border-color: #00fddc;
-    outline: 2px solid #00fddc;
-  }
+.form-input:focus {
+  border-color: #00fddc;
+  outline: 2px solid #00fddc;
+}
 
-  .login-button {
-    padding: 10px;
-    background-color: #00fddc;
-    color: #000000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.login-button {
+  padding: 10px;
+  background-color: #00fddc;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .login-button:hover {
-    background-color: #00fddbc0;
-  }
+.login-button:hover {
+  background-color: #00fddbc0;
+}
 
-  .try-again {
-    margin-top: 10px;
-    text-align: center;
-    color: #ff5666;
-  }
+.try-again {
+  margin-top: 10px;
+  text-align: center;
+  color: #ff5666;
+}
 </style>
