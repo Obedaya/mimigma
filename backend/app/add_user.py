@@ -39,7 +39,7 @@ def delete_user(file_path, username):
 def delete_default_test_user():
     delete_user(file_path, "testuser")
 
-if __name__ == '__main__':
-    delete_default_test_user()
+# if __name__ == '__main__':
+#     delete_default_test_user()
 
 
