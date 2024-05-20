@@ -39,17 +39,14 @@
                             </tbody>
                         </table>
                         <!--Dropdown-Feld für die Rotoren Auswahl-->
-                        <div class="popover-container">
-                            <button class="btn btn-primary" data-bs-toggle="popover" data-bs-placement="top" :data-bs-content="popoverContent">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Rotoren auswählen
                             </button>
-                        </div>
-                        <div id="rotorPopoverContent" class="d-none">
-                            <div>
-                                <h5>Verfügbare Rotoren</h5>
-                                <ul>
-                                    <li v-for="rotor in rotors" :key="rotor.id" @click="selectRotor(rotor)">{{ rotor.name }}</li>
-                                </ul>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1')">Rotor 1</a>
+                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2')">Rotor 2</a>
+                                <a class="dropdown-item" href="#" @click="selectRotor('Reflektor')">Reflektor</a>
                             </div>
                         </div>
                     </div>
