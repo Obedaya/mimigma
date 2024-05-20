@@ -15,7 +15,24 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        bingbong
+                        <table class = "talbe">
+                            <thead>
+                                <tr>
+                                    <th scope = "col">Spalte 1</th>
+                                    <th scope = "col">Spalte 2</th>
+                                    <th scope = "col">Spalte 3</th>
+                                    <th scope = "col">Spalte 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Zeile 1, Spalte 1</td>
+                                    <td>Zeile 1, Spalte 2</td>
+                                    <td>Zeile 1, Spalte 3</td>
+                                    <td>Zeile 1, Spalte 4</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
