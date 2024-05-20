@@ -4,6 +4,7 @@ from .database import engine, check_db_connection
 from .routes import users, login, general, items, rotor, ring, plugboard, lamp, reflector, keyboard
 from .init_db import init_db, sync_db_with_json
 from fastapi.middleware.cors import CORSMiddleware
+from app.enigma.enigma import Enigma
 
 app = FastAPI()
 
