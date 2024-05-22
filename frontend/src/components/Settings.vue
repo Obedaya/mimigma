@@ -38,14 +38,14 @@
                                     <td>Rotor:</td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">I</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1.1')">I</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1.2')">II</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1.3')">III</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1.4')">IV</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 1.5')">V</a>
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor1" 
+                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedRotor1 }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor1" style="height: auto; max-height: 100px; overflow-y: auto; width: 100%;">
+                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor1_' + rotor" @click="selectRotor1(rotor)">
+                                                    {{ rotor }}
+                                                </a>
                                             </div>
                                         </div>
                                     </td>
@@ -165,12 +165,17 @@ export default {
         return {
             alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
             selectedPosition: 'A',
+            selectedRotor1: 'I',
         };
     },
     methods: {
         selectPosition(position) {
             this.selectedPosition = position;
             console.log('Ausgewählte Ausgangsposition:', position);
+        },
+        selectRotor1(rotor) {
+            this.selectedRotor1 = rotor;
+            console.log('Ausgewählter Rotor 1:', rotor);
         }
     }
 };
