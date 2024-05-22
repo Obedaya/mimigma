@@ -84,9 +84,8 @@
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
                                                 {{ selectedPosition }}
                                             </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: 8%;">
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
                                                 <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
-                                                
                                             </div>
                                         </div>
                                     </td>
@@ -95,10 +94,7 @@
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">A</button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="#" @click="selectRotor('Position_A_Rotor2')">A</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_B_Rotor2')">B</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_C_Rotor2')">C</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_D_Rotor2')">D</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_E_Rotor2')">E</a>
+                                                
                                             </div>
                                         </div>
                                     </td>
@@ -108,10 +104,43 @@
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">A</button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="#" @click="selectRotor('Position_A_Rotor3')">A</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_B_Rotor3')">B</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_C_Rotor3')">C</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_D_Rotor3')">D</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_E_Rotor3')">E</a>
+                                                
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ringposition:</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
+                                                {{ selectedPosition }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
+                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
+                                                {{ selectedPosition }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
+                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
+                                                {{ selectedPosition }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
+                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
