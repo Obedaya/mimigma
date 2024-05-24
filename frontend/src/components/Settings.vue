@@ -51,27 +51,27 @@
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">I</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2.1')">I</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2.2')">II</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2.3')">III</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2.4')">IV</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 2.5')">V</a>
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor2" 
+                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedRotor2 }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor2" style="height: auto; max-height: 100px; overflow-y: auto; width: 100%;">
+                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor2_' + rotor" @click="selectRotor2(rotor)">
+                                                    {{ rotor }}
+                                                </a>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">I</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 3.1')">I</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 3.2')">II</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 3.3')">III</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 3.4')">IV</a>
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Rotor 3.5')">V</a>
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor3" 
+                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedRotor3 }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor3" style="height: auto; max-height: 100px; overflow-y: auto; width: 100%;">
+                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor3_' + rotor" @click="selectRotor3(rotor)">
+                                                    {{ rotor }}
+                                                </a>
                                             </div>
                                         </div>
                                     </td>
@@ -80,12 +80,12 @@
                                     <td>Ausgangsposition:</td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition1" 
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
-                                                {{ selectedPosition }}
+                                                {{ selectedPosition1 }}
                                             </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition1" style="height: auto; max-height: 100px; overflow-y: auto; /* top: -150%; */ width: 100%;">
+                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position1_' + letter" @click="selectPostion1(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
@@ -163,21 +163,43 @@ export default {
     name: 'App',
     data() {
         return {
-            alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            selectedPosition: 'A',
+            alphabetArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+            rotorOptions: ['I', 'II', 'III', 'IV', 'V'],
             selectedRotor1: 'I',
+            selectedRotor2: 'I',
+            selectedRotor3: 'I',
+            selectedPosition1: 'A',
+            selectedPosition2: 'A',
+            selectedPosition3: 'A'
         };
     },
     methods: {
-        selectPosition(position) {
-            this.selectedPosition = position;
-            console.log('Ausgewählte Ausgangsposition:', position);
-        },
         selectRotor1(rotor) {
             this.selectedRotor1 = rotor;
             console.log('Ausgewählter Rotor 1:', rotor);
+        },
+        selectRotor2(rotor) {
+            this.selectedRotor2 = rotor;
+            console.log('Ausgewählter Rotor 2:', rotor);
+        },
+        selectRotor3(rotor) {
+            this.selectedRotor3 = rotor;
+            console.log('Ausgewählter Rotor 3:', rotor);
+        },
+        selectPosition1(position) {
+            this.selectedPosition1 = position;
+            console.log('Ausgewählte Ausgangsposition 1:', position);
+        },
+        selectPosition2(position) {
+            this.selectedPosition2 = position;
+            console.log('Ausgewählte Ausgangsposition 2:', position);
+        },
+        selectPosition3(position) {
+            this.selectedPosition3 = position;
+            console.log('Ausgewählte Ausgangsposition 3:', position);
         }
     }
+    
 };
 </script>
 
@@ -198,5 +220,20 @@ export default {
     .modal-body{
         overflow-x: auto; 
     }
-    
+    .dropdown-menu {
+    padding: 0;
+    width: auto !important;
+    }
+
+    .dropdown-menu .dropdown-item {
+    padding: 0.25rem 0.5rem; /* Adjust padding for narrower items */
+    }
+
+    .dropdown-toggle::after {
+    margin-left: 0.25rem; /* Adjust margin to make the arrow closer to the text */
+    }
+
+    #dropdownMenuButton {
+    min-width: 50px; /* Adjust the width of the button */
+    }
 </style>
