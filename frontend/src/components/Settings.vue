@@ -81,7 +81,7 @@
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition1" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 {{ selectedPosition1 }}
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownPosition1" style="height: auto; max-height: 100px; overflow-y: auto; /* top: -150%; */ width: 100%;">
@@ -90,21 +90,23 @@
                                         </div>
                                     </td>
                                     <td><div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">A</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_A_Rotor2')">A</a>
-                                                
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition2" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedPosition2 }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition2" style="height: auto; max-height: 100px; overflow-y: auto; /* top: -150%; */ width: 100%;">
+                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position2_' + letter" @click="selectPostion2(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">A</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Position_A_Rotor3')">A</a>
-                                                
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition3" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedPosition3 }}
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition3" style="height: auto; max-height: 100px; overflow-y: auto; /* top: -150%; */ width: 100%;">
+                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position3_' + letter" @click="selectPostion3(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
@@ -113,34 +115,34 @@
                                     <td>Ringposition:</td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
-                                                {{ selectedPosition }}
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedPosition_Ring1 }}
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'ring1_' + letter" @click="selectPosition_Ring1(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
-                                                {{ selectedPosition }}
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedPosition_Ring2 }}
                                             </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownRing" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
+                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'ring1_' + letter" @click="selectPosition_Ring2(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: smaller;">
-                                                {{ selectedPosition }}
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ selectedPosition_Ring3 }}
                                             </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabet" :key="letter" @click="selectPostion(letter)">{{ letter }}</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownRing" style="height: auto; max-height: 100px; overflow-y: auto; top: -150%; width: auto;">
+                                                <a class="dropdown-item" v-for="letter in alphabet" :key="'ring1_' + letter" @click="selectPosition_Ring3(letter)">{{ letter }}</a>
                                             </div>
                                         </div>
                                     </td>
@@ -170,7 +172,10 @@ export default {
             selectedRotor3: 'I',
             selectedPosition1: 'A',
             selectedPosition2: 'A',
-            selectedPosition3: 'A'
+            selectedPosition3: 'A',
+            selectedPosition_Ring1: 'A',
+            selectedPosition_Ring2: 'A',
+            selectedPosition_Ring3: 'A',
         };
     },
     methods: {
@@ -197,7 +202,19 @@ export default {
         selectPosition3(position) {
             this.selectedPosition3 = position;
             console.log('Ausgewählte Ausgangsposition 3:', position);
-        }
+        },
+        selectPosition_Ring1(Ring_Position) {
+            this.selectedPosition_Ring1 = Ring_Position;
+            console.log('Ausgewählte Ausgangsposition 1:', Ring_Position);
+        },
+        selectPosition_Ring2(Ring_Position) {
+            this.selectedPosition_Ring2 = Ring_Position;
+            console.log('Ausgewählte Ausgangsposition 2:', Ring_Position);
+        },
+        selectPosition_Ring3(Ring_Position) {
+            this.selectedPosition_Ring3 = Ring_Position;
+            console.log('Ausgewählte Ausgangsposition 3:', Ring_Position);
+        },
     }
     
 };
