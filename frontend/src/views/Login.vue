@@ -22,38 +22,44 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  export default {
-    data() {
-      return {
-        username: '',
-        password: '',
-        showErrorBorder: false
-      };
-    },
+import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
 
-    methods: {
-      login() {
-        axios.post(`/login?username=${this.username}&password=${this.password}`)
-            .then(response => {
-              console.log(response.data)
-              if (response.status === 200) {
-                this.$router.push('/main');
-              } else {
-                this.showErrorBorder = true;
-              }
-            })
-            .catch(error => {
-              if (error.response.status === 401) {
-                this.showErrorBorder = true;
-                console.log('Login failed')
-              } else {
-                console.error('Error while fetching data: ', error);
-              }
-            });
-      }
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      showErrorBorder: false
+    };
+  },
+  
+  methods: {
+    login() {
+      axios.post(`/login?username=${this.username}&password=${this.password}`)
+        .then(response => {
+          console.log('Response:', response.data);
+          if (response.status === 200) {
+            const auth = useAuthStore();
+            const userData = response.data.user;
+            auth.login(userData);
+            this.$router.push('/main');
+          } else {
+            console.log('Login failed: Invalid status code');
+            this.showErrorBorder = true;
+          }
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 401) {
+            console.log('Login failed: Unauthorized');
+            this.showErrorBorder = true;
+          } else {
+            console.error('Error while fetching data: ', error);
+          }
+        });
     }
-  };
+  }
+};
 </script>
 
 <style>
