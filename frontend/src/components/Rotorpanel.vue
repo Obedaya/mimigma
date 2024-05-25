@@ -11,48 +11,63 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        rotors: [{
-            next: 'B',
-            current: 'A',
-            prev: 'Z'
-          },
-          {
-            next: 'B',
-            current: 'A',
-            prev: 'Z'
-          },
-          {
-            next: 'B',
-            current: 'A',
-            prev: 'Z'
-          }
-        ]
-      };
-    },
-    methods: {
-      rotateRotor(rotorRef, direction) {
-        const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
-        const rotor = this.rotors[rotorIndex];
-
-        switch (direction) {
-          case 'next':
-            rotor.prev = rotor.current;
-            rotor.current = rotor.next;
-            rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-            break;
-          case 'prev':
-            rotor.next = rotor.current;
-            rotor.current = rotor.prev;
-            rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
-            break;
-          case 'current':
-            break;
-        }
+export default {
+  data() {
+    return {
+      rotors: [],
+    };
+  },
+  methods: {
+    initializeRotors(i) {
+      for (let j = 0; j < i; j++) {
+        this.rotors.push({
+          next: 'B',
+          current: 'A',
+          prev: 'Z',
+        });
       }
-    }
+    },
+    rotateRotor(rotorRef, direction) {
+      const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
+      const rotor = this.rotors[rotorIndex];
+      switch (direction) {
+        case 'next':
+          rotor.prev = rotor.current;
+          rotor.current = rotor.next;
+          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+          break;
+        case 'prev':
+          rotor.next = rotor.current;
+          rotor.current = rotor.prev;
+          rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
+          break;
+        case 'current':
+          break;
+      }
+    },
+    changeRotorCount(newRotorCount) {
+      if (newRotorCount > 0 && newRotorCount <= 10) {
+        const currentRotorCount = this.rotors.length;
+        if (newRotorCount > currentRotorCount) {
+          for (let i = currentRotorCount; i < newRotorCount; i++) {
+            this.rotors.push({
+              next: 'B',
+              current: 'A',
+              prev: 'Z',
+            });
+          }
+        } else if (newRotorCount < currentRotorCount) {
+          this.rotors.splice(newRotorCount);
+        }
+      } else {
+        console.error('Ungültige Anzahl von Rotoren.');
+      }
+    },
+  },
+  created() {
+    const initialRotorCount = 5; // Anzahl der anfänglichen Rotoren
+    this.initializeRotors(initialRotorCount);
+  }
   };
 </script>
 
