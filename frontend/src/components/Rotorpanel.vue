@@ -10,6 +10,7 @@
   </section>
 </template>
 
+
 <script>
 export default {
   data() {
@@ -67,8 +68,16 @@ export default {
   created() {
     const initialRotorCount = 5; // Anzahl der anfänglichen Rotoren
     this.initializeRotors(initialRotorCount);
-  }
-  };
+  },
+  props: {
+    newNumber: Number,
+  },
+watch: {
+    newNumber(newVal) {
+        this.changeRotorCount(newVal);
+    },
+},
+};
 </script>
 
 <style>

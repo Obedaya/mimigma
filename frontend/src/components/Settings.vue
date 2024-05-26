@@ -23,7 +23,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button @click="sendRotorCountToBackend(rotorCount)" type="button modalSendButton" class="btn btn-primary">Save
+                        <button @click="sendRotorCountToBackend(rotorCount)" type="button modalSendButton"  data-bs-dismiss="modal" class="btn btn-primary">Save
                             changes</button>
                     </div>
                 </div>

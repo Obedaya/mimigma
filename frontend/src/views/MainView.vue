@@ -8,11 +8,11 @@
         <Usersettings />
 
         <!-- Enigma Settings Icon + Modal-->
-        <Settings />
+        <Settings @count="rotorNumber"/>
 
       </div>
       <div class="col-6">
-        <Rotorpanel />
+        <Rotorpanel  :newNumber="newNumber"/>
 
       </div>
       <div class="col-3">
@@ -67,6 +67,7 @@
     data() {
       return {
         currentKey: "",
+        newNumber: 0,
       };
     },
     // name: 'App',
@@ -82,6 +83,11 @@
       update(key) {
         this.currentKey = key;
         console.log(key);
+      },
+
+      rotorNumber(count) {
+        this.newNumber = count;
+        console.log(this.newNumber);
       }
     }
   };
