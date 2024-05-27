@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="rotor_panel">
-      <div v-for="(rotor, index) in rotors" :key="index" :ref="'rotor' + (index, 1)" class="rotor">
+      <div v-for="(rotor, index) in rotors" :key="index" :ref="'rotor' + (index + 1)" class="rotor">
         <div class="nextletter" @click="rotateRotor('rotor' + (index + 1), 'next')">{{ rotor.next }}</div>
         <div class="currentletter" @click="rotateRotor('rotor' + (index + 1), 'current')">{{ rotor.current }}</div>
         <div class="prevletter" @click="rotateRotor('rotor' + (index + 1), 'prev')">{{ rotor.prev }}</div>
@@ -10,12 +10,12 @@
   </section>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       rotors: [],
+      rotationCount: 0, // Zählvariable für die Anzahl der Aufrufe
     };
   },
   methods: {
@@ -36,6 +36,7 @@ export default {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+      this.rotationCount++;
           break;
         case 'prev':
           rotor.next = rotor.current;
@@ -44,6 +45,16 @@ export default {
           break;
         case 'current':
           break;
+      }
+
+      // Wenn 26 Rotationen erreicht sind, rufe die nächste Rotorrotation auf
+      if (this.rotationCount === 26) {
+        this.rotationCount = 0; // Zurücksetzen der Zählvariable
+        const prevRotorIndex = rotorIndex - 1;
+        if (prevRotorIndex >= 0) {
+          const prevRotorRef = 'rotor' + (prevRotorIndex + 1);
+          this.rotateRotor(prevRotorRef, 'next');
+        }
       }
     },
     changeRotorCount(newRotorCount) {
@@ -72,13 +83,14 @@ export default {
   props: {
     newNumber: Number,
   },
-watch: {
+  watch: {
     newNumber(newVal) {
-        this.changeRotorCount(newVal);
+      this.changeRotorCount(newVal);
     },
-},
+  },
 };
 </script>
+
 
 <style>
   .rotor_panel {
