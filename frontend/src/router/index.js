@@ -16,24 +16,15 @@ const router = createRouter({
       name: 'main',
       meta: { requiresAuth: true },
       component: MainView
-      /*children: [
-        { path: 'keyboard', component: () => import('../components/Keyboard.vue') },
-        { path: 'plugboard', component: () => import('../components/Plugboard.vue') },
-        { path: 'rotorpanel', component: () => import('../components/Rotorpanel.vue') }
-      ]*/
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
-  
+  auth.checkAuth();  // Check auth state on each route change
   if (to.matched.some(record => record.meta.requiresAuth) && !auth.user) {
-    if (to.path !== '/') {
-      next('/');
-    } else {
-      next();
-    }
+    next('/');
   } else {
     next();
   }

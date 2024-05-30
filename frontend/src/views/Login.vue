@@ -41,7 +41,11 @@ export default {
           console.log('Response:', response.data);
           if (response.status === 200) {
             const auth = useAuthStore();
-            const userData = response.data.user;
+            const userData = {
+              id: response.data.user.id,
+              username: response.data.user.username,
+              token: response.data.access_token
+            };
             auth.login(userData);
             this.$router.push('/main');
           } else {
@@ -61,6 +65,7 @@ export default {
   }
 };
 </script>
+
 
 <style>
 body {
