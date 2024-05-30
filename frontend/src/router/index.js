@@ -22,7 +22,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
-  auth.checkAuth();  // Check auth state on each route change
+
   if (to.matched.some(record => record.meta.requiresAuth) && !auth.user) {
     next('/');
   } else {

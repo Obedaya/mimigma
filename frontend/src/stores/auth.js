@@ -25,8 +25,19 @@ export const useAuthStore = defineStore({
       const token = localStorage.getItem('authToken');
       const user = localStorage.getItem('user');
       if (token && user) {
-        this.token = token;
-        this.user = JSON.parse(user);
+        try {
+          this.token = token;
+          this.user = JSON.parse(user);
+        } catch (error) {
+          console.error('Error parsing stored user data:', error);
+          this.token = null;
+          this.user = null;
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+        }
+      } else {
+        this.token = null;
+        this.user = null;
       }
     }
   }
