@@ -3,12 +3,15 @@
     <!-- upper keyboard -->
     <div class="keyboard" style="pointer-events: none;">
       <div v-for="key in keys1" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
-        {{ key }}</div>
+        {{ key }}
+      </div>
       <div></div>
       <div v-for="key in keys2" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
-        {{ key }}</div>
+        {{ key }}
+      </div>
       <div v-for="key in keys3" :key="key" :class="{ 'key': true, 'highlighted': key === highlightedKeyUpper, 'lamp': true }">
-        {{ key }}</div>
+        {{ key }}
+      </div>
     </div>
   </section>
   <section>
@@ -16,16 +19,20 @@
     <div class="keyboard lower">
       <div v-for="key in keys1" :key="key" 
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }" @click="highlightLowerMouse(key)">
-        {{ key }}</div>
+        {{ key }}
+      </div>
       <div></div>
       <div v-for="key in keys2" :key="key"
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }" @click="highlightLowerMouse(key)">
-        {{ key }}</div>
+        {{ key }}
+      </div>
       <div v-for="key in keys3" :key="key" 
         :class="{ 'key': true, 'highlighted': key === highlightedKeyLower, 'keyboard': true }" @click="highlightLowerMouse(key)">
-        {{ key }}</div>
+        {{ key }}
+      </div>
     </div>
   </section>
+  <History :current_key="highlightedKeyUpper" />
 </template>
 
 <script>
@@ -46,6 +53,7 @@ export default {
     highlightLowerKeyboard(key) {
       this.highlightedKeyLower = key;
       this.sendKeyToBackend(key); // send pressed key to backend
+      this.getEncryptedKey();
     },
     highlightLowerMouse(key) {
       this.highlightLowerKeyboard(key);
@@ -66,8 +74,18 @@ export default {
     handleKeyUp() {
       this.resetHighlight();
     },
-    sendKeyToBackend(key) {
-      axios.post(`/keyboard`, { key: key })
+    async sendKeyToBackend(key) {
+      axios.post(`/keyboard?key=${key}`)
+        .then(response => {
+          console.log("Received data from backend: ", response.data);
+          this.$emit('key', key)
+        })
+        .catch(error => {
+          console.error("Error while fetching data: ", error);
+        });
+    },
+    async getEncryptedKey() {
+      axios.get(`/lamp`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
           this.highlightedKeyUpper = response.data.encrypted_key; // update upper keyboard with encrypted key
@@ -75,7 +93,7 @@ export default {
         .catch(error => {
           console.error("Error while fetching data: ", error);
         });
-    },
+    }
   },
   mounted() {
     window.addEventListener('keydown', this.handleKeyPress);

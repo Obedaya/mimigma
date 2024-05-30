@@ -8,20 +8,20 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
       output: 'Backend not yet connected, please wait...',
+      connection: null, // Store the WebSocket connection object
     };
   },
   methods: {
-    // get key from backend
+    // Send a key press event to the backend
     getKey() {
-      axios.get("/lamp")
+      axios.get("/keyboard")
         .then(response => {
           console.log("Received data from backend: ", response.data);
-          this.output = response.data.status;
+          this.key = response.data;
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);
