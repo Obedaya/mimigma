@@ -5,7 +5,7 @@ from ..database import SessionLocal
 from ..models import User
 from ..utils import hash_password
 
-SECRET_KEY = "your_secret_key"  # Ersetzen Sie dies durch einen sichereren Schlüssel
+SECRET_KEY = "secret_key"
 ALGORITHM = "HS256"
 
 router = APIRouter()
