@@ -18,138 +18,65 @@
                            <!--  erste Zeile --> 
                             <thead>
                                 <tr>
-                                    <th scope = "col">
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownReflektor" 
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reflektor</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownReflektor">
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Reflektor1')">UKW-B</a>  
-                                                <a class="dropdown-item" href="#" @click="selectRotor('Reflektor2')">UKW-C</a>
-                                            </div>
-                                        </div>
-                                    </th>
+                                    <th scope="col">
+                                        <!--Hier wird dann später der Code für Reflector stehen-->
 
+
+                    <!-- <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" :id="'dropdownReflector' + index" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ /* selectedValues.Reflector || */ 'Reflector' }}
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownReflector">
+                        <a class="dropdown-item" href="#" v-for="(value, key) in dropdownOptionsReflector" :key="key" @click="selectReflectorOption(index, value)">{{ value }}</a>
+                      </div>
+                    </div> -->
+                  </th>
+                  
                                     <th scope="col" class="text-center">Rotor 1</th>
                                     <th scope="col" class="text-center">Rotor 2</th>
                                     <th scope="col" class="text-center">Rotor 3</th>
-                                </tr>
+                </tr>           
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Rotor:</td>
-                                    <td>    <!-- Button Togle -->
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor1" 
-                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedRotor1 }}
-                                            </button>
-                                            <!-- Liste der Rotoren -->
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor1" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor1' + rotor" @click="selectRotor1(rotor)">
-                                                    {{ rotor }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor2" 
-                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedRotor2 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor2" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor2' + rotor" @click="selectRotor2(rotor)">
-                                                    {{ rotor }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRotor3" 
-                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedRotor3 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRotor3" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="rotor in rotorOptions" :key="'rotor3' + rotor" @click="selectRotor3(rotor)">
-                                                    {{ rotor }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                  <td v-for="(rotor, index) in rotorHeaders" :key="index">
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" :id="'rotor' + header" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ rotor }}
+                      </button>
+                      <div class="dropdown-menu" :aria-labelledby="'dropdown' + header">
+                        <a class="dropdown-item" href="#" v-for="(value, key) in dropdownRotorOptions" :key="key" @click="selectRotorOption(header, value)">{{ value }}</a>
+                      </div>
+                    </div>
+                  </td>
+                  </tr>
+                                 
                                 <tr>
                                     <td>Ausgangsposition:</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition1" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition1 }}
-                                            </button>
-                                            <!-- Liste der Buchstaben -->
-                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition1" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position1' + letter" @click="selectPosition1(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition2" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition2 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition2" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position2' + letter" @click="selectPosition2(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPosition3" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition3 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownPosition3" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'position3' + letter" @click="selectPosition3(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td v-for="(position, index) in selectedInitialPositions" :key="'position' + index">
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" :id="'dropdownPosition' + index" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ position}}
+                      </button>
+                      <div class="dropdown-menu" :aria-labelledby="'dropdownPosition' + index" style="max-height: 100px; overflow-y: auto;">
+                        <a class="dropdown-item" v-for="letter in alphabetArray_Position" :key="'position' + index + letter" @click="selectPosition(index, letter)">{{ letter }}</a>
+                      </div>
+                    </div>
+                  </td>
                                 </tr>
                                 <tr>
                                     <td>Ringposition:</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition_Ring1 }}
-                                            </button>
-                                            <!-- Liste der Buchstaben -->
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRing" style="max-height: 100px;overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'ring1' + letter" @click="selectPosition_Ring1(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition_Ring2 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRing" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'ring1' + letter" @click="selectPosition_Ring2(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRing" 
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ selectedPosition_Ring3 }}
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownRing" style="max-height: 100px; overflow-y: auto;">
-                                                <a class="dropdown-item" v-for="letter in alphabetArray" :key="'ring1' + letter" @click="selectPosition_Ring3(letter)">{{ letter }}</a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td v-for="(ringPosition, index) in selectedRingPositions" :key="'ringPosition' + index">
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" :id="'dropdownRing' + index" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ ringPosition }}
+                      </button>
+                      <div class="dropdown-menu" :aria-labelledby="'dropdownRing' + index" style="max-height: 100px; overflow-y: auto;">
+                        <a class="dropdown-item" v-for="letter in alphabetArray_Ring" :key="'ringPosition' + index + letter" @click="selectRingPosition(index, letter)">{{ letter }}</a>
+                      </div>
+                    </div>
+                  </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -169,58 +96,48 @@ export default {
     name: 'App',
     data() {
         return {
-            alphabetArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-            rotorOptions: ['I', 'II', 'III', 'IV', 'V'],
-            selectedRotor1: 'I',
-            selectedRotor2: 'I',
-            selectedRotor3: 'I',
-            selectedPosition1: 'A',
-            selectedPosition2: 'A',
-            selectedPosition3: 'A',
-            selectedPosition_Ring1: 'A',
-            selectedPosition_Ring2: 'A',
-            selectedPosition_Ring3: 'A',
-        };
+        rotorHeaders: {1: 'I', 2: 'I', 3:'I'}, //Titel der Dropdowns for Rotoren. Füge ein neues Element hinzu um die Spalten zu erweitern
+        dropdownRotorOptions: {
+        1: 'I',
+        2: 'II',
+        3: 'III',
+        4: 'IV',
+        5: 'V'
+      },
+      /* selectedValues: {
+        Reflector: null,
+        'Rotor 1': null,
+        'Rotor 2': null,
+        'Rotor 3': null
+      } */
+        selectedInitialPositions: {1 : 'A', 2 : 'A', 3 : 'A'}, // Hier werden die ausgewählten Positionen gespeichert
+        alphabetArray_Position: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], // Array der verfügbaren Buchstaben
+        
+        selectedRingPositions: {1 : 'A', 2 : 'A', 3 : 'A'},
+        alphabetArray_Ring: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], // Array der verfügbaren Buchstaben
+        
+        /* dropdownOptionsReflector: {
+            '1': 'UKW-A',
+            '2': 'UKW-B',
+            '3': 'UKW-C'
+            // Weitere Optionen können hier hinzugefügt werden
+        }, */
+    };    
     },
+
     methods: {
-        selectRotor1(rotor) {
-            this.selectedRotor1 = rotor; 
-            
+        selectPosition(index, letter) {
+            // Hier wird der ausgewählte Buchstabe an der entsprechenden Position im Array gespeichert
+            this.selectedPositions[index] = letter;
         },
-        selectRotor2(rotor) {
-            this.selectedRotor2 = rotor;
-            
-        },
-        selectRotor3(rotor) {
-            this.selectedRotor3 = rotor;
-            
-        },
-        selectPosition1(position) {
-            this.selectedPosition1 = position;
-            
-        },
-        selectPosition2(position) {
-            this.selectedPosition2 = position;
-            
-        },
-        selectPosition3(position) {
-            this.selectedPosition3 = position;
-            
-        },
-        selectPosition_Ring1(Ring_Position) {
-            this.selectedPosition_Ring1 = Ring_Position;
-            
-        },
-        selectPosition_Ring2(Ring_Position) {
-            this.selectedPosition_Ring2 = Ring_Position;
-            
-        },
-        selectPosition_Ring3(Ring_Position) {
-            this.selectedPosition_Ring3 = Ring_Position;
-            
-        },
-    }
-    
+        selectRotorOption(index, Rotor){
+            this.selectRotorOption[index] = Rotor;
+        }
+        /* selectReflectorOption(KeyReflector, ReflectorOption) {
+            this.selectedValues[KeyReflector] = ReflectorOption;
+        }, */
+        
+}
 };
 </script>
 
