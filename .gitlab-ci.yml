@@ -53,6 +53,8 @@ cypress-test:
   image: docker:26.0.1
   services:
     - docker:dind
+  variables:
+      DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker-compose up -d --build frontend db   
     - docker-compose --profile testing up --build cypress  
