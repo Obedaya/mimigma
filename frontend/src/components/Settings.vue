@@ -97,6 +97,7 @@ export default {
     };    
   },
 
+    //Diese Funktionen ändern das Zeichen des Toggles sobald was ausgewählt wird
   methods: {
     selectRotorOption(index, rotor){
       this.rotorHeaders[index] = rotor;
