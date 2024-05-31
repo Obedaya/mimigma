@@ -56,3 +56,18 @@ cypress-test:
     - docker-compose up -d --build frontend db   
     - docker-compose --profile testing up --build cypress  
     - docker-compose down
+
+cleanup:
+  stage: cleanup
+  image: docker:26.0.1
+  services:
+    - docker:dind
+  script:
+    - if docker images $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME | grep -q $CI_COMMIT_REF_NAME; then
+        docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
+      fi
+    - if docker images $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME | grep -q $CI_COMMIT_REF_NAME; then
+        docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
+      fi
+  when: always
+
