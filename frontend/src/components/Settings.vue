@@ -87,7 +87,7 @@ export default {
       RotorTitle: {1 : 'Rotor 1', 2 : 'Rotor 2', 3 : 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
             
       rotorHeaders: {1: 'I', 2: 'I', 3:'I'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
-      dropdownRotorOptions: { 1: 'I', 2 : 'II', 3 : 'III', 4 : 'IV', 5 : 'V'},
+      dropdownRotorOptions: { 1 : 'I', 2 : 'II', 3 : 'III', 4 : 'IV', 5 : 'V'},
         
       selectedInitialPositions: {1 : 'A', 2 : 'A', 3 : 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
       alphabetArray_Position: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], // Array der verfügbaren Buchstaben
