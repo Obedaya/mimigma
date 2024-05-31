@@ -48,17 +48,16 @@ build_backend:
         docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_TAG;
       fi
 
-cypress-test:   
+cypress-test:
   stage: e2e_test
   image: docker:26.0.1
   services:
     - docker:dind
-  variables:
-      DOCKER_TLS_CERTDIR: "/certs"
   script:
-    - docker-compose up -d --build frontend db   
-    - docker-compose --profile testing up --build cypress  
-    - docker-compose down  
+    - docker-compose down -v  # Ensure all containers are stopped and volumes removed
+    - docker-compose up -d --build frontend db
+    - docker-compose --profile testing up --build cypress
+    - docker-compose down -v  # Ensure all containers are stopped and volumes removed
 
 nightly_release:  
   stage: release
