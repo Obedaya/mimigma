@@ -77,15 +77,25 @@ export default {
     },
   },
   created() {
-    const initialRotorCount = 5; // Anzahl der anfänglichen Rotoren
+    const initialRotorCount = 3; // Anzahl der anfänglichen Rotoren
     this.initializeRotors(initialRotorCount);
   },
   props: {
     newNumber: Number,
+    initialRotorsettings: Object,
   },
   watch: {
     newNumber(newVal) {
       this.changeRotorCount(newVal);
+    },
+    initialRotorsettings(newVal) {
+      const length = Object.keys(newVal).length;
+      for (let i = 0; i < length; i++) {
+        this.rotors[i].current = newVal[i+1];
+        this.rotors[i].next = String.fromCharCode(((newVal[i+1].charCodeAt(0) - 65 + 1) % 26) + 65);
+        this.rotors[i].prev = String.fromCharCode(((newVal[i+1].charCodeAt(0) - 65 + 25) % 26) + 65);
+      }
+
     },
   },
 };

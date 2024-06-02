@@ -18,7 +18,7 @@
             <div data-mdb-input-init class="form-outline">
               <label class="col-6" for="typeNumber">Rotorenanzahl</label>
               <!-- der Value Wert sollte dann durch die aktuelle Anzahl der Rotoren getauscht werden!!-->
-              <input value="3" min="1" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6"/>
+              <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6" @input="changeRotorCount"/>
             </div>
             <br>
             <table class="table table-responsive table-bordered settings-table">
@@ -59,7 +59,7 @@
                     </button>
                     <div class="dropdown-menu" :aria-labelledby="'dropdownPosition' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="letter in alphabetArray_Position" :key="'position' + index"
+                      <a class="dropdown-item" v-for="letter in alphabet" :key="'position' + index"
                          @click="selectInitialPosition(index, letter)">{{ letter }}</a>
                     </div>
                   </div>
@@ -76,7 +76,7 @@
                     </button>
                     <div class="dropdown-menu" :aria-labelledby="'dropdownRing' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="letter in alphabetArray_Ring"
+                      <a class="dropdown-item" v-for="letter in alphabet"
                          :key="'ringPosition' + index + letter" @click="selectRingPosition(index, letter)">{{
                           letter
                         }}</a>
@@ -89,7 +89,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button @click="sendRotorCountToBackend(rotorCount)" type="button modalSendButton" data-bs-dismiss="modal"
+            <button @click="sendSettingsToBackend" type="button modalSendButton" data-bs-dismiss="modal"
                     class="btn btn-primary">Save changes
             </button>
           </div>
@@ -105,22 +105,21 @@ import axios from "axios";
 export default {
   data() {
     return {
+      rotorCount: 3,
+
       RotorTitle: {1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
 
       rotorHeaders: {1: 'I', 2: 'I', 3: 'I'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
       dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
+      alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
 
       selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
-      alphabetArray_Position: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], // Array der verfügbaren Buchstaben
-
       selectedRingPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten RingPositionen gespeichert
-      alphabetArray_Ring: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], // Array der verfügbaren Buchstaben
     };
   },
   methods: {
 
     sendRotorCountToBackend(count) {
-      console.log(count);
       axios.post(`/rotor?count=${count}`)
           .then(response => {
             console.log("Received data from backend: ", response.data);
@@ -129,6 +128,39 @@ export default {
           .catch(error => {
             console.error("Error while fetching data: ", error);
           });
+    },
+    sendRotorToBackend(rotor) {
+      axios.post(`/rotor?rotor=${rotor}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.$emit('initialRotor', this.selectedInitialPositions);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+    },
+    createRotor(){
+      // Combine all dictionaries to one
+      let initalRotor = {}
+      for (let i = 1; i <= this.rotorCount; i++) {
+        initalRotor[i] = {rotor: this.rotorHeaders[i], initialPosition: this.selectedInitialPositions[i], ringPosition: this.selectedRingPositions[i]}
+      }
+      let jsonRotor = JSON.stringify(initalRotor);
+      return jsonRotor;
+    },
+    addRotor(number) {
+      // Add new rotor to the settings
+      this.RotorTitle[number] = 'Rotor ' + number;
+      this.rotorHeaders[number] = 'I';
+      this.selectedInitialPositions[number] = 'A';
+      this.selectedRingPositions[number] = 'A';
+    },
+    removeRotor(number) {
+      // Remove rotor from the settings
+      delete this.RotorTitle[number];
+      delete this.rotorHeaders[number];
+      delete this.selectedInitialPositions[number];
+      delete this.selectedRingPositions[number];
     },
     selectRotorOption(index, rotor) {
       this.rotorHeaders[index] = rotor;
@@ -140,6 +172,28 @@ export default {
 
     selectRingPosition(index, letter) {
       this.selectedRingPositions[index] = letter;
+    },
+    sendSettingsToBackend() {
+      this.sendRotorCountToBackend(this.rotorCount);
+      let rotor = this.createRotor();
+      // Send rotor as json to backend
+      this.sendRotorToBackend(rotor);
+    },
+    changeRotorCount(){
+      if (this.rotorCount >= 3 && this.rotorCount <= 10) {
+        for (let i = 4; i <= this.rotorCount; i++) {
+          if (!this.RotorTitle[i]) {
+            this.addRotor(i);
+          }
+        }
+        for (let i = 10; i > this.rotorCount; i--) {
+          if (this.RotorTitle[i]) {
+            this.removeRotor(i);
+          }
+        }
+      } else {
+        console.error('Ungültige Anzahl von Rotoren.');
+      }
     },
   },
 };

@@ -8,11 +8,11 @@
         <Usersettings />
 
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber"/>
+        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor"/>
 
       </div>
       <div class="col-6">
-        <Rotorpanel  :newNumber="newNumber"/>
+        <Rotorpanel  :newNumber="newNumber" :initialRotorsettings="initialRotorsettings"/>
 
       </div>
       <div class="col-3">
@@ -68,6 +68,7 @@
       return {
         currentKey: "",
         newNumber: 0,
+        initialRotorsettings: {},
       };
     },
     // name: 'App',
@@ -88,6 +89,10 @@
       rotorNumber(count) {
         this.newNumber = count;
         console.log(this.newNumber);
+      },
+
+      setInitialsRotor(rotor) {
+        this.initialRotorsettings = rotor;
       }
     }
   };
