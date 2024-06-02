@@ -1,37 +1,234 @@
 <template>
-    <div class="col-6" style='display: inline-block;'>
+  <div class="col-6" style='display: inline-block;'>
 
-        <!-- Button trigger modal -->
-        <div data-bs-toggle="modal" data-bs-target="#SettingsModal">
-            <img class="icons" src="../assets/zahnrad.png">
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="SettingsModal" tabindex="-1" aria-labelledby="SettingsModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Einstellungen</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        bingbong
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Button trigger modal -->
+    <div data-bs-toggle="modal" data-bs-target="#SettingsModal">
+      <img class="icons" src="../assets/zahnrad.png">
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="SettingsModal" tabindex="-1" aria-labelledby="SettingsModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content modalbackground">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Einstellungen</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div data-mdb-input-init class="form-outline">
+              <label class="col-6" for="typeNumber">Rotorenanzahl</label>
+              <!-- der Value Wert sollte dann durch die aktuelle Anzahl der Rotoren getauscht werden!!-->
+              <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6" @input="changeRotorCount"/>
+            </div>
+            <br>
+            <table class="table table-responsive table-bordered settings-table">
+              <!--  erste Zeile -->
+              <thead>
+              <tr>
+                <th scope="col">Platz für Reflector</th>
+                <!--Title für Buchstaben-->
+                <th v-for="(rotor, key) in RotorTitle" :key="key" scope="col" class="text-center">{{ rotor }}</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <td>Rotor</td>
+                <td v-for="(rotor, index) in rotorHeaders" :key=" 'rotor' + index">
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            :id="'DropdownRotor' + index" data-bs-toggle="dropdown">
+                      {{ rotor }}
+                    </button>
+                    <div class="dropdown-menu" :aria-labelledby="'dropdown' + index"
+                         style="max-height: 100px; overflow-y: auto;">
+                      <a class="dropdown-item" v-for="(value, key) in dropdownRotorOptions" :key="key"
+                         @click="selectRotorOption(index, value)">{{ value }}</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Ausgangsposition</td>
+                <td v-for="(InitialPosition, index) in selectedInitialPositions" :key="'position' + index">
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            :id="'DropdownPosition' + index" data-bs-toggle="dropdown">
+                      {{ InitialPosition }}
+                    </button>
+                    <div class="dropdown-menu" :aria-labelledby="'dropdownPosition' + index"
+                         style="max-height: 100px; overflow-y: auto;">
+                      <a class="dropdown-item" v-for="letter in alphabet" :key="'position' + index"
+                         @click="selectInitialPosition(index, letter)">{{ letter }}</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Ringposition</td>
+                <td v-for="(RingPosition, index) in selectedRingPositions" :key="'ringPosition' + index">
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" :id="'DropdownRing' + index"
+                            data-bs-toggle="dropdown">
+                      {{ RingPosition }}
+                    </button>
+                    <div class="dropdown-menu" :aria-labelledby="'dropdownRing' + index"
+                         style="max-height: 100px; overflow-y: auto;">
+                      <a class="dropdown-item" v-for="letter in alphabet"
+                         :key="'ringPosition' + index + letter" @click="selectRingPosition(index, letter)">{{
+                          letter
+                        }}</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button @click="sendSettingsToBackend" type="button modalSendButton" data-bs-dismiss="modal"
+                    class="btn btn-primary">Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      rotorCount: 3,
+
+      RotorTitle: {1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
+
+      rotorHeaders: {1: 'I', 2: 'I', 3: 'I'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
+      dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
+      alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+
+      selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
+      selectedRingPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten RingPositionen gespeichert
+    };
+  },
+  methods: {
+
+    sendRotorCountToBackend(count) {
+      axios.post(`/rotor?count=${count}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.$emit('count', count);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+    },
+    sendRotorToBackend(rotor) {
+      axios.post(`/rotor?rotor=${rotor}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.$emit('initialRotor', this.selectedInitialPositions);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+    },
+    createRotor(){
+      // Combine all dictionaries to one
+      let initalRotor = {}
+      for (let i = 1; i <= this.rotorCount; i++) {
+        initalRotor[i] = {rotor: this.rotorHeaders[i], initialPosition: this.selectedInitialPositions[i], ringPosition: this.selectedRingPositions[i]}
+      }
+      let jsonRotor = JSON.stringify(initalRotor);
+      return jsonRotor;
+    },
+    addRotor(number) {
+      // Add new rotor to the settings
+      this.RotorTitle[number] = 'Rotor ' + number;
+      this.rotorHeaders[number] = 'I';
+      this.selectedInitialPositions[number] = 'A';
+      this.selectedRingPositions[number] = 'A';
+    },
+    removeRotor(number) {
+      // Remove rotor from the settings
+      delete this.RotorTitle[number];
+      delete this.rotorHeaders[number];
+      delete this.selectedInitialPositions[number];
+      delete this.selectedRingPositions[number];
+    },
+    selectRotorOption(index, rotor) {
+      this.rotorHeaders[index] = rotor;
+    },
+
+    selectInitialPosition(index, letter) {
+      this.selectedInitialPositions[index] = letter;
+    },
+
+    selectRingPosition(index, letter) {
+      this.selectedRingPositions[index] = letter;
+    },
+    sendSettingsToBackend() {
+      this.sendRotorCountToBackend(this.rotorCount);
+      let rotor = this.createRotor();
+      // Send rotor as json to backend
+      this.sendRotorToBackend(rotor);
+    },
+    changeRotorCount(){
+      if (this.rotorCount >= 3 && this.rotorCount <= 10) {
+        for (let i = 4; i <= this.rotorCount; i++) {
+          if (!this.RotorTitle[i]) {
+            this.addRotor(i);
+          }
+        }
+        for (let i = 10; i > this.rotorCount; i--) {
+          if (this.RotorTitle[i]) {
+            this.removeRotor(i);
+          }
+        }
+      } else {
+        console.error('Ungültige Anzahl von Rotoren.');
+      }
+    },
+  },
+};
 </script>
 
 <style>
-    #SettingsModal {
-        color: black;
-    }
+
+.settings-table {
+  padding-top: 2rem;
+}
+
+#SettingsModal .modal-dialog {
+  color: black;
+  max-width: 50%;
+  height: 80%;
+}
+
+.table thead th {
+  background-color: #191970;
+  color: #fff;
+  text-align: center;
+}
+
+.modal-body {
+  overflow-x: auto;
+}
+
+/* damit die Toggles in der Mitte bleieben */
+.dropdown-toggle {
+  margin: 0 auto;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #faebd7;
+  cursor: pointer;
+}
 </style>
