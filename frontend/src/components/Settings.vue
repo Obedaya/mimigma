@@ -18,7 +18,8 @@
             <div data-mdb-input-init class="form-outline">
               <label class="col-6" for="typeNumber">Rotorenanzahl</label>
               <!-- der Value Wert sollte dann durch die aktuelle Anzahl der Rotoren getauscht werden!!-->
-              <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6" @input="changeRotorCount"/>
+              <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6"
+                     @input="changeRotorCount"/>
             </div>
             <br>
             <table class="table table-responsive table-bordered settings-table">
@@ -101,11 +102,13 @@
 
 <script>
 import axios from "axios";
+import {useAuthStore} from '@/stores/auth';
 
 export default {
   data() {
     return {
       rotorCount: 3,
+      enigmaVariant: 'M3',
 
       RotorTitle: {1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
 
@@ -120,7 +123,7 @@ export default {
   methods: {
 
     sendRotorCountToBackend(count) {
-      axios.post(`/rotor?count=${count}`)
+      axios.post(`/rotor/count?count=${count}`)
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('count', count);
@@ -130,7 +133,7 @@ export default {
           });
     },
     sendRotorToBackend(rotor) {
-      axios.post(`/rotor?rotor=${rotor}`)
+      axios.post(`/rotor`, rotor)
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
@@ -139,14 +142,30 @@ export default {
             console.error("Error while fetching data: ", error);
           });
     },
-    createRotor(){
-      // Combine all dictionaries to one
-      let initalRotor = {}
+    createRotor() {
+      // Initialize arrays for rotors, rotor_positions, and ring_positions
+      let rotors = [];
+      let rotor_positions = [];
+      let ring_positions = [];
+
+      const auth = useAuthStore();
+
+      // Populate the arrays
       for (let i = 1; i <= this.rotorCount; i++) {
-        initalRotor[i] = {rotor: this.rotorHeaders[i], initialPosition: this.selectedInitialPositions[i], ringPosition: this.selectedRingPositions[i]}
+        rotors.push(this.rotorHeaders[i]);
+        rotor_positions.push(this.selectedInitialPositions[i]);
+        ring_positions.push(this.selectedRingPositions[i]);
       }
-      let jsonRotor = JSON.stringify(initalRotor);
-      return jsonRotor;
+
+      // Create the initialRotor object
+      let initialRotor = {
+        user_id: auth.currenUserID,
+        machine_type: this.enigmaVariant,
+        rotors: rotors,
+        rotor_positions: rotor_positions.join(''),
+        ring_positions: ring_positions.join('')
+      };
+      return initialRotor;
     },
     addRotor(number) {
       // Add new rotor to the settings
@@ -175,11 +194,12 @@ export default {
     },
     sendSettingsToBackend() {
       this.sendRotorCountToBackend(this.rotorCount);
-      let rotor = this.createRotor();
+      let rotors = this.createRotor();
+      console.log(rotors)
       // Send rotor as json to backend
-      this.sendRotorToBackend(rotor);
+      this.sendRotorToBackend(rotors);
     },
-    changeRotorCount(){
+    changeRotorCount() {
       if (this.rotorCount >= 3 && this.rotorCount <= 10) {
         for (let i = 4; i <= this.rotorCount; i++) {
           if (!this.RotorTitle[i]) {

@@ -40,5 +40,10 @@ export const useAuthStore = defineStore({
         this.user = null;
       }
     }
+  },
+  getters: {
+    currenUserID() {
+        return this.user ? this.user.id : null;
+    }
   }
 });
