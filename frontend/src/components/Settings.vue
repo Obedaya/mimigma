@@ -227,7 +227,7 @@ export default {
 
 #SettingsModal .modal-dialog {
   color: black;
-  max-width: 50%;
+  max-width: 60%;
   height: 80%;
 }
 

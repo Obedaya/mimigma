@@ -128,6 +128,7 @@ export default {
   }
 
   .nextletter {
+    width: 1vw;
     text-align: center;
     user-select: none;
     cursor: pointer;
@@ -141,6 +142,7 @@ export default {
   }
 
   .currentletter {
+    width: 1vw;
     text-align: center;
     user-select: none;
     cursor: pointer;
@@ -154,6 +156,7 @@ export default {
   }
 
   .prevletter {
+    width: 1vw;
     text-align: center;
     user-select: none;
     cursor: pointer;
