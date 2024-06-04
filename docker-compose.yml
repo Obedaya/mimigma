@@ -25,7 +25,6 @@ services:
       - db
     networks:
       the-enigma-network:
-        aliases:
         - backend
         - enigma-backend
   db:
