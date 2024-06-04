@@ -9,7 +9,11 @@ services:
     env_file:
       - .env
     networks:
-      - the-enigma-network
+      the-enigma-network:
+        aliases:
+          - frontend
+          - enigma-frontend
+
 
   backend:
     build: ./backend
@@ -20,8 +24,9 @@ services:
     depends_on:
       - db
     networks:
-      - the-enigma-network
-
+      the-enigma-network:
+        - backend
+        - enigma-backend
   db:
     image: postgres:alpine
     environment:
@@ -29,7 +34,10 @@ services:
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
     networks:
-      - the-enigma-network
+      the-enigma-network:
+        aliases:
+          - db
+          - enigma-db
 
   cypress:
     build:
@@ -45,7 +53,10 @@ services:
       - testing
     entrypoint: [ "bun", "cypress", "run" ]
     networks:
-      - the-enigma-network
+      the-enigma-network:
+        aliases:
+          - cypress
+          - enigma-cypress
 
   test:
     build: ./backend
@@ -58,7 +69,9 @@ services:
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
     networks:
-      - the-enigma-network
+      the-enigma-network:
+        aliases:
+          - test
 
 networks:
   the-enigma-network:

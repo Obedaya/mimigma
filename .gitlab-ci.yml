@@ -61,9 +61,9 @@ cypress-test:
     - docker ps -a  # List all containers after bringing up services
       
       # List cypress directory
-    - docker exec mimigma-frontend-1 pwd
-    - docker exec mimigma-frontend-1 ls -l cypress 
-    - docker exec mimigma-frontend-1 ls -R cypress
+    - docker-compose exec frontend pwd
+    - docker-compose exec frontend ls -l cypress 
+    - docker-compose exec frontend ls -R cypress
 
     - docker-compose --profile testing up --build cypress
     - docker-compose down -v
