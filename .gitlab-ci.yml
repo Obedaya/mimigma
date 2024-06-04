@@ -55,7 +55,7 @@ cypress-test:
     #     - docker:dind
   script:
     - docker rm -f $(docker ps -aq --filter "name=mimigma-cypress-1") || true
-    - docker ps -a  # List all containers after attempting to remove existing ones
+    - docker ps -a  
     - docker-compose down -v
     - docker-compose up -d --build frontend db
     - docker ps -a  # List all containers after bringing up services
