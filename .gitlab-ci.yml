@@ -72,11 +72,12 @@ cypress-test:
   variables:
     DOCKER_DRIVER: overlay2
   before_script:
-    - docker-compose -d
+    - docker-compose -f docker-compose.yml up -d db
+    - docker-compose -f docker-compose.yml up -d frontend
   script:
-    - docker-compose run cypress
+    - docker-compose -f docker-compose.yml run cypress
   after_script:
-    - docker-compose down -v
+    - docker-compose -f docker-compose.yml down -v
 nightly_release:  
   stage: release
   image: docker:26.0.1
