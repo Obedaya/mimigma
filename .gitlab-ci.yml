@@ -57,14 +57,14 @@ cypress-test:
     - docker rm -f $(docker ps -aq --filter "name=mimigma-cypress-1") || true
     - docker ps -a  # List all containers after attempting to remove existing ones
     - docker-compose down -v
-    - docker-compose up -d --build frontend db
-    - docker ps -a  # List all containers after bringing up services
       
       # List cypress directory
     - docker exec frontend pwd
     - docker exec frontend ls -l cypress 
     - docker exec frontend ls -R cypress
 
+    - docker-compose up -d --build frontend db
+    - docker ps -a  # List all containers after bringing up services
     - docker-compose --profile testing up --build cypress
     - docker-compose down -v
 
