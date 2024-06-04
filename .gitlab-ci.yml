@@ -59,9 +59,9 @@ cypress-test:
     - docker-compose down -v
       
       # List cypress directory
-    - docker exec frontend pwd
-    - docker exec frontend ls -l cypress 
-    - docker exec frontend ls -R cypress
+    - docker exec mimigma-frontend-1 pwd
+    - docker exec mimigma-frontend-1 ls -l cypress 
+    - docker exec mimigma-frontend-1 ls -R cypress
 
     - docker-compose up -d --build frontend db
     - docker ps -a  # List all containers after bringing up services
