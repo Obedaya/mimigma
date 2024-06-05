@@ -37,6 +37,7 @@ cypress-test:
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose up -d --build # Start services in detached mode
+    - docker-compose logs frontend
     - docker-compose exec frontend npx cypress open # Run Cypress in the frontend container
     - docker-compose down -v # Clean up after the tests
 
