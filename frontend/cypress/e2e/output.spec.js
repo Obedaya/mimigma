@@ -1,6 +1,7 @@
 describe('Output test', () => {
     beforeEach(() => {
         cy.visit('/main');
+        cy.login('admin', 'password');
     });
 
     it('should display the letter in the output field when a keyboard button is pressed', () => {

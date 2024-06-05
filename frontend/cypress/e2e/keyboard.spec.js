@@ -1,6 +1,7 @@
 describe('Virtual Keyboard Test', () => {
     beforeEach(() => {
         cy.visit('/main');
+        cy.login('admin', 'password');
     });
 
     it('should highlight the letter in the lamp panel when a keyboard button is pressed', () => {
@@ -17,10 +18,10 @@ describe('Virtual Keyboard Test', () => {
 
         cy.get('body').trigger('keydown', { key: 'A' });
 
-        cy.get('.lamp').contains('A').should('have.class', 'highlighted');
+        cy.get('.lamp').contains('D').should('have.class', 'highlighted');
 
         cy.get('body').trigger('keyup', { key: 'A' });
 
-        cy.get('.lamp').contains('A').should('not.have.class', 'highlighted');
+        cy.get('.lamp').contains('D').should('not.have.class', 'highlighted');
     });
 });

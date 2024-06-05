@@ -1,5 +1,5 @@
 # ROTOR.py
-from crud import get_rotor_settings
+from ..crud import get_rotor_settings
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from ..models import RotorSettings
@@ -74,7 +74,6 @@ class RotorMachine:
             # Adjust the result taking into account the ring position
             letter = chr((ord(letter) - ord('A') + self.ring_positions[i]) % 26 + ord('A'))
         
-        # Reflect (Note: Enigma has a fixed reflector, we do not implement it here)
 
         return letter
 
@@ -265,9 +264,10 @@ rotor_machine = RotorMachine(machine_type, rotors, rotor_positions, ring_positio
 
 # Now you can use rotor_machine to encrypt or decrypt messages
 encrypted_letter = rotor_machine.encrypt_letter("A")
+reverse_letter = rotor_machine.encrypt_letter_reverse("X")
 print(f"Encrypted letter: {encrypted_letter}")
 
 # Close the database session when done
-db_session.close()
+#db_session.close()
 
 """

@@ -19,7 +19,7 @@ class Key(Base):
 
 class RotorSettings(Base):
     __tablename__ = "rotor_settings"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, unique=True, index=True)
     machine_type = Column(String, index=True)
     rotors = Column(JSON)

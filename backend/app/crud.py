@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
-from models import RotorSettings
-from schemas import RotorSettingsCreate
+from .models import RotorSettings
+from .schemas import RotorSettingCreate
 
 def get_rotor_settings(db: Session, user_id: int):
     return db.query(RotorSettings).filter(RotorSettings.user_id == user_id).first()
 
-def create_or_update_rotor_settings(db: Session, settings: RotorSettingsCreate):
+def create_or_update_rotor_settings(db: Session, settings: RotorSettingCreate):
     db_settings = db.query(RotorSettings).filter(RotorSettings.user_id == settings.user_id).first()
     if db_settings:
         db_settings.machine_type = settings.machine_type
@@ -20,7 +20,7 @@ def create_or_update_rotor_settings(db: Session, settings: RotorSettingsCreate):
             rotor_positions=settings.rotor_positions,
             ring_positions=settings.ring_positions
         )
-        db.add(db_settings)
+    db.add(db_settings)
     db.commit()
     db.refresh(db_settings)
     return db_settings

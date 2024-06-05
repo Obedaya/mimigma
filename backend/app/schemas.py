@@ -1,18 +1,12 @@
 from pydantic import BaseModel
 from typing import List
 
-class RotorSettingsBase(BaseModel):
-    user_id: int
+class RotorSettingCreate(BaseModel):
+    user_id: str
     machine_type: str
-    rotors: List[str]
-    rotor_positions: str
-    ring_positions: str
-
-class RotorSettingsCreate(RotorSettingsBase):
-    pass
-
-class RotorSettings(RotorSettingsBase):
-    id: int
+    rotors: List[int]
+    rotor_positions: List[int]
+    ring_positions: List[int]
 
     class Config:
         orm_mode = True
