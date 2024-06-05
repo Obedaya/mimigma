@@ -16,6 +16,7 @@ export default {
     return {
       rotors: [],
       rotationCount: 0, // Zählvariable für die Anzahl der Aufrufe
+      rotorRotationCounts: [],
     };
   },
   methods: {
@@ -26,6 +27,7 @@ export default {
           current: 'A',
           prev: 'Z',
         });
+        this.rotorRotationCounts.push(0);
       }
     },
     rotateRotor(rotorRef, direction) {
@@ -36,7 +38,7 @@ export default {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-      this.rotationCount++;
+          this.rotationCount++;
           break;
         case 'prev':
           rotor.next = rotor.current;
@@ -75,6 +77,23 @@ export default {
         console.error('Ungültige Anzahl von Rotoren.');
       }
     },
+    rotateRotorOnKey() {
+      for (let i = 0; i < this.rotorRotationCounts.length; i++) {
+        const rotor = this.rotors[this.rotors.length - 1 - i];
+        if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === 25) {
+          rotor.prev = rotor.current;
+          rotor.current = rotor.next;
+          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] = 0;
+        } else {
+          rotor.prev = rotor.current;
+          rotor.current = rotor.next;
+          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i]++;
+          break;
+        }
+      }
+    },
   },
   created() {
     const initialRotorCount = 3; // Anzahl der anfänglichen Rotoren
@@ -88,87 +107,87 @@ export default {
     newNumber(newVal) {
       this.changeRotorCount(newVal);
     },
-   initialRotorsettings: {
-     handler(newVal) {
-       const length = Object.keys(newVal).length;
-       for (let i = 0; i < length; i++) {
-         this.rotors[i].current = newVal[i + 1];
-         this.rotors[i].next = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
-         this.rotors[i].prev = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
-       }
-       this.rotationCount = 0;
-     },
-     deep: true,
-   }
+    initialRotorsettings: {
+      handler(newVal) {
+        const length = Object.keys(newVal).length;
+        for (let i = 0; i < length; i++) {
+          this.rotors[i].current = newVal[i + 1];
+          this.rotors[i].next = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
+          this.rotors[i].prev = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
+        }
+        this.rotationCount = 0;
+      },
+      deep: true,
+    }
   },
 };
 </script>
 
 
 <style>
-  .rotor_panel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
+.rotor_panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
-  .rotor {
+.rotor {
 
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    /*float: left;*/
-    margin: 0px 20px;
-    width: 23px;
-    height: 130px;
-    border: 4px solid black;
-    position: relative;
-    /*top: -750px;
-      left: 250px;*/
-    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(42, 42, 42, 1) 2%, rgba(245, 245, 245, 1) 28%, rgba(52, 52, 52, 1) 30%, rgba(216, 216, 216, 1) 31%, rgba(255, 255, 255, 1) 50%, rgba(212, 212, 212, 1) 67%, rgba(45, 45, 45, 1) 69%, rgba(226, 226, 226, 1) 70%, rgba(42, 42, 42, 1) 98%, rgba(0, 0, 0, 1) 100%);
-  }
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  /*float: left;*/
+  margin: 0px 20px;
+  width: 23px;
+  height: 130px;
+  border: 4px solid black;
+  position: relative;
+  /*top: -750px;
+    left: 250px;*/
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(42, 42, 42, 1) 2%, rgba(245, 245, 245, 1) 28%, rgba(52, 52, 52, 1) 30%, rgba(216, 216, 216, 1) 31%, rgba(255, 255, 255, 1) 50%, rgba(212, 212, 212, 1) 67%, rgba(45, 45, 45, 1) 69%, rgba(226, 226, 226, 1) 70%, rgba(42, 42, 42, 1) 98%, rgba(0, 0, 0, 1) 100%);
+}
 
-  .nextletter {
-    width: 1vw;
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    font-family: Tahoma;
-    color: #222222;
-    font-size: 12pt;
-    padding-top: 7px;
-    padding-bottom: 6px;
-    text-shadow: 0px 1px #AAAAAA;
-  }
+.nextletter {
+  width: 1vw;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: Tahoma;
+  color: #222222;
+  font-size: 12pt;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  text-shadow: 0px 1px #AAAAAA;
+}
 
-  .currentletter {
-    width: 1vw;
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    font-family: Tahoma;
-    color: #222222;
-    font-size: 12pt;
-    padding-top: 11px;
-    padding-bottom: 6px;
-    text-shadow: 0px 1px #AAAAAA;
-  }
+.currentletter {
+  width: 1vw;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: Tahoma;
+  color: #222222;
+  font-size: 12pt;
+  padding-top: 11px;
+  padding-bottom: 6px;
+  text-shadow: 0px 1px #AAAAAA;
+}
 
-  .prevletter {
-    width: 1vw;
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    font-family: Tahoma;
-    color: #222222;
-    font-size: 12pt;
-    padding-top: 11px;
-    padding-bottom: 11px;
-    text-shadow: 0px 1px #AAAAAA;
-  }
+.prevletter {
+  width: 1vw;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: Tahoma;
+  color: #222222;
+  font-size: 12pt;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  text-shadow: 0px 1px #AAAAAA;
+}
 </style>

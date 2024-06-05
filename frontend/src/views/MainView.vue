@@ -12,7 +12,7 @@
 
       </div>
       <div class="col-6">
-        <Rotorpanel  :newNumber="newNumber" :initialRotorsettings="initialRotorsettings"/>
+        <Rotorpanel  :newNumber="newNumber" :initialRotorsettings="initialRotorsettings" ref="rotorPanel"/>
 
       </div>
       <div class="col-3">
@@ -58,10 +58,6 @@
   import Usersettings from '../components/Usersettings.vue';
   import Settings from '../components/Settings.vue';
   import History from '../components/History.vue';
-  import {
-    RouterLink,
-    RouterView
-  } from 'vue-router'
 
   export default {
     data() {
@@ -83,12 +79,11 @@
     methods: {
       update(key) {
         this.currentKey = key;
-        console.log(key);
+        this.$refs.rotorPanel.rotateRotorOnKey();
       },
 
       rotorNumber(count) {
         this.newNumber = count;
-        console.log(this.newNumber);
       },
 
       setInitialsRotor(rotor) {
