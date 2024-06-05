@@ -32,6 +32,8 @@ cypress-test:
   image: docker:26.0.1-dind  # Use the dind image for running Docker commands
   services:
     - docker:26.0.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose up -d --build # Start services in detached mode
