@@ -265,7 +265,6 @@ rotor_machine = RotorMachine(machine_type, rotors, rotor_positions, ring_positio
 # Now you can use rotor_machine to encrypt or decrypt messages
 encrypted_letter = rotor_machine.encrypt_letter("A")
 reverse_letter = rotor_machine.encrypt_letter_reverse("X")
-print(f"Encrypted letter: {encrypted_letter}")
 
 # Close the database session when done
 #db_session.close()
