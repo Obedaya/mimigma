@@ -88,15 +88,17 @@ export default {
     newNumber(newVal) {
       this.changeRotorCount(newVal);
     },
-    initialRotorsettings(newVal) {
-      const length = Object.keys(newVal).length;
-      for (let i = 0; i < length; i++) {
-        this.rotors[i].current = newVal[i+1];
-        this.rotors[i].next = String.fromCharCode(((newVal[i+1].charCodeAt(0) - 65 + 1) % 26) + 65);
-        this.rotors[i].prev = String.fromCharCode(((newVal[i+1].charCodeAt(0) - 65 + 25) % 26) + 65);
-      }
-
-    },
+   initialRotorsettings: {
+     handler(newVal) {
+       const length = Object.keys(newVal).length;
+       for (let i = 0; i < length; i++) {
+         this.rotors[i].current = newVal[i + 1];
+         this.rotors[i].next = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
+         this.rotors[i].prev = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
+       }
+     },
+     deep: true,
+   }
   },
 };
 </script>
