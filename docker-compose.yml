@@ -28,7 +28,6 @@ services:
   cypress: # Only needed when running cypress open 
     depends_on:
       - frontend:
-        condition: service_healthy
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
     working_dir: /e2e
