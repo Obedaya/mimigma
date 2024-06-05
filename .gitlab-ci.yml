@@ -31,7 +31,7 @@ cypress-test:
   stage: e2e_test
   image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
   script:
-    - npx cypress run
+    - npx cypress open
 
 cleanup:
   stage: cleanup
