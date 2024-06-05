@@ -31,7 +31,13 @@ cypress-test:
   stage: e2e_test
   image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
   script:
-    - npx cypress open
+    - ls -la /app # List files in the workdir
+    - printenv | grep PATH # Filter PATH variable from environment variables
+    - npm list -g --depth=0  # List globally installed npm packages
+    - node -v  # Print the Node.js version
+    - npm -v  # Print the npm version
+    - bun --version  # Print the Bun version
+    - bunx cypress --version  # Check for Cypress
 
 cleanup:
   stage: cleanup
