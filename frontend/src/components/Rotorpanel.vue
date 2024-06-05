@@ -96,6 +96,7 @@ export default {
          this.rotors[i].next = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
          this.rotors[i].prev = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
        }
+       this.rotationCount = 0;
      },
      deep: true,
    }
