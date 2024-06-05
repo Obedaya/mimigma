@@ -38,7 +38,7 @@ services:
     command: npx cypress open
     profiles:
       - testing
-    entrypoint: [ "bun", "cypress", "run" ]
+        # entrypoint: [ "bun", "cypress", "run" ]
 
 
   test:
