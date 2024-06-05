@@ -19,13 +19,4 @@ def read_rotor_setting(user_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@router.post("/rotor", tags=["Rotor"], response_model=RotorSettings)
-def update_rotor_setting(settings: RotorSettingsCreate, db: Session = Depends(get_db)):
-    try:
-        db_settings = create_or_update_rotor_settings(db=db, settings=settings)
-        return db_settings
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
