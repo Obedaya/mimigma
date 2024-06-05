@@ -26,9 +26,10 @@ services:
       - POSTGRES_DB=enigma_db
 
   cypress: # Only needed when running cypress open 
-    build:
-      context: ./frontend
-      dockerfile: Cypress.Dockerfile
+    #  build:
+    #   context: ./frontend
+    #   dockerfile: Cypress.Dockerfile
+    image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     depends_on: # Correct depends_on syntax
       - frontend
     environment:
