@@ -251,7 +251,7 @@ def advance_rotor(position):
     new_position = (position + 1) % 26
     return new_position
 
-
+"""
 # Example usage
 user_id = 4
 db_session = Session()
@@ -269,3 +269,5 @@ print(f"Encrypted Letter : {reverse_letter}")
 
 # Close the database session when done
 db_session.close()
+
+"""
