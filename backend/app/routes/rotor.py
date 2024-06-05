@@ -26,34 +26,41 @@ def read_rotor_setting(user_id: int, db: Session = Depends(get_db)):
 """
 
 @router.post("/rotor", tags=["Rotor"])
-async def update_rotor_setting(data: dict = Body(...)):
+async def update_rotor_setting(data: RotorSettingCreate):
     db = SessionLocal()
     try:
-        user_id = data["user_id"]
-        machine_type = data["machine_type"]
-        rotors = data["rotors"]
-        rotor_positions = data["rotor_positions"]
-        ring_positions = data["ring_positions"]
-        # Logic to update the rotor setting in the database
-        rotor_setting = RotorSettings(
-            user_id=user_id,
-            machine_type=machine_type,
-            rotors=rotors,
-            rotor_positions=rotor_positions,
-            ring_positions=ring_positions
-        )
+        existing_setting = db.query(RotorSettings).filter_by(user_id=data.user_id).first()
 
-        db.add(rotor_setting)
-        db.commit()
-        db.refresh(rotor_setting)
+        if existing_setting:
+            # Update existing record
+            existing_setting.machine_type = data.machine_type
+            existing_setting.rotors = data.rotors
+            existing_setting.rotor_positions = data.rotor_positions
+            existing_setting.ring_positions = data.ring_positions
+            db.commit()
+            db.refresh(existing_setting)
+            message = "Rotor setting updated successfully"
+        else:
+            # Insert new record
+            rotor_setting = RotorSettings(
+                user_id=data.user_id,
+                machine_type=data.machine_type,
+                rotors=data.rotors,
+                rotor_positions=data.rotor_positions,
+                ring_positions=data.ring_positions
+            )
+            db.add(rotor_setting)
+            db.commit()
+            db.refresh(rotor_setting)
+            message = "Rotor setting created successfully"
 
-        print(f"User ID: {user_id}")
-        print(f"Machine Type: {machine_type}")
-        print(f"Rotors: {rotors}")
-        print(f"Rotor Positions: {rotor_positions}")
-        print(f"Ring Positions: {ring_positions}")
+        print(f"User ID: {data.user_id}")
+        print(f"Machine Type: {data.machine_type}")
+        print(f"Rotors: {data.rotors}")
+        print(f"Rotor Positions: {data.rotor_positions}")
+        print(f"Ring Positions: {data.ring_positions}")
 
-        return {"message": "Rotor setting updated successfully"}
+        return {"message": message}
     finally:
         db.close()
 

@@ -251,9 +251,9 @@ def advance_rotor(position):
     new_position = (position + 1) % 26
     return new_position
 
-"""
+
 # Example usage
-user_id = 1
+user_id = 4
 db_session = Session()
 
 # Retrieve rotor settings from the database
@@ -264,9 +264,8 @@ rotor_machine = RotorMachine(machine_type, rotors, rotor_positions, ring_positio
 
 # Now you can use rotor_machine to encrypt or decrypt messages
 encrypted_letter = rotor_machine.encrypt_letter("A")
-reverse_letter = rotor_machine.encrypt_letter_reverse("X")
+reverse_letter = rotor_machine.encrypt_letter_reverse(encrypted_letter)
+print(f"Encrypted Letter : {reverse_letter}")
 
 # Close the database session when done
-#db_session.close()
-
-"""
+db_session.close()
