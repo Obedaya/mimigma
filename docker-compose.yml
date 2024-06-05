@@ -8,8 +8,6 @@ services:
       - /app/node_modules
     env_file:
       - .env
-    networks:
-      - the-enigma-network
 
   backend:
     build: ./backend
@@ -19,8 +17,6 @@ services:
       - DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
     depends_on:
       - db
-    networks:
-      - the-enigma-network
 
   db:
     image: postgres:alpine
@@ -28,8 +24,6 @@ services:
       - POSTGRES_USER=db_user
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
-    networks:
-      - the-enigma-network
 
   cypress:
     build:
@@ -44,8 +38,6 @@ services:
     profiles:
       - testing
     entrypoint: [ "bun", "cypress", "run" ]
-    networks:
-      - the-enigma-network
 
   test:
     build: ./backend
@@ -57,9 +49,3 @@ services:
       - db
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
-    networks:
-      - the-enigma-network
-
-networks:
-  the-enigma-network:
-    driver: bridge
