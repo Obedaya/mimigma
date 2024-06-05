@@ -14,12 +14,16 @@ RUN apt-get update && apt-get install -y \
 
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:${PATH}"
 
 # Install Cypress
 RUN bun add cypress
 
-RUN npm install -g npx
+# Install npx with Bun
+RUN bun add -g npx
+
+# Set PATH after Bun and npx installation
+ENV PATH="/usr/local/lib/node_modules/npm/bin:${PATH}"
+ENV PATH="/root/.bun/bin:${PATH}"  
 
 # Setup workspace
 WORKDIR /e2e
