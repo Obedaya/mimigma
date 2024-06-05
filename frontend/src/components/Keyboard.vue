@@ -47,18 +47,22 @@ export default {
       keys3: ['P', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', 'L'],
       highlightedKeyUpper: null,
       highlightedKeyLower: null,
+      isBeingProcessed: false,
     };
   },
   methods: {
     highlightLowerKeyboard(key) {
-      this.highlightedKeyLower = key;
-      this.sendKeyToBackend(key); // send pressed key to backend
-      this.getEncryptedKey();
+      if (!this.isBeingProcessed) {
+        this.isBeingProcessed = true;
+        this.highlightedKeyLower = key;
+        this.sendKeyToBackend(key); // send pressed key to backend
+      }
     },
     highlightLowerMouse(key) {
       this.highlightLowerKeyboard(key);
       setTimeout(() => {
         this.resetHighlight();
+        this.isBeingProcessed = false;
       }, 1000); // 1 sec 
     },
     resetHighlight() {
@@ -72,13 +76,15 @@ export default {
       }
     },
     handleKeyUp() {
+      this.isBeingProcessed = false;
       this.resetHighlight();
     },
     async sendKeyToBackend(key) {
       axios.post(`/keyboard?key=${key}`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
-          this.$emit('key', key)
+          this.$emit('key', key);
+          this.getEncryptedKey();
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);
@@ -99,25 +105,25 @@ export default {
     window.addEventListener('keydown', this.handleKeyPress);
     window.addEventListener('keyup', this.handleKeyUp);
 
-    // eventlistener on click lower keyboard
-    const lowerKeys = document.querySelectorAll('.lower .key');
-    lowerKeys.forEach(key => {
-      key.addEventListener('click', () => {
-        this.highlightLowerMouse(key.textContent);
-      });
-    });
+    // // eventlistener on click lower keyboard
+    // const lowerKeys = document.querySelectorAll('.lower .key');
+    // lowerKeys.forEach(key => {
+    //   key.addEventListener('click', () => {
+    //     this.highlightLowerMouse(key.textContent);
+    //   });
+    // });
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeyPress);
     window.removeEventListener('keyup', this.handleKeyUp);
 
     // remove eventlistener
-    const lowerKeys = document.querySelectorAll('.lower .key');
-    lowerKeys.forEach(key => {
-      key.removeEventListener('click', () => {
-        this.highlightLowerMouse(key.textContent);
-      });
-    });
+    // const lowerKeys = document.querySelectorAll('.lower .key');
+    // lowerKeys.forEach(key => {
+    //   key.removeEventListener('click', () => {
+    //     this.highlightLowerMouse(key.textContent);
+    //   });
+    // });
   },
 };
 </script>
