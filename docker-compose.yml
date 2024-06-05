@@ -25,16 +25,16 @@ services:
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
 
-  cypress:
-    build:
-      context: ./frontend
-      dockerfile: Cypress.Dockerfile
+  cypress: # Only needed when running cypress open 
+    image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     depends_on:
       - frontend
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
-    volumes:
-      - ./frontend/cypress:/e2e/cypress
+    working_dir: /e2e
+    command: npx cypress open
+      #     volumes:
+      #       - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
     entrypoint: [ "bun", "cypress", "run" ]

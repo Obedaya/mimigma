@@ -29,15 +29,13 @@ build_backend:
 
 cypress-test:
   stage: e2e_test
-  image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+  image: docker:26.0.1-dind  # Use the dind image for running Docker commands
+  services:
+    - docker:26.0.1-dind
   script:
-    - ls -la /app # List files in the workdir
-    - printenv | grep PATH # Filter PATH variable from environment variables
-    - npm list -g --depth=0  # List globally installed npm packages
-    - node -v  # Print the Node.js version
-    - npm -v  # Print the npm version
-    - bun --version  # Print the Bun version
-    - bunx cypress --version  # Check for Cypress
+    - docker-compose up -d --build # Start services in detached mode
+    - docker-compose exec frontend npx cypress open # Run Cypress in the frontend container
+    - docker-compose down -v # Clean up after the tests
 
 cleanup:
   stage: cleanup
