@@ -26,17 +26,19 @@ services:
       - POSTGRES_DB=enigma_db
 
   cypress: # Only needed when running cypress open 
-    depends_on:
-      - frontend:
+    build:
+      context: ./frontend
+      dockerfile: Cypress.Dockerfile
+    depends_on: # Correct depends_on syntax
+      - frontend
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
     working_dir: /e2e
     command: npx cypress open
-      #     volumes:
-      #       - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
     entrypoint: [ "bun", "cypress", "run" ]
+
 
   test:
     build: ./backend
