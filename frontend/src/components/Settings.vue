@@ -2,7 +2,7 @@
   <div class="col-6" style='display: inline-block;'>
 
     <!-- Button trigger modal -->
-    <div data-bs-toggle="modal" data-bs-target="#SettingsModal">
+    <div data-bs-toggle="modal" data-bs-target="#SettingsModal" id="settings-button">
       <img class="icons" src="../assets/zahnrad.png">
     </div>
     <!-- Modal -->
@@ -12,7 +12,7 @@
         <div class="modal-content modalbackground">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Einstellungen</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modal-close-button"></button>
           </div>
           <div class="modal-body">
             <div data-mdb-input-init class="form-outline">
@@ -91,7 +91,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button @click="sendSettingsToBackend" type="button modalSendButton" data-bs-dismiss="modal"
-                    class="btn btn-primary">Save changes
+                    class="btn btn-primary" id="modal-submit-button">Save changes
             </button>
           </div>
         </div>
