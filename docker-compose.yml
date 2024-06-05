@@ -25,21 +25,19 @@ services:
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
 
-  cypress: # Only needed when running cypress open 
-    #  build:
-    #   context: ./frontend
-    #   dockerfile: Cypress.Dockerfile
-    image: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    depends_on: # Correct depends_on syntax
+  cypress:
+    build:
+      context: ./frontend
+      dockerfile: Cypress.Dockerfile
+    depends_on:
       - frontend
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
-    working_dir: /e2e
-    command: npx cypress open
+    volumes:
+      - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
-        # entrypoint: [ "bun", "cypress", "run" ]
-
+    entrypoint: [ "bun", "cypress", "run" ]
 
   test:
     build: ./backend
@@ -51,3 +49,4 @@ services:
       - db
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
+
