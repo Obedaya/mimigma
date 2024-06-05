@@ -19,6 +19,8 @@ ENV PATH="/root/.bun/bin:${PATH}"
 # Install Cypress
 RUN bun add cypress
 
+RUN npm install -g npx
+
 # Setup workspace
 WORKDIR /e2e
 COPY . .
