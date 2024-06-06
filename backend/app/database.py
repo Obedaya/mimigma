@@ -20,3 +20,11 @@ def check_db_connection(engine):
             print(e)
             # wait 2 seconds before connecting again
             time.sleep(2)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
