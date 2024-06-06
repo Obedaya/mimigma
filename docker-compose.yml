@@ -33,10 +33,11 @@ services:
       - frontend
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
-        # volumes:
-        #   - ./frontend/cypress:/e2e/cypress
+    volumes:
+      - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
+    entrypoint: [ "bun", "cypress", "run" ]
 
   test:
     build: ./backend
