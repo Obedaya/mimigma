@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     xauth \
     xvfb
 
-# Install Bun
+# Install bun
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/root/.bun/bin:${PATH}"
 
