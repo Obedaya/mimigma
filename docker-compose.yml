@@ -37,7 +37,6 @@ services:
       - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
-    entrypoint: [ "bun", "cypress", "run" ]
 
   test:
     build: ./backend

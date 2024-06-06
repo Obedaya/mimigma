@@ -22,3 +22,5 @@ RUN bun add cypress
 # Setup workspace
 WORKDIR /e2e
 COPY . .
+
+CMD [ "bun", "cypress", "run" ]
