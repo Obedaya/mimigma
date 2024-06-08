@@ -41,8 +41,8 @@ services:
 
   test:
     build: ./backend
-    volumes:
-      - ./backend/app:/code/app  # Mount to reflect changes in tests immediately
+#    volumes:
+#      - ./backend/app:/code/app  # Mount to reflect changes in tests immediately
     command: sh -c 'sleep 3 && pytest -s /code/app/user_tests.py'
     depends_on:
       - backend

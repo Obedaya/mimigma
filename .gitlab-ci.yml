@@ -1,6 +1,6 @@
 stages:
   - build 
-  - e2e_test
+  - test
   - cleanup
 
 # Build and push the frontend image
@@ -27,8 +27,8 @@ build_backend:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
-cypress-test:
-  stage: e2e_test
+e2e-test:
+  stage: test
   image: docker:26.0.1-dind  # Use the dind image for running Docker commands
   services:
     - docker:26.0.1-dind
@@ -36,11 +36,18 @@ cypress-test:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    - docker-compose --profile testing up --build
-#     - docker-compose up -d --build # Start services in detached mode
-#     - docker-compose logs frontend
-#     - docker-compose exec cypress npx cypress open # Run Cypress in the cypress container
-#     - docker-compose down -v # Clean up after the tests
+    - docker-compose --profile e2etest up --build --abort-on-container-exit
+
+unit-test:
+  stage: test
+  image: docker:26.0.1-dind  # Use the dind image for running Docker commands
+  services:
+    - docker:26.0.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker-compose --profile unittest up --build --abort-on-container-exit
 
 cleanup:
   stage: cleanup
