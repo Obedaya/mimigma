@@ -36,10 +36,11 @@ cypress-test:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    - docker-compose up -d --build # Start services in detached mode
-    - docker-compose logs frontend
-    - docker-compose exec cypress npx cypress open # Run Cypress in the cypress container
-    - docker-compose down -v # Clean up after the tests
+    - docker-compose --profile testing up --build
+#     - docker-compose up -d --build # Start services in detached mode
+#     - docker-compose logs frontend
+#     - docker-compose exec cypress npx cypress open # Run Cypress in the cypress container
+#     - docker-compose down -v # Clean up after the tests
 
 cleanup:
   stage: cleanup
