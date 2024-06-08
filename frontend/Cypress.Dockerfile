@@ -1,18 +1,7 @@
-FROM node:15
-RUN apt-get update && apt-get install -y \
-    libgtk2.0-0 \
-    libgtk-3-0 \
-    libgbm-dev \
-    libnotify-dev \
-    libgconf-2-4 \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    libxtst6 \
-    xauth \
-    xvfb
+FROM cypress/browsers:latest
 
 # Install Bun
+RUN apt-get update && apt-get install -y curl
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/root/.bun/bin:${PATH}"
 
@@ -20,7 +9,7 @@ ENV PATH="/root/.bun/bin:${PATH}"
 RUN bun add cypress
 
 # Setup workspace
-WORKDIR /e2e
-COPY . .
-
+WORKDIR /app
+COPY . /app
+RUN ls -al cypress/support
 CMD [ "bun", "cypress", "run" ]

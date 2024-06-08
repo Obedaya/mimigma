@@ -37,6 +37,7 @@ services:
       - ./frontend/cypress:/e2e/cypress
     profiles:
       - testing
+      - e2etest
 
   test:
     build: ./backend
@@ -46,6 +47,9 @@ services:
     depends_on:
       - backend
       - db
+    profiles:
+      - testing
+      - unittest
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
 
