@@ -11,5 +11,5 @@ RUN bun add cypress
 # Setup workspace
 WORKDIR /app
 COPY . /app
-
+RUN ls -al cypress/support
 CMD [ "bun", "cypress", "run" ]
