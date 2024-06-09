@@ -33,8 +33,8 @@ services:
       - frontend
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
-    volumes:
-      - ./frontend/cypress:/app/cypress
+#    volumes:
+#      - ./frontend/cypress:/app/cypress
     profiles:
       - testing
       - e2etest
