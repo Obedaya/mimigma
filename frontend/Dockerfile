@@ -16,3 +16,4 @@ EXPOSE 8080
 RUN bun install
 
 CMD ["bun", "dev", "--port", "8080", "--host"]
+

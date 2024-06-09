@@ -1,12 +1,11 @@
-version: '3'
 services:
   frontend:
     build: ./frontend
     ports:
       - 8080:8080
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+        #    volumes:
+      #       - ./frontend:/app
+      #  - /app/node_modules
     env_file:
       - .env
 
@@ -35,18 +34,22 @@ services:
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
     volumes:
-      - ./frontend/cypress:/e2e/cypress
+      - ./frontend/cypress:/app/cypress
     profiles:
       - testing
-    entrypoint: [ "bun", "cypress", "run" ]
+      - e2etest
 
   test:
     build: ./backend
-    volumes:
-      - ./backend/app:/code/app  # Mount to reflect changes in tests immediately
+#    volumes:
+#      - ./backend/app:/code/app  # Mount to reflect changes in tests immediately
     command: sh -c 'sleep 3 && pytest -s /code/app/user_tests.py'
     depends_on:
       - backend
       - db
+    profiles:
+      - testing
+      - unittest
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
+
