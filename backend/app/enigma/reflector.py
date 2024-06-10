@@ -1,5 +1,5 @@
 import string
-from reflector_config import UKW_A, UKW_B, UKW_C, UKW_N
+from .reflector_config import UKW_A, UKW_B, UKW_C, UKW_N
 
 class Reflector:
     def __init__(self, variant):
