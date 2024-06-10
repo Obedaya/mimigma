@@ -12,7 +12,8 @@
         <div class="modal-content modalbackground">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Einstellungen</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modal-close-button"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="modal-close-button"></button>
           </div>
           <div class="modal-body">
             <div data-mdb-input-init class="form-outline">
@@ -215,6 +216,9 @@ export default {
         console.error('Ungültige Anzahl von Rotoren.');
       }
     },
+  },
+  created() {
+    this.sendSettingsToBackend();
   },
 };
 </script>
