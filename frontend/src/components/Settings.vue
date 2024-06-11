@@ -27,7 +27,19 @@
               <!--  erste Zeile -->
               <thead>
               <tr>
-                <th scope="col">Platz für Reflector</th>
+                <div class="dropdown">
+                  Reflector
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                             id="DropdownReflector" data-bs-toggle="dropdown">
+                      {{ selectedReflectorOption }}
+                    </button>
+                    <div class="dropdown-menu" :aria-labelledby="'dropdown' + index"
+                         style="max-height: 100px; overflow-y: auto;">
+                      <a class="dropdown-item" v-for="(value, key) in dropdownReflectorOptions" :key="key"
+                         @click="selectReflectorOption(index, value)">{{ value }}</a>
+                    </div>
+                </div>
+
                 <!--Title für Buchstaben-->
                 <th v-for="(rotor, key) in RotorTitle" :key="key" scope="col" class="text-center">{{ rotor }}</th>
               </tr>
@@ -119,6 +131,10 @@ export default {
 
       selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
       selectedRingPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten RingPositionen gespeichert
+
+      ReflectorTitle: {'A': 'UKW_A', 'B': 'UKW_B', 'C': 'UKW_C', 'N': 'UKW_N'},
+      dropdownReflectorOptions: {1: 'UKW_A', 2: 'UKW_B', 3: 'UKW_C', 4: 'UKW_N'},
+      selectedReflectorOption: "UKW_A",
     };
   },
   methods: {
@@ -145,6 +161,17 @@ export default {
             console.error("Error while fetching data: ", error);
           });
     },
+    sendReflectorToBackend(selectedReflectorOption) {
+      const auth = useAuthStore();
+      axios.post(`/reflector?user_id=${auth.currenUserID}&reflector=${selectedReflectorOption}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+    },
+
     createRotor() {
       // Initialize arrays for rotors, rotor_positions, and ring_positions
       let rotors = [];
@@ -195,12 +222,16 @@ export default {
     selectRingPosition(index, letter) {
       this.selectedRingPositions[index] = letter;
     },
+    selectReflectorOption(index, reflector) {
+      this.selectedReflectorOption = reflector;
+    },
     sendSettingsToBackend() {
       this.sendRotorCountToBackend(this.rotorCount);
       let rotors = this.createRotor();
       console.log(rotors)
       // Send rotor as json to backend
       this.sendRotorToBackend(rotors);
+      this.sendReflectorToBackend(this.selectedReflectorOption);
     },
     changeRotorCount() {
       if (this.rotorCount >= 3 && this.rotorCount <= 10) {

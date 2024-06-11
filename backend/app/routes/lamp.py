@@ -22,7 +22,7 @@ def get_encrypted_key():
         current_key = db.query(Key).first()
         current_key_value = current_key.key
         machine_type, rotors, rotor_positions, ring_positions = get_rotor_settings_from_db(user_id, db)
-        reflector_type = "B"  # This can also be dynamic if stored in the database
+        reflector_type = "UKW_B"  # This can also be dynamic if stored in the database
         print(f"Machine type: {machine_type}, Rotors: {rotors}, Rotor positions: {rotor_positions}, Ring positions: {ring_positions}, Reflector type: {reflector_type}")
 
         enigma_machine = Enigma(machine_type, rotors, rotor_positions, ring_positions, reflector_type)

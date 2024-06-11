@@ -25,3 +25,10 @@ class RotorSettings(Base):
     rotors = Column(JSON)
     rotor_positions = Column(String)
     ring_positions = Column(String)
+
+
+class ReflectorSettings(Base):
+    __tablename__ = "reflector_settings"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(Integer, unique=True, index=True)
+    reflector = Column(String)

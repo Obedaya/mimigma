@@ -10,3 +10,10 @@ class RotorSettingCreate(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ReflectorSettingCreate(BaseModel):
+    user_id: int
+    reflector: str
+
+    class Config:
+        orm_mode = True
