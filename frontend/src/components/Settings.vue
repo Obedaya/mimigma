@@ -138,6 +138,8 @@ export default {
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
+            this.$emit('initialRing', this.selectedRingPositions);
+            this.$emit('rotorVariants', this.rotorHeaders);
           })
           .catch(error => {
             console.error("Error while fetching data: ", error);

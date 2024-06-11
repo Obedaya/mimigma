@@ -287,7 +287,7 @@ class EnigmaNorway:
         wiring_forward = "FGZJMVXEPBWSHQTLIUDYKCNRAO"
         wiring_backward = "HZWVARTNLGUPXQCEJMBSKDYOIF"
         notch = "R"
-        turnover = "V"
+        turnover = "J"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         
         if reverse:

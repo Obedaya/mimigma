@@ -73,3 +73,19 @@ async def rotor_count(count: int):
         return {"message": "Rotor count retrieved successfully"}
     finally:
         db.close()
+
+@router.get("/rotor/standard", tags=["Rotor"])
+async def standard_rotor(variant: str):
+    try:
+        turnovers = {}
+        if variant == "M1":
+            turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z"}
+        elif variant == "M3":
+            turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z", "VI": "ZM", "VII": "ZM", "VIII": "ZM"}
+        elif variant == "Norway":
+            turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z"}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid variant")
+        return {"turnovers": turnovers}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")

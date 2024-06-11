@@ -11,12 +11,16 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       rotors: [],
       rotationCount: 0, // Zählvariable für die Anzahl der Aufrufe
       rotorRotationCounts: [],
+      rotorTurnovers: [],
+      turnovers: {},
     };
   },
   methods: {
@@ -38,25 +42,18 @@ export default {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotationCount++;
+          // this.rotationCount[rotorIndex] = (this.rotationCount[rotorIndex] + 1) % 25;
+          // console.log(this.rotationCount);
           break;
         case 'prev':
           rotor.next = rotor.current;
           rotor.current = rotor.prev;
           rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
+          // this.rotationCount[rotorIndex] = (this.rotationCount[rotorIndex] + 24) % 25;
+          // console.log(this.rotationCount);
           break;
         case 'current':
           break;
-      }
-
-      // Wenn 26 Rotationen erreicht sind, rufe die nächste Rotorrotation auf
-      if (this.rotationCount === 26) {
-        this.rotationCount = 0; // Zurücksetzen der Zählvariable
-        const prevRotorIndex = rotorIndex - 1;
-        if (prevRotorIndex >= 0) {
-          const prevRotorRef = 'rotor' + (prevRotorIndex + 1);
-          this.rotateRotor(prevRotorRef, 'next');
-        }
       }
     },
     changeRotorCount(newRotorCount) {
@@ -78,9 +75,10 @@ export default {
       }
     },
     rotateRotorOnKey() {
+      console.log(this.rotorRotationCounts)
       for (let i = 0; i < this.rotorRotationCounts.length; i++) {
         const rotor = this.rotors[this.rotors.length - 1 - i];
-        if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === 25) {
+        if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === this.rotorTurnovers[this.rotorTurnovers.length - 1 - i]) {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
@@ -94,6 +92,44 @@ export default {
         }
       }
     },
+    async getStandardSettings() {
+      return axios.get(`/rotor/standard?variant=${this.enigmaVariant}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            this.turnovers = response.data.turnovers;
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+    },
+    calculateRotorTurnover(index) {
+      const rotorVariant = this.rotorVariants[index + 1];
+      const turnoverLetter = this.turnovers[rotorVariant];
+      const turnoverPosition = turnoverLetter.charCodeAt(0) - 'A'.charCodeAt(0);
+      const ringSetting = this.initialRingsettings[index + 1].charCodeAt(0) - 'A'.charCodeAt(0);
+      this.rotorTurnovers[index] = (26 + turnoverPosition - ringSetting) % 26;
+    },
+
+    async getRotations() {
+      await this.getStandardSettings();
+      const rotorCount = Object.keys(this.initialRingsettings).length;
+      for (let i = 0; i < rotorCount; i++) {
+        this.calculateRotorTurnover(i);
+      }
+      console.log(this.rotorTurnovers);
+    },
+    async onSettingsChange() {
+      console.log(this.rotorVariants);
+      const length = Object.keys(this.initialRotorsettings).length;
+      for (let i = 0; i < length; i++) {
+        this.rotors[i].current = this.initialRotorsettings[i + 1];
+        this.rotors[i].next = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
+        this.rotors[i].prev = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
+      }
+      this.rotationCount = 0;
+      await this.getRotations();
+    },
+
   },
   created() {
     const initialRotorCount = 3; // Anzahl der anfänglichen Rotoren
@@ -101,24 +137,15 @@ export default {
   },
   props: {
     newNumber: Number,
+    rotorVariants: Object,
     initialRotorsettings: Object,
+    initialRingsettings: Object,
+    enigmaVariant: String,
   },
   watch: {
     newNumber(newVal) {
       this.changeRotorCount(newVal);
     },
-    initialRotorsettings: {
-      handler(newVal) {
-        const length = Object.keys(newVal).length;
-        for (let i = 0; i < length; i++) {
-          this.rotors[i].current = newVal[i + 1];
-          this.rotors[i].next = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotors[i].prev = String.fromCharCode(((newVal[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
-        }
-        this.rotationCount = 0;
-      },
-      deep: true,
-    }
   },
 };
 </script>
