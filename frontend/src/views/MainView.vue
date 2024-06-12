@@ -7,6 +7,7 @@
         <!-- User Settings Icon + Modal-->
         <Usersettings/>
 
+        <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
         <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"/>
 
