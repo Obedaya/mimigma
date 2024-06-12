@@ -33,9 +33,9 @@
                              id="DropdownReflector" data-bs-toggle="dropdown">
                       {{ selectedReflectorOption }}
                     </button>
-                    <div class="dropdown-menu" :aria-labelledby="'dropdown' + index"
+                    <div class="dropdown-menu reflector-menu" :aria-labelledby="'dropdown' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="(value, key) in dropdownReflectorOptions" :key="key"
+                      <a class="dropdown-item dropdown-reflector" v-for="(value, key) in dropdownReflectorOptions" :key="key"
                          @click="selectReflectorOption(index, value)">{{ value }}</a>
                     </div>
                 </div>
@@ -54,9 +54,9 @@
                             :id="'DropdownRotor' + index" data-bs-toggle="dropdown">
                       {{ rotor }}
                     </button>
-                    <div class="dropdown-menu" :aria-labelledby="'dropdown' + index"
+                    <div class="dropdown-menu variant-menu" :aria-labelledby="'dropdown' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="(value, key) in dropdownRotorOptions" :key="key"
+                      <a class="dropdown-item dropdown-variant" v-for="(value, key) in dropdownRotorOptions" :key="key"
                          @click="selectRotorOption(index, value)">{{ value }}</a>
                     </div>
                   </div>
@@ -71,9 +71,9 @@
                             :id="'DropdownPosition' + index" data-bs-toggle="dropdown">
                       {{ InitialPosition }}
                     </button>
-                    <div class="dropdown-menu" :aria-labelledby="'dropdownPosition' + index"
+                    <div class="dropdown-menu initial-menu" :aria-labelledby="'dropdownPosition' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="letter in alphabet" :key="'position' + index"
+                      <a class="dropdown-item dropdown-initial" v-for="letter in alphabet" :key="'position' + index"
                          @click="selectInitialPosition(index, letter)">{{ letter }}</a>
                     </div>
                   </div>
@@ -88,9 +88,9 @@
                             data-bs-toggle="dropdown">
                       {{ RingPosition }}
                     </button>
-                    <div class="dropdown-menu" :aria-labelledby="'dropdownRing' + index"
+                    <div class="dropdown-menu ring-menu" :aria-labelledby="'dropdownRing' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item" v-for="letter in alphabet"
+                      <a class="dropdown-item dropdown-ring" v-for="letter in alphabet"
                          :key="'ringPosition' + index + letter" @click="selectRingPosition(index, letter)">{{
                           letter
                         }}</a>
@@ -125,7 +125,7 @@ export default {
 
       RotorTitle: {1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
 
-      rotorHeaders: {1: 'I', 2: 'I', 3: 'I'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
+      rotorHeaders: {1: 'I', 2: 'II', 3: 'III'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
       dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
       alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
 
