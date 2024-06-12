@@ -42,17 +42,25 @@ export default {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          // this.rotationCount[rotorIndex] = (this.rotationCount[rotorIndex] + 1) % 25;
-          // console.log(this.rotationCount);
+          if (this.rotorRotationCounts[rotorIndex] === this.rotorTurnovers[rotorIndex]) {
+            this.rotorRotationCounts[rotorIndex] = 0;
+            this.rotorTurnovers[rotorIndex] = 25;
+          } else {
+            this.rotorRotationCounts[rotorIndex]++;
+          }
+          break;
+        case 'current':
           break;
         case 'prev':
           rotor.next = rotor.current;
           rotor.current = rotor.prev;
           rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
-          // this.rotationCount[rotorIndex] = (this.rotationCount[rotorIndex] + 24) % 25;
-          // console.log(this.rotationCount);
-          break;
-        case 'current':
+          if (this.rotorRotationCounts[rotorIndex] === 0) {
+            this.rotorRotationCounts[rotorIndex] = 25;
+            this.rotorTurnovers[rotorIndex] = 25;
+          } else {
+            this.rotorRotationCounts[rotorIndex]--;
+          }
           break;
       }
     },
@@ -75,7 +83,6 @@ export default {
       }
     },
     rotateRotorOnKey() {
-      console.log(this.rotorRotationCounts)
       for (let i = 0; i < this.rotorRotationCounts.length; i++) {
         const rotor = this.rotors[this.rotors.length - 1 - i];
         if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === this.rotorTurnovers[this.rotorTurnovers.length - 1 - i]) {
@@ -83,6 +90,7 @@ export default {
           rotor.current = rotor.next;
           rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
           this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] = 0;
+          this.rotorTurnovers[this.rotorTurnovers.length - 1 - i] = 25;
         } else {
           rotor.prev = rotor.current;
           rotor.current = rotor.next;
@@ -106,17 +114,19 @@ export default {
       const rotorVariant = this.rotorVariants[index + 1];
       const turnoverLetter = this.turnovers[rotorVariant];
       const turnoverPosition = turnoverLetter.charCodeAt(0) - 'A'.charCodeAt(0);
-      const ringSetting = this.initialRingsettings[index + 1].charCodeAt(0) - 'A'.charCodeAt(0);
-      this.rotorTurnovers[index] = (26 + turnoverPosition - ringSetting) % 26;
+      const rotorPosition = this.initialRotorsettings[index + 1].charCodeAt(0) - 'A'.charCodeAt(0);
+      this.rotorTurnovers[index] = (turnoverPosition) % 26;
+      this.rotorRotationCounts[index] = rotorPosition;
     },
 
     async getRotations() {
       await this.getStandardSettings();
-      const rotorCount = Object.keys(this.initialRingsettings).length;
+      const rotorCount = Object.keys(this.initialRotorsettings).length;
       for (let i = 0; i < rotorCount; i++) {
         this.calculateRotorTurnover(i);
       }
-      console.log(this.rotorTurnovers);
+      console.log("Rotor Turnovers: ", this.rotorTurnovers);
+      console.log("Rotor Rotation Counts: ", this.rotorRotationCounts);
     },
     async onSettingsChange() {
       console.log(this.rotorVariants);
@@ -126,7 +136,6 @@ export default {
         this.rotors[i].next = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
         this.rotors[i].prev = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
       }
-      this.rotationCount = 0;
       await this.getRotations();
     },
 
@@ -139,7 +148,6 @@ export default {
     newNumber: Number,
     rotorVariants: Object,
     initialRotorsettings: Object,
-    initialRingsettings: Object,
     enigmaVariant: String,
   },
   watch: {

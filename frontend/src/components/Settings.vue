@@ -128,6 +128,7 @@ export default {
       rotorHeaders: {1: 'I', 2: 'II', 3: 'III'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
       dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
       alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
 
       selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
       selectedRingPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten RingPositionen gespeichert
@@ -154,7 +155,6 @@ export default {
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
-            this.$emit('initialRing', this.selectedRingPositions);
             this.$emit('rotorVariants', this.rotorHeaders);
           })
           .catch(error => {
