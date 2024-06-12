@@ -29,7 +29,7 @@ class Enigma:
         print(f"Letter after reflection: {reflected_letter}")
         # Encrypt through rotors in reverse
         final_letter = self.rotor_machine.encrypt_letter_reverse(reflected_letter)
-        print(f"Final encrypted letter: {final_letter}")
+        print(f"Letter after backward encryption: {final_letter}")
         return final_letter
     
     def encrypt_message(self, key):
