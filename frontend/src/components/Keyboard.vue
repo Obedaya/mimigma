@@ -37,6 +37,8 @@
 
 <script>
 import axios from "axios";
+import { useAuthStore } from '@/stores/auth';
+
   //TODO EventBus 
   //import { EventBus } from '@/EventBus.js'; //HERE
 export default {
@@ -91,7 +93,9 @@ export default {
         });
     },
     async getEncryptedKey() {
-      axios.get(`/lamp`)
+      const auth = useAuthStore();
+      const user_id = auth.currentUserID;
+      axios.get(`/lamp?user_id=${user_id}`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
           this.highlightedKeyUpper = response.data.encrypted_key; // update upper keyboard with encrypted key

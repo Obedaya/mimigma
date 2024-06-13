@@ -8,10 +8,8 @@ from ..crud import get_rotor_settings, get_reflector_settings
 
 router = APIRouter()
 
-user_id = 4
-
 @router.get("/lamp", tags=["Lamp"])
-def get_encrypted_key():
+def get_encrypted_key(user_id: int):
     db = SessionLocal()
     try:
         current_key = db.query(Key).first()

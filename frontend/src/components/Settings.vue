@@ -163,7 +163,7 @@ export default {
     },
     sendReflectorToBackend(selectedReflectorOption) {
       const auth = useAuthStore();
-      axios.post(`/reflector?user_id=${auth.currenUserID}&reflector=${selectedReflectorOption}`)
+      axios.post(`/reflector?user_id=${auth.currentUserID}&reflector=${selectedReflectorOption}`)
           .then(response => {
             console.log("Received data from backend: ", response.data);
           })
@@ -189,7 +189,7 @@ export default {
 
       // Create the initialRotor object
       let initialRotor = {
-        user_id: auth.currenUserID,
+        user_id: auth.currentUserID,
         machine_type: this.enigmaVariant,
         rotors: rotors,
         rotor_positions: rotor_positions.join(''),

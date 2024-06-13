@@ -20,7 +20,7 @@ def read_reflector_setting():
     finally:
         db.close()
 
-# axios.post(`/reflector?uid=${auth.currenUserID}?reflector={selectedReflectorOption}`)
+# axios.post(`/reflector?uid=${auth.currentUserID}?reflector={selectedReflectorOption}`)
 @router.post("/reflector", tags=["Reflector"])
 def update_reflector_setting(user_id: int, reflector: str):
     db = SessionLocal()
