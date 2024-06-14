@@ -12,13 +12,14 @@ class KeyInput(BaseModel):
     key: str
 
 class Enigma:
-    def __init__(self, machine_type, rotors, rotor_positions, ring_positions, reflector_type):
+    def __init__(self, machine_type, rotors, rotor_positions, ring_positions, reflector_type, user_id):
         self.rotor_machine = RotorMachine(machine_type, rotors, rotor_positions, ring_positions)
         self.reflector = Reflector(reflector_type)
         self.db = SessionLocal()  # Initialize a session
+        self.user_id = user_id
 
     def update_rotor_positions_in_db(self):
-        user_id = self.db.query(RotorSettings.user_id).first()[0]
+        user_id = self.user_id
         updated_positions = "".join(chr(pos + ord('A')) for pos in self.rotor_machine.rotor_positions)
         db_rotor_settings = self.db.query(RotorSettings).filter(RotorSettings.user_id == user_id).first()
         if db_rotor_settings:

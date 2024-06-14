@@ -25,7 +25,7 @@ def get_encrypted_key(user_id: int):
         
         print(f"Machine type: {machine_type}, Rotors: {rotors}, Rotor positions: {rotor_positions}, Ring positions: {ring_positions}, Reflector type: {reflector_type}")
 
-        enigma_machine = Enigma(machine_type, rotors, rotor_positions, ring_positions, reflector_type)
+        enigma_machine = Enigma(machine_type, rotors, rotor_positions, ring_positions, reflector_type, user_id)
         encrypted_key = enigma_machine.encrypt_message(current_key_value.upper())
         print(f"Encrypted key: {encrypted_key}")
 
