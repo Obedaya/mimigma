@@ -89,14 +89,13 @@ class RotorMachine:
     def encrypt_letter_reverse(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         # Iterate through rotors in forward order
-        for i, rotor in enumerate(self.rotors):
-            # Calculate shift taking into account rotor and ring positions
-            shifted_position = (self.rotor_positions[i] - self.ring_positions[i]) % 26
-            rotor_method = self.get_rotor_method(rotor)
-            letter, _, _ = rotor_method(letter, shifted_position, reverse=True)
+        for i in range(len(self.rotors)):
+            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
+            rotor_method = self.get_rotor_method(self.rotors[i])
+            index = (alphabet.index(letter) + shift) % 26
+            letter, _, _ = rotor_method(alphabet[index])
             # Adjust the result taking into account the ring position
-            letter = chr((ord(letter) - ord('A') + self.ring_positions[i]) % 26 + ord('A'))
-        
+            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
         return letter
 
 
