@@ -42,7 +42,7 @@ export const useAuthStore = defineStore({
     }
   },
   getters: {
-    currenUserID() {
+    currentUserID() {
         return this.user ? this.user.id : null;
     }
   }
