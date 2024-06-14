@@ -7,14 +7,14 @@
         <!-- User Settings Icon + Modal-->
         <Usersettings/>
 
+        <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @initialRing="setInitialsRing"
-                  @rotorVariants="setRotorVariants"/>
+        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"/>
 
       </div>
       <div class="col-6">
         <Rotorpanel :newNumber="newNumber" :rotorVariants="rotorVariants" :initialRotorsettings="initialRotorsettings"
-                    :initialRingsettings="initialRingsettings" :enigmaVariant="enigmaVariant" ref="rotorPanel"/>
+                    :enigmaVariant="enigmaVariant" ref="rotorPanel"/>
 
       </div>
       <div class="col-3">
@@ -68,7 +68,6 @@ export default {
       newNumber: 0,
       initialRotorsettings: {},
       enigmaVariant: "M3",
-      initialRingsettings: {},
       rotorVariants: {},
     };
   },
@@ -93,12 +92,6 @@ export default {
 
     setInitialsRotor(rotor) {
       this.initialRotorsettings = rotor;
-      this.$nextTick(() => {
-        this.$refs.rotorPanel.onSettingsChange();
-      });
-    },
-    setInitialsRing(ring) {
-      this.initialRingsettings = ring;
       this.$nextTick(() => {
         this.$refs.rotorPanel.onSettingsChange();
       });

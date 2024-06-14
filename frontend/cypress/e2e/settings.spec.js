@@ -36,7 +36,7 @@ describe('Settings', () => {
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').should('have.length', 3);
     });
 
-    it('should change the rotor variant, depending on the initial rotor setting', () => {
+    it('should change the rotor variant, depending on the rotor variant', () => {
         cy.get('button[id=DropdownRotor3]').click();
         cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('II').click();
         cy.get('button[id=modal-submit-button]').click();
@@ -55,14 +55,26 @@ describe('Settings', () => {
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(2).find('div[class=currentletter]').contains('B');
     });
 
+    it('should change the clicks towards the rotor turnover, depending on the initial rotor setting', () => {
+        cy.get('button[id=DropdownPosition3]').click();
+        cy.get('.initial-menu.show .dropdown-item.dropdown-initial').contains('V').click();
+        cy.get('button[id=modal-submit-button]').click();
+        cy.wait(500)
+        cy.get('button[id=modal-close-button]').click();
+        cy.get('body').trigger('keydown', {key: 'A'});
+        cy.wait(100);
+        cy.get('body').trigger('keyup', {key: 'A'});
+        cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(1).find('div[class=currentletter]').contains('B');
+    });
+
     it('should change the rotor ring, depending on the initial ring setting', () => {
         cy.get('button[id=DropdownRing3]').click();
-        cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('B').click();
+        cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
         cy.get('button[id=modal-submit-button]').click();
         cy.wait(500)
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
-        cy.get('.dropdown-menu.ring-menu').contains('B').should('exist');
+        cy.get('.dropdown-menu.ring-menu').contains('2').should('exist');
     });
 
     it('should change the rotor turnover, depending on the initial rotor variant', () => {
