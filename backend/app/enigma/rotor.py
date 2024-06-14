@@ -37,7 +37,6 @@ class RotorMachine:
             _, notch, _ = rotor_method('A')
             self.notches.append(ord(notch) - ord('A'))
 
-
     def get_machine_class(self):
         if self.machine_type == "M1":
             return EnigmaM1
@@ -59,6 +58,12 @@ class RotorMachine:
             if advance_next:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
+
+                # Implement double-stepping logic for Enigma M3 and similar machines
+                if i == 2 and self.machine_type == "M3" and advance_next:
+                    self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
+                elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
+                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26
             else:
                 break"""
 
@@ -69,33 +74,57 @@ class RotorMachine:
             if advance_next:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
+                # Implement double-stepping logic for Enigma M3 and similar machines
+                if i == 2 and self.machine_type == "M3" and advance_next:
+                    self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
+                elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
+                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26
             else:
                 break
-    
+
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        # Iterate through rotors in reverse order
-        for i in reversed(range(len(self.rotors))):
+        for i, rotor in enumerate(self.rotors):
+            rotor_position = self.rotor_positions[i]
+            ring_position = self.ring_positions[i]
+
             # Calculate shift based on rotor and ring positions
-            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
-            rotor_method = self.get_rotor_method(self.rotors[i])
-            index = (alphabet.index(letter) + shift) % 26
-            letter, _, _ = rotor_method(alphabet[index])
-            # Adjust the result taking into account the ring position
-            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
-        
+            shift = (rotor_position + ring_position) % 26
+
+            # Get rotor encryption method
+            rotor_method = self.get_rotor_method(rotor)
+
+            # Calculate encrypted index
+            encrypted_index = (alphabet.index(letter) + shift) % 26
+
+            # Encrypt the letter using the rotor method
+            letter, _, _ = rotor_method(alphabet[encrypted_index])
+
+            # Adjust the result considering the ring position
+            letter = alphabet[(alphabet.index(letter) - ring_position) % 26]
+
         return letter
+
 
     def encrypt_letter_reverse(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        # Iterate through rotors in forward order
-        for i in range(len(self.rotors)):
-            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
+
+        for i in reversed(range(len(self.rotors))):
+            rotor_position = self.rotor_positions[i]
+            ring_position = self.ring_positions[i]
+
+            # Calculate the shift taking into account rotor and ring positions
+            shifted_position = (self.rotor_positions[i] - self.ring_positions[i]) % 26
+
+            # Get rotor encryption method
             rotor_method = self.get_rotor_method(self.rotors[i])
-            index = (alphabet.index(letter) + shift) % 26
-            letter, _, _ = rotor_method(alphabet[index])
-            # Adjust the result taking into account the ring position
-            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
+
+            # Encrypt the letter using the rotor method in reverse
+            letter, _, _ = rotor_method(letter, shifted_position, reverse=True)
+
+            # Adjust the result considering the ring position
+            letter = alphabet[(alphabet.index(letter) + ring_position) % 26]
+
         return letter
 
 
