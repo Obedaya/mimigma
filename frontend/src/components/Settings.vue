@@ -90,7 +90,7 @@
                     </button>
                     <div class="dropdown-menu ring-menu" :aria-labelledby="'dropdownRing' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item dropdown-ring" v-for="letter in alphabet"
+                      <a class="dropdown-item dropdown-ring" v-for="letter in numbers"
                          :key="'ringPosition' + index + letter" @click="selectRingPosition(index, letter)">{{
                           letter
                         }}</a>
@@ -128,9 +128,10 @@ export default {
       rotorHeaders: {1: 'I', 2: 'II', 3: 'III'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
       dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
       alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
 
       selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
-      selectedRingPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten RingPositionen gespeichert
+      selectedRingPositions: {1: '1', 2: '1', 3: '1'}, // Hier werden die ausgewählten RingPositionen gespeichert
 
       ReflectorTitle: {'A': 'UKW_A', 'B': 'UKW_B', 'C': 'UKW_C', 'N': 'UKW_N'},
       dropdownReflectorOptions: {1: 'UKW_A', 2: 'UKW_B', 3: 'UKW_C', 4: 'UKW_N'},
@@ -154,7 +155,6 @@ export default {
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
-            this.$emit('initialRing', this.selectedRingPositions);
             this.$emit('rotorVariants', this.rotorHeaders);
           })
           .catch(error => {
@@ -184,7 +184,8 @@ export default {
       for (let i = 1; i <= this.rotorCount; i++) {
         rotors.push(this.rotorHeaders[i]);
         rotor_positions.push(this.selectedInitialPositions[i]);
-        ring_positions.push(this.selectedRingPositions[i]);
+        // Add ring position to the array and convert to corresponding letter
+        ring_positions.push(String.fromCharCode(parseInt(this.selectedRingPositions[i]) + 64));
       }
 
       // Create the initialRotor object

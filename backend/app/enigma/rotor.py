@@ -23,7 +23,7 @@ class RotorMachine:
         # Initial rotor positions (e.g., "AAA" -> [0, 0, 0])
         self.rotor_positions = [ord(pos) - ord('A') for pos in rotor_positions]
         
-        # Ring settings positions (e.g., "AAA" -> [0, 0, 0])
+        # Ring settings positions (e.g., "000" -> [0, 0, 0])
         self.ring_positions = [ord(pos) - ord('A') for pos in ring_positions]
         
         # Determine the appropriate Enigma machine class
