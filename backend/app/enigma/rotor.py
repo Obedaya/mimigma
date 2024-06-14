@@ -31,12 +31,11 @@ class RotorMachine:
 
         # Initialize notches and turnovers for each rotor
         self.notches = []
-        self.turnovers = []
+        # self.turnovers = []
         for rotor in self.rotors:
             rotor_method = self.get_rotor_method(rotor)
-            _, notch, turnover = rotor_method('A')
+            _, notch, _ = rotor_method('A')
             self.notches.append(ord(notch) - ord('A'))
-            self.turnovers.append(turnover)
 
 
     def get_machine_class(self):
@@ -52,7 +51,7 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    def advance_rotors(self):
+    """def advance_rotors(self):
         # Initial advancement (rightmost rotor always advances)
         advance_next = True
 
@@ -61,16 +60,17 @@ class RotorMachine:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
             else:
-                break
+                break"""
 
-    """def advance_rotors(self):
+    def advance_rotors(self):
         advance_next = True
-        for i in range(len(self.rotors)):
+
+        for i in reversed(range(len(self.rotors))):
             if advance_next:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
-                advance_next = self.rotor_positions[i] == (ord(self.notches[i]) - ord('A'))
+                advance_next = self.rotor_positions[i] == self.notches[i]
             else:
-                break"""
+                break
 
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

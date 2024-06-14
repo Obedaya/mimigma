@@ -18,7 +18,7 @@ class Enigma:
         self.db = SessionLocal()  # Initialize a session
 
     def update_rotor_positions_in_db(self):
-        user_id = 4  # example user_id, should be dynamic in a real scenario
+        user_id = self.db.query(RotorSettings.user_id).first()[0]
         updated_positions = "".join(chr(pos + ord('A')) for pos in self.rotor_machine.rotor_positions)
         db_rotor_settings = self.db.query(RotorSettings).filter(RotorSettings.user_id == user_id).first()
         if db_rotor_settings:
