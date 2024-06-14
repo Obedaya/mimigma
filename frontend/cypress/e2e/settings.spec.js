@@ -69,12 +69,12 @@ describe('Settings', () => {
 
     it('should change the rotor ring, depending on the initial ring setting', () => {
         cy.get('button[id=DropdownRing3]').click();
-        cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('B').click();
+        cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
         cy.get('button[id=modal-submit-button]').click();
         cy.wait(500)
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
-        cy.get('.dropdown-menu.ring-menu').contains('B').should('exist');
+        cy.get('.dropdown-menu.ring-menu').contains('2').should('exist');
     });
 
     it('should change the rotor turnover, depending on the initial rotor variant', () => {
