@@ -51,7 +51,7 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    """def advance_rotors(self):
+    def advance_rotors(self):
         # Initial advancement (rightmost rotor always advances)
         advance_next = True
 
@@ -60,9 +60,9 @@ class RotorMachine:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
             else:
-                break"""
+                break
 
-    def advance_rotors(self):
+    """def advance_rotors(self):
         advance_next = True
 
         for i in reversed(range(len(self.rotors))):
@@ -70,7 +70,7 @@ class RotorMachine:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
             else:
-                break
+                break"""
 
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
