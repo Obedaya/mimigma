@@ -31,11 +31,11 @@ class Enigma:
         # Advance rotors
         self.rotor_machine.advance_rotors()
         print(f"Rotor positions after advancement: {self.rotor_machine.rotor_positions}")
-        # Update rotor positions in the database
-        self.update_rotor_positions_in_db()
         # Encrypt through rotors forward
         encrypted_letter = self.rotor_machine.encrypt_letter(key)
         print(f"Letter after forward encryption: {encrypted_letter}")
+        # Update rotor positions in the database
+        self.update_rotor_positions_in_db()
         # Reflect
         reflected_letter = self.reflector.encrypt(encrypted_letter)
         print(f"Letter after reflection: {reflected_letter}")
