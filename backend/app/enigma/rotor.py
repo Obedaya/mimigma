@@ -71,19 +71,6 @@ class RotorMachine:
                 advance_next = self.rotor_positions[i] == self.notches[i]
             else:
                 break
-
-    """def encrypt_letter(self, letter):
-        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for i, rotor in enumerate(self.rotors):
-            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
-            rotor_method = self.get_rotor_method(rotor)
-            index = (alphabet.index(letter) + shift) % 26
-            letter, _, _ = rotor_method(alphabet[index])
-            
-            # Adjust the result taking into account the ring position
-            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
-        
-        return letter"""
     
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
