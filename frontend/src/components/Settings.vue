@@ -135,7 +135,7 @@ export default {
 
       ReflectorTitle: {'A': 'UKW_A', 'B': 'UKW_B', 'C': 'UKW_C', 'N': 'UKW_N'},
       dropdownReflectorOptions: {1: 'UKW_A', 2: 'UKW_B', 3: 'UKW_C', 4: 'UKW_N'},
-      selectedReflectorOption: "UKW_A",
+      selectedReflectorOption: "UKW_B",
     };
   },
   methods: {
