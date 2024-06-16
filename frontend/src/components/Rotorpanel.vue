@@ -12,6 +12,7 @@
 
 <script>
 import axios from 'axios';
+import { useAuthStore } from "@/stores/auth.js";
 
 export default {
   data() {
@@ -83,22 +84,38 @@ export default {
       }
     },
     rotateRotorOnKey() {
-      for (let i = 0; i < this.rotorRotationCounts.length; i++) {
-        const rotor = this.rotors[this.rotors.length - 1 - i];
-        if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === this.rotorTurnovers[this.rotorTurnovers.length - 1 - i]) {
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] = 0;
-          this.rotorTurnovers[this.rotorTurnovers.length - 1 - i] = 25;
-        } else {
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i]++;
-          break;
-        }
-      }
+      // for (let i = 0; i < this.rotorRotationCounts.length; i++) {
+      //   const rotor = this.rotors[this.rotors.length - 1 - i];
+      //   if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === this.rotorTurnovers[this.rotorTurnovers.length - 1 - i]) {
+      //     rotor.prev = rotor.current;
+      //     rotor.current = rotor.next;
+      //     rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+      //     this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] = 0;
+      //     this.rotorTurnovers[this.rotorTurnovers.length - 1 - i] = 25;
+      //   } else {
+      //     rotor.prev = rotor.current;
+      //     rotor.current = rotor.next;
+      //     rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
+      //     this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i]++;
+      //     break;
+      //   }
+      // }
+      const auth = useAuthStore();
+      const user_id = auth.user.id;
+      axios.get(`/settings?user_id=${user_id}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            const rotor_position = response.data.rotor_positions;
+            for (let i = 0; i < this.initialRotorsettings.length; i++) {
+              this.initialRotorsettings[i + 1] = rotor_position[i];
+            }
+            // this.enigmaVariant = response.data.machine_type;
+            // this.rotorVariants = response.data.rotors;
+            this.onSettingsChange();
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
     },
     async getStandardSettings() {
       return axios.get(`/rotor/standard?variant=${this.enigmaVariant}`)
