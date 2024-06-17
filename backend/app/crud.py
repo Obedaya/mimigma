@@ -12,13 +12,15 @@ def create_or_update_rotor_settings(db: Session, settings: RotorSettingCreate):
         db_settings.rotors = settings.rotors
         db_settings.rotor_positions = settings.rotor_positions
         db_settings.ring_positions = settings.ring_positions
+        db_settings.plugboard = settings.plugboard
     else:
         db_settings = RotorSettings(
             user_id=settings.user_id,
             machine_type=settings.machine_type,
             rotors=settings.rotors,
             rotor_positions=settings.rotor_positions,
-            ring_positions=settings.ring_positions
+            ring_positions=settings.ring_positions,
+            plugboard=settings.plugboard
         )
     db.add(db_settings)
     db.commit()

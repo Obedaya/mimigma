@@ -37,6 +37,7 @@ async def update_rotor_setting(data: RotorSettingCreate):
             existing_setting.rotors = data.rotors
             existing_setting.rotor_positions = data.rotor_positions
             existing_setting.ring_positions = data.ring_positions
+            existing_setting.plugboard = data.plugboard
             db.commit()
             db.refresh(existing_setting)
             message = "Rotor setting updated successfully"
@@ -47,7 +48,8 @@ async def update_rotor_setting(data: RotorSettingCreate):
                 machine_type=data.machine_type,
                 rotors=data.rotors,
                 rotor_positions=data.rotor_positions,
-                ring_positions=data.ring_positions
+                ring_positions=data.ring_positions,
+                plugboard=data.plugboard
             )
             db.add(rotor_setting)
             db.commit()
@@ -59,6 +61,7 @@ async def update_rotor_setting(data: RotorSettingCreate):
         print(f"Rotors: {data.rotors}")
         print(f"Rotor Positions: {data.rotor_positions}")
         print(f"Ring Positions: {data.ring_positions}")
+        print(f"Plugboard: {data.plugboard}")
 
         return {"message": message}
     finally:

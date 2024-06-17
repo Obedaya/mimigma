@@ -7,6 +7,7 @@ class RotorSettingCreate(BaseModel):
     rotors: List[str]
     rotor_positions: str
     ring_positions: str
+    plugboard: List[str]
 
     class Config:
         orm_mode = True
