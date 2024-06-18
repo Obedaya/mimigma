@@ -9,7 +9,7 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"/>
+        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants" @toggle-plugboard="togglePlugboard"/>
 
       </div>
       <div class="col-6">
@@ -43,7 +43,7 @@
 
       </div>
       <div class="col-6">
-        <Plugboard/>
+        <Plugboard v-if="showPlugboard"/>
 
       </div>
       <div class="col">
@@ -69,6 +69,8 @@ export default {
       initialRotorsettings: {},
       enigmaVariant: "M3",
       rotorVariants: {},
+      showPlugboard: true,
+
     };
   },
   // name: 'App',
@@ -102,7 +104,11 @@ export default {
       this.$nextTick(() => {
         this.$refs.rotorPanel.onSettingsChange();
       });
-    }
+    },
+    togglePlugboard(show) {
+      this.showPlugboard = show;
+    },
+  
   }
 };
 </script>
