@@ -128,6 +128,7 @@
       return {
         rotorCount: 3,
         enigmaVariant: 'M3',
+        // Plugboard Anzeigen Variable
         showPlugboard: true,
 
         RotorTitle: {
@@ -181,7 +182,7 @@
         plugboardSettingsPlaceholder: []
       };
     },
-
+    //Watcher, ob das Plugboard angezeigt wird oder nicht
     watch: {
       showPlugboard(newVal) {
         this.$emit('toggle-plugboard', newVal);

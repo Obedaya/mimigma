@@ -5,16 +5,17 @@
       <div class="col-3" style="align-self: center;">
 
         <!-- User Settings Icon + Modal-->
-        <Usersettings/>
+        <Usersettings />
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants" @toggle-plugboard="togglePlugboard"/>
+        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"
+          @toggle-plugboard="togglePlugboard" />
 
       </div>
       <div class="col-6">
         <Rotorpanel :newNumber="newNumber" :rotorVariants="rotorVariants" :initialRotorsettings="initialRotorsettings"
-                    :enigmaVariant="enigmaVariant" ref="rotorPanel"/>
+          :enigmaVariant="enigmaVariant" ref="rotorPanel" />
 
       </div>
       <div class="col-3">
@@ -27,13 +28,13 @@
         <img class="mimigma" src="../assets/mimigma.png">
       </div>
       <div class="col-6">
-        <Keyboard @key="update"/>
+        <Keyboard @key="update" />
 
       </div>
       <div class="col">
         <!-- HISTORY-->
         <div class="border border-white">
-          <History :current_key="currentKey"/>
+          <History :current_key="currentKey" />
         </div>
       </div>
     </div>
@@ -43,7 +44,7 @@
 
       </div>
       <div class="col-6">
-        <Plugboard v-if="showPlugboard"/>
+        <Plugboard v-if="showPlugboard" />
 
       </div>
       <div class="col">
@@ -54,61 +55,61 @@
 
 </template>
 <script>
-import Keyboard from '../components/Keyboard.vue';
-import Plugboard from '../components/Plugboard.vue';
-import Rotorpanel from '../components/Rotorpanel.vue';
-import Usersettings from '../components/Usersettings.vue';
-import Settings from '../components/Settings.vue';
-import History from '../components/History.vue';
+  import Keyboard from '../components/Keyboard.vue';
+  import Plugboard from '../components/Plugboard.vue';
+  import Rotorpanel from '../components/Rotorpanel.vue';
+  import Usersettings from '../components/Usersettings.vue';
+  import Settings from '../components/Settings.vue';
+  import History from '../components/History.vue';
 
-export default {
-  data() {
-    return {
-      currentKey: "",
-      newNumber: 0,
-      initialRotorsettings: {},
-      enigmaVariant: "M3",
-      rotorVariants: {},
-      showPlugboard: true,
+  export default {
+    data() {
+      return {
+        currentKey: "",
+        newNumber: 0,
+        initialRotorsettings: {},
+        enigmaVariant: "M3",
+        rotorVariants: {},
+        showPlugboard: true,
 
-    };
-  },
-  // name: 'App',
-  components: {
-    Keyboard,
-    Plugboard,
-    Rotorpanel,
-    Usersettings,
-    Settings,
-    History
-  },
-  methods: {
-    update(key) {
-      this.currentKey = key;
-      this.$refs.rotorPanel.rotateRotorOnKey();
+      };
     },
+    // name: 'App',
+    components: {
+      Keyboard,
+      Plugboard,
+      Rotorpanel,
+      Usersettings,
+      Settings,
+      History
+    },
+    methods: {
+      update(key) {
+        this.currentKey = key;
+        this.$refs.rotorPanel.rotateRotorOnKey();
+      },
 
-    rotorNumber(count) {
-      this.newNumber = count;
-    },
+      rotorNumber(count) {
+        this.newNumber = count;
+      },
 
-    setInitialsRotor(rotor) {
-      this.initialRotorsettings = rotor;
-      this.$nextTick(() => {
-        this.$refs.rotorPanel.onSettingsChange();
-      });
-    },
-    setRotorVariants(variants) {
-      console.log("Variants: ", variants);
-      this.rotorVariants = variants;
-      this.$nextTick(() => {
-        this.$refs.rotorPanel.onSettingsChange();
-      });
-    },
-    togglePlugboard(show) {
-      this.showPlugboard = show;
-    },
-  
-  }
-};
+      setInitialsRotor(rotor) {
+        this.initialRotorsettings = rotor;
+        this.$nextTick(() => {
+          this.$refs.rotorPanel.onSettingsChange();
+        });
+      },
+      setRotorVariants(variants) {
+        console.log("Variants: ", variants);
+        this.rotorVariants = variants;
+        this.$nextTick(() => {
+          this.$refs.rotorPanel.onSettingsChange();
+        });
+      },
+      togglePlugboard(show) {
+        this.showPlugboard = show;
+      },
+
+    }
+  };
 </script>

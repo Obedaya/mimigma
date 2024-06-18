@@ -1,6 +1,6 @@
 <template>
-  
-    <section v-if="showPlugboard">
+
+  <section v-if="showPlugboard">
     <div class="plugboard">
       <div v-for="key in keys1" :key="key" :class="['plug', getColorClass(key)]" @click="handlePlugClick(key)">{{ key }}
       </div>
