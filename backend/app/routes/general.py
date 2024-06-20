@@ -19,7 +19,8 @@ def reset(user_id: int):
             "machine_type": "M3",
             "rotors": ["I", "II", "III"],
             "rotor_positions": "AAA",
-            "ring_positions": "AAA"
+            "ring_positions": "AAA",
+            "plugboard": []
         }
         default_reflector_settings = {
             "user_id": user_id,

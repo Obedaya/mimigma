@@ -121,6 +121,7 @@
             </table>
           </div>
           <div class="modal-footer">
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal"
               class="btn btn-primary" id="modal-submit-button">Save changes
@@ -227,6 +228,8 @@
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
             this.$emit('rotorVariants', this.rotorHeaders);
+            this.$emit('ringstellung', this.selectedRingPositions);
+            this.$emit('rotorHeaders', this.rotorHeaders);
           })
           .catch(error => {
             console.error("Error while fetching data: ", error);
@@ -325,7 +328,43 @@
         } else {
           console.error('Ungültige Anzahl von Rotoren.');
         }
-      },
+      },                    
+
+    resetSettings() {
+      this.rotorCount = 3;
+      this.showPlugboard = true;
+      this.RotorTitle = {
+        1: 'Rotor 1',
+        2: 'Rotor 2',
+        3: 'Rotor 3'
+      };
+      this.rotorHeaders = {
+        1: 'I',
+        2: 'II',
+        3: 'III'
+      };
+      this.selectedInitialPositions = {
+        1: 'A',
+        2: 'A',
+        3: 'A'
+      };
+      this.selectedRingPositions = {
+        1: '1',
+        2: '1',
+        3: '1'
+      };
+      this.selectedReflectorOption = "UKW_B";
+
+      // Send reset request to backend
+      const auth = useAuthStore();
+      axios.post(`/reset?user_id=${auth.currentUserID}`)
+          .then(response => {
+            console.log("Settings reset on backend: ", response.data);
+          })
+          .catch(error => {
+            console.error("Error while resetting settings: ", error);
+          });
+    },
       updateEnigmaVariant() {
         console.log("Selected Enigma Variant: ", this.tempEnigmaVariant);
         // Additional logic to fetch the contents of the variant from the backend if needed.
