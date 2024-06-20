@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
 from ..crud import get_rotor_settings
+from fastapi import HTTPException
 from ..models import RotorSettings
 
 def get_rotor_settings_from_db(user_id: int, db: Session) -> tuple:
@@ -37,9 +37,6 @@ class RotorMachine:
             _, notch, _ = rotor_method('A')
             self.notches.append(ord(notch) - ord('A'))
 
-        # Print initial positions for verification
-        print(f"Initial rotor positions: {self.rotor_positions}")
-        print(f"Initial ring positions: {self.ring_positions}")
 
     def get_machine_class(self):
         if self.machine_type == "M1":
@@ -54,7 +51,7 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    def advance_rotors(self):
+    """def advance_rotors(self):
         # Initial advancement (rightmost rotor always advances)
         advance_next = True
 
@@ -62,80 +59,47 @@ class RotorMachine:
             if advance_next:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
-
-                """# Implement double-stepping logic for Enigma M3 and similar machines
-                if i == 2 and self.machine_type == "M3" and advance_next:
-                    self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
-                elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
-                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26"""
             else:
-                break
-    """def advance_rotors(self):
+                break"""
+
+    def advance_rotors(self):
         advance_next = True
 
         for i in reversed(range(len(self.rotors))):
             if advance_next:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
-                # Implement double-stepping logic for Enigma M3 and similar machines
-                if i == 2 and self.machine_type == "M3" and advance_next:
-                    self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
-                elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
-                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26
-
-                # Print current rotor positions for verification
-                print(f"Rotor {self.rotors[i]} position: {self.rotor_positions[i]}")
-
             else:
-                break"""
-
+                break
+    
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for i, rotor in enumerate(self.rotors):
-            rotor_position = self.rotor_positions[i]
-            ring_position = self.ring_positions[i]
-
+        # Iterate through rotors in reverse order
+        for i in reversed(range(len(self.rotors))):
             # Calculate shift based on rotor and ring positions
-            shift = (rotor_position + ring_position) % 26
-
-            # Get rotor encryption method
-            rotor_method = self.get_rotor_method(rotor)
-
-            # Calculate encrypted index
-            encrypted_index = (alphabet.index(letter) + shift) % 26
-
-            # Encrypt the letter using the rotor method
-            letter, _, _ = rotor_method(alphabet[encrypted_index])
-
-            # Adjust the result considering the ring position
-            letter = alphabet[(alphabet.index(letter) - ring_position) % 26]
-
-            # Print encrypted letter for current rotor
+            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
+            rotor_method = self.get_rotor_method(self.rotors[i])
+            index = (alphabet.index(letter) + shift) % 26
+            letter, _, _ = rotor_method(alphabet[index])
+            # Adjust the result taking into account the ring position
+            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
             print(f"Encrypted letter after rotor {self.rotors[i]}: {letter}")
-
+        
         return letter
-
 
     def encrypt_letter_reverse(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-        for i in reversed(range(len(self.rotors))):
-            rotor_position = self.rotor_positions[i]
-            ring_position = self.ring_positions[i]
-
-            # Calculate the shift taking into account rotor and ring positions
-            shifted_position = (self.rotor_positions[i] - self.ring_positions[i]) % 26
-
-            # Get rotor encryption method
+        # Iterate through rotors in forward order
+        for i in range(len(self.rotors)):
+            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
             rotor_method = self.get_rotor_method(self.rotors[i])
-
-            # Encrypt the letter using the rotor method in reverse
-            letter, _, _ = rotor_method(letter, shifted_position, reverse=True)
-
-            # Adjust the result considering the ring position
-            letter = alphabet[(alphabet.index(letter) + ring_position) % 26]
-
+            index = (alphabet.index(letter) + shift) % 26
+            letter, _, _ = rotor_method(alphabet[index])
+            # Adjust the result taking into account the ring position
+            letter = chr((ord(letter) - ord('A') - self.ring_positions[i]) % 26 + ord('A'))
+            print(f"Encrypted letter after rotor {self.rotors[i]}: {letter}")
         return letter
+
 
 class EnigmaM1:
     @staticmethod
