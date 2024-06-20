@@ -6,8 +6,7 @@
       <img class="icons" src="../assets/zahnrad.png">
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="SettingsModal" tabindex="-1" aria-labelledby="SettingsModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="SettingsModal" tabindex="-1" aria-labelledby="SettingsModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content modalbackground">
           <div class="modal-header">
@@ -23,21 +22,26 @@
                      @input="changeRotorCount"/>
             </div>
             <br>
+            <!-- Anzeige Plugboard -->
+            <div id="plugboardCheckboxContainer">
+              <input id="plugboardCheckbox" type="checkbox" v-model="showPlugboard"> Plugboard anzeigen
+            </div>
+            <br>
             <table class="table table-responsive table-bordered settings-table">
               <!--  erste Zeile -->
               <thead>
               <tr>
                 <div class="dropdown">
                   Reflector
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                             id="DropdownReflector" data-bs-toggle="dropdown">
-                      {{ selectedReflectorOption }}
-                    </button>
-                    <div class="dropdown-menu reflector-menu" :aria-labelledby="'dropdown' + index"
-                         style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item dropdown-reflector" v-for="(value, key) in dropdownReflectorOptions" :key="key"
-                         @click="selectReflectorOption(index, value)">{{ value }}</a>
-                    </div>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="DropdownReflector"
+                          data-bs-toggle="dropdown">
+                    {{ selectedReflectorOption }}
+                  </button>
+                  <div class="dropdown-menu reflector-menu" :aria-labelledby="'dropdown' + index"
+                       style="max-height: 100px; overflow-y: auto;">
+                    <a class="dropdown-item dropdown-reflector" v-for="(value, key) in dropdownReflectorOptions"
+                       :key="key" @click="selectReflectorOption(index, value)">{{ value }}</a>
+                  </div>
                 </div>
 
                 <!--Title für Buchstaben-->
@@ -56,8 +60,8 @@
                     </button>
                     <div class="dropdown-menu variant-menu" :aria-labelledby="'dropdown' + index"
                          style="max-height: 100px; overflow-y: auto;">
-                      <a class="dropdown-item dropdown-variant" v-for="(value, key) in dropdownRotorOptions" :key="key"
-                         @click="selectRotorOption(index, value)">{{ value }}</a>
+                      <a class="dropdown-item dropdown-variant" v-for="(value, key) in dropdownRotorOptions"
+                         :key="key" @click="selectRotorOption(index, value)">{{ value }}</a>
                     </div>
                   </div>
                 </td>
@@ -84,8 +88,8 @@
                 <td>Ringposition</td>
                 <td v-for="(RingPosition, index) in selectedRingPositions" :key="'ringPosition' + index">
                   <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" :id="'DropdownRing' + index"
-                            data-bs-toggle="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            :id="'DropdownRing' + index" data-bs-toggle="dropdown">
                       {{ RingPosition }}
                     </button>
                     <div class="dropdown-menu ring-menu" :aria-labelledby="'dropdownRing' + index"
@@ -115,28 +119,76 @@
 
 <script>
 import axios from "axios";
-import {useAuthStore} from '@/stores/auth';
+import {
+  useAuthStore
+} from '@/stores/auth';
 
 export default {
   data() {
     return {
       rotorCount: 3,
       enigmaVariant: 'M3',
+      // Plugboard Anzeigen Variable
+      showPlugboard: true,
 
-      RotorTitle: {1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3'}, //hier kann die Titel für Rotoren erweitert werden
+      RotorTitle: {
+        1: 'Rotor 1',
+        2: 'Rotor 2',
+        3: 'Rotor 3'
+      }, //hier kann die Titel für Rotoren erweitert werden
 
-      rotorHeaders: {1: 'I', 2: 'II', 3: 'III'}, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
-      dropdownRotorOptions: {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'},
-      alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      rotorHeaders: {
+        1: 'I',
+        2: 'II',
+        3: 'III'
+      }, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
+      dropdownRotorOptions: {
+        1: 'I',
+        2: 'II',
+        3: 'III',
+        4: 'IV',
+        5: 'V'
+      },
+      alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z'
+      ],
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
 
-      selectedInitialPositions: {1: 'A', 2: 'A', 3: 'A'}, // Hier werden die ausgewählten AusgangsPositionen gespeichert
-      selectedRingPositions: {1: '1', 2: '1', 3: '1'}, // Hier werden die ausgewählten RingPositionen gespeichert
+      selectedInitialPositions: {
+        1: 'A',
+        2: 'A',
+        3: 'A'
+      }, // Hier werden die ausgewählten AusgangsPositionen gespeichert
+      selectedRingPositions: {
+        1: '1',
+        2: '1',
+        3: '1'
+      }, // Hier werden die ausgewählten RingPositionen gespeichert
 
-      ReflectorTitle: {'A': 'UKW_A', 'B': 'UKW_B', 'C': 'UKW_C', 'N': 'UKW_N'},
-      dropdownReflectorOptions: {1: 'UKW_A', 2: 'UKW_B', 3: 'UKW_C', 4: 'UKW_N'},
+      ReflectorTitle: {
+        'A': 'UKW_A',
+        'B': 'UKW_B',
+        'C': 'UKW_C',
+        'N': 'UKW_N'
+      },
+      dropdownReflectorOptions: {
+        1: 'UKW_A',
+        2: 'UKW_B',
+        3: 'UKW_C',
+        4: 'UKW_N'
+      },
       selectedReflectorOption: "UKW_B",
+
     };
+  },
+  props: {
+    plugs: Array,
+  },
+  //Watcher, ob das Plugboard angezeigt wird oder nicht
+  watch: {
+    showPlugboard(newVal) {
+      this.$emit('toggle-plugboard', newVal);
+    }
   },
   methods: {
 
@@ -194,7 +246,8 @@ export default {
         machine_type: this.enigmaVariant,
         rotors: rotors,
         rotor_positions: rotor_positions.join(''),
-        ring_positions: ring_positions.join('')
+        ring_positions: ring_positions.join(''),
+        plugboard: this.plugs,
       };
       return initialRotor;
     },
@@ -258,7 +311,6 @@ export default {
 </script>
 
 <style>
-
 .settings-table {
   padding-top: 2rem;
 }

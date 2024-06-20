@@ -121,4 +121,11 @@ describe('Settings', () => {
             statusCode: 200,
         });
     });
+
+    it('should remove the plugboard, depending on the plugboard setting', () => {
+        cy.get('input[id=plugboardCheckbox]').click();
+        cy.get('button[id=modal-submit-button]').click();
+        // cy.get('button[id=modal-close-button]').click();
+        cy.get('.plugboard').should('not.exist');
+    });
 });

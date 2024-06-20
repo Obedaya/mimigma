@@ -177,52 +177,48 @@ export default {
   margin: 0px 20px;
   width: 23px;
   height: 130px;
-  border: 4px solid black;
-  position: relative;
+  background: rgb(60,60,60);
+  background: radial-gradient(circle, rgb(60, 60, 60) 32%, rgba(0,0,0,0.5760504885547969) 100%);
+  border: 1px solid rgb(204, 204, 204);  position: relative;
   /*top: -750px;
     left: 250px;*/
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(42, 42, 42, 1) 2%, rgba(245, 245, 245, 1) 28%, rgba(52, 52, 52, 1) 30%, rgba(216, 216, 216, 1) 31%, rgba(255, 255, 255, 1) 50%, rgba(212, 212, 212, 1) 67%, rgba(45, 45, 45, 1) 69%, rgba(226, 226, 226, 1) 70%, rgba(42, 42, 42, 1) 98%, rgba(0, 0, 0, 1) 100%);
 }
 
 .nextletter {
-  width: 1vw;
   text-align: center;
   user-select: none;
   cursor: pointer;
   box-sizing: border-box;
   font-family: Tahoma;
-  color: #222222;
   font-size: 12pt;
-  padding-top: 7px;
-  padding-bottom: 6px;
-  text-shadow: 0px 1px #AAAAAA;
+  border-bottom: 1px solid #ccc;
+  color: rgb(165, 165, 165);
+  padding-top: 7.5px;
+  padding-bottom: 7.5px;
 }
 
 .currentletter {
-  width: 1vw;
   text-align: center;
   user-select: none;
   cursor: pointer;
   box-sizing: border-box;
   font-family: Tahoma;
-  color: #222222;
   font-size: 12pt;
-  padding-top: 11px;
-  padding-bottom: 6px;
-  text-shadow: 0px 1px #AAAAAA;
+  border-bottom: 1px solid #ccc;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: white;
 }
 
 .prevletter {
-  width: 1vw;
   text-align: center;
   user-select: none;
   cursor: pointer;
   box-sizing: border-box;
   font-family: Tahoma;
-  color: #222222;
   font-size: 12pt;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  text-shadow: 0px 1px #AAAAAA;
+  color: rgb(165, 165, 165);
+  padding-top: 7.5px;
+  padding-bottom: 7.5px;
 }
 </style>
