@@ -128,4 +128,71 @@ describe('Settings', () => {
         // cy.get('button[id=modal-close-button]').click();
         cy.get('.plugboard').should('not.exist');
     });
+
+    it('should change and then reset the enigma settings when the reset button is pressed', () => {
+      
+        // Change the rotor count to 5
+        cy.get('input[id=rotorCount]').clear().type('5');
+      
+        // Change rotors to 'IV' for all 5 positions
+        for (let i = 1; i < 6; i++) {
+          cy.get(`button[id=DropdownRotor${i}]`).click();
+          cy.wait(500);
+          cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('IV').click();
+          cy.wait(500);
+        }
+      
+        // Change initial positions to 'B' for all 5 positions
+        for (let i = 1; i < 6; i++) {
+          cy.get(`button[id=DropdownPosition${i}]`).click();
+          cy.get('.initial-menu.show .dropdown-item.dropdown-initial').contains('B').click();
+
+        }
+      
+        // Change ring positions to '2' for all 5 positions
+        for (let i = 1; i < 6; i++) {
+          cy.get(`button[id=DropdownRing${i}]`).click();
+          cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
+        }
+      
+        // Change the reflector to 'UKW_C'
+        cy.get('button[id=DropdownReflector]').click();
+        cy.get('.dropdown-reflector').contains('UKW_C').click();
+      
+        // Uncheck the plugboard
+        cy.get('input[id=plugboardCheckbox]').uncheck();
+      
+        // Save the changes
+        cy.get('button[id=modal-submit-button]').click();
+        cy.wait(200)
+      
+        // Reopen the settings modal to verify changes
+        cy.get('div[id="settings-button"]').click();
+      
+        // Verify the changes were applied
+        cy.get('input[id=rotorCount]').should('have.value', '5');
+        cy.get('button[id=DropdownReflector]').should('contain', 'UKW_C');
+        
+        for (let i = 1; i < 6; i++) {
+          cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'IV');
+          cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'B');
+          cy.get(`button[id=DropdownRing${i}`).should('contain', '2');
+        }
+        cy.get('input[id=plugboardCheckbox]').should('not.be.checked');
+      
+        // Click the reset button
+        cy.get('button.btn-secondary').contains('Reset').click();
+      
+        // Verify the settings were reset to defaults
+        cy.get('input[id=rotorCount]').should('have.value', '3');
+        cy.get('button[id=DropdownReflector]').should('contain', 'UKW_B');
+        for (let i = 1; i < 3; i++) {
+          cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'I');
+          cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'A');
+          cy.get(`button[id=DropdownRing${i}`).should('contain', '1');
+        }
+        cy.get('input[id=plugboardCheckbox]').should('be.checked');
+      });
+      
+      
 });
