@@ -106,7 +106,7 @@
             </table>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="resetSettings">Reset</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button @click="sendSettingsToBackend" type="button modalSendButton" data-bs-dismiss="modal"
                     class="btn btn-primary" id="modal-submit-button">Save changes
@@ -208,6 +208,7 @@ export default {
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.$emit('initialRotor', this.selectedInitialPositions);
+            this.$emit('rotorVariants', this.rotorHeaders);
             this.$emit('ringstellung', this.selectedRingPositions);
             this.$emit('rotorHeaders', this.rotorHeaders);
           })
