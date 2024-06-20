@@ -10,7 +10,7 @@
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
         <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"
-          @toggle-plugboard="togglePlugboard" />
+          @toggle-plugboard="togglePlugboard" :plugs="plugs" ref="settings"/>
 
       </div>
       <div class="col-6">
@@ -44,7 +44,7 @@
 
       </div>
       <div class="col-6">
-        <Plugboard v-if="showPlugboard" />
+        <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard"/>
 
       </div>
       <div class="col">
@@ -71,6 +71,7 @@
         enigmaVariant: "M3",
         rotorVariants: {},
         showPlugboard: true,
+        plugs: []
 
       };
     },
@@ -108,7 +109,16 @@
       },
       togglePlugboard(show) {
         this.showPlugboard = show;
+        if (!show) {
+
+          this.$refs.plugboard.updatePlugboardInDB(true);
+          this.plugs = [];
+        }
       },
+      updatePlugboard(plugs) {
+        this.plugs = plugs;
+        this.$refs.plugboard.updatePlugboardInDB();
+      }
 
     }
   };

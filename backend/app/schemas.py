@@ -7,7 +7,7 @@ class RotorSettingCreate(BaseModel):
     rotors: List[str]
     rotor_positions: str
     ring_positions: str
-    plugboard: List[str]
+    plugboard: List[List[str]]
 
     class Config:
         orm_mode = True
@@ -15,6 +15,13 @@ class RotorSettingCreate(BaseModel):
 class ReflectorSettingCreate(BaseModel):
     user_id: int
     reflector: str
+
+    class Config:
+        orm_mode = True
+
+class PlugboardSettingCreate(BaseModel):
+    user_id: int
+    plugboard: List[List[str]]
 
     class Config:
         orm_mode = True
