@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from ..crud import get_rotor_settings
 from fastapi import HTTPException
+from ..crud import get_rotor_settings
 from ..models import RotorSettings
 
 def get_rotor_settings_from_db(user_id: int, db: Session) -> tuple:
@@ -37,6 +37,10 @@ class RotorMachine:
             _, notch, _ = rotor_method('A')
             self.notches.append(ord(notch) - ord('A'))
 
+        # Print initial positions for verification
+        print(f"Initial rotor positions: {self.rotor_positions}")
+        print(f"Initial ring positions: {self.ring_positions}")
+
     def get_machine_class(self):
         if self.machine_type == "M1":
             return EnigmaM1
@@ -50,7 +54,7 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    """def advance_rotors(self):
+    def advance_rotors(self):
         # Initial advancement (rightmost rotor always advances)
         advance_next = True
 
@@ -59,15 +63,14 @@ class RotorMachine:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
                 advance_next = self.rotor_positions[i] == self.notches[i]
 
-                # Implement double-stepping logic for Enigma M3 and similar machines
+                """# Implement double-stepping logic for Enigma M3 and similar machines
                 if i == 2 and self.machine_type == "M3" and advance_next:
                     self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
                 elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
-                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26
+                    self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26"""
             else:
-                break"""
-
-    def advance_rotors(self):
+                break
+    """def advance_rotors(self):
         advance_next = True
 
         for i in reversed(range(len(self.rotors))):
@@ -79,8 +82,12 @@ class RotorMachine:
                     self.rotor_positions[1] = (self.rotor_positions[1] + 1) % 26
                 elif i == 1 and self.machine_type == "M3" and self.rotor_positions[1] == (self.notches[1] - 1):
                     self.rotor_positions[2] = (self.rotor_positions[2] + 1) % 26
+
+                # Print current rotor positions for verification
+                print(f"Rotor {self.rotors[i]} position: {self.rotor_positions[i]}")
+
             else:
-                break
+                break"""
 
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -102,6 +109,9 @@ class RotorMachine:
 
             # Adjust the result considering the ring position
             letter = alphabet[(alphabet.index(letter) - ring_position) % 26]
+
+            # Print encrypted letter for current rotor
+            print(f"Encrypted letter after rotor {self.rotors[i]}: {letter}")
 
         return letter
 
@@ -126,7 +136,6 @@ class RotorMachine:
             letter = alphabet[(alphabet.index(letter) + ring_position) % 26]
 
         return letter
-
 
 class EnigmaM1:
     @staticmethod
