@@ -23,8 +23,8 @@
             </div>
             <br>
             <!-- Anzeige Plugboard -->
-            <div>
-              <input type="checkbox" v-model="showPlugboard"> Plugboard anzeigen
+            <div id="plugboardCheckboxContainer">
+              <input id="plugboardCheckbox" type="checkbox" v-model="showPlugboard"> Plugboard anzeigen
             </div>
             <br>
             <table class="table table-responsive table-bordered settings-table">

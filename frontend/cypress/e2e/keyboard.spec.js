@@ -42,6 +42,7 @@ describe('Virtual Keyboard Test', () => {
         cy.get('body').trigger('keyup', {key: 'A'});
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(2).find('div[class=currentletter]').contains('B');
     });
+
     it('should rotate the second rotor when the first rotor completes a full rotation', () => {
         var genArr = Array.from({length: 26}, (v, k) => k + 1)
         cy.wrap(genArr).each((index) => {
