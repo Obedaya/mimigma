@@ -12,59 +12,27 @@
 
 <script>
 import axios from 'axios';
+import { useAuthStore } from "@/stores/auth.js";
 
 export default {
   data() {
     return {
       rotors: [],
-      rotationCount: 0, // Zählvariable für die Anzahl der Aufrufe
-      rotorRotationCounts: [],
-      rotorTurnovers: [],
-      turnovers: {},
     };
   },
   methods: {
     initializeRotors(i) {
+      // Methode zum erstmaligen Initialisieren der Rotoren
       for (let j = 0; j < i; j++) {
         this.rotors.push({
           next: 'B',
           current: 'A',
           prev: 'Z',
         });
-        this.rotorRotationCounts.push(0);
-      }
-    },
-    rotateRotor(rotorRef, direction) {
-      const rotorIndex = parseInt(rotorRef.substr(5)) - 1;
-      const rotor = this.rotors[rotorIndex];
-      switch (direction) {
-        case 'next':
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          if (this.rotorRotationCounts[rotorIndex] === this.rotorTurnovers[rotorIndex]) {
-            this.rotorRotationCounts[rotorIndex] = 0;
-            this.rotorTurnovers[rotorIndex] = 25;
-          } else {
-            this.rotorRotationCounts[rotorIndex]++;
-          }
-          break;
-        case 'current':
-          break;
-        case 'prev':
-          rotor.next = rotor.current;
-          rotor.current = rotor.prev;
-          rotor.prev = String.fromCharCode(((rotor.prev.charCodeAt(0) - 65 + 25) % 26) + 65);
-          if (this.rotorRotationCounts[rotorIndex] === 0) {
-            this.rotorRotationCounts[rotorIndex] = 25;
-            this.rotorTurnovers[rotorIndex] = 25;
-          } else {
-            this.rotorRotationCounts[rotorIndex]--;
-          }
-          break;
       }
     },
     changeRotorCount(newRotorCount) {
+      // Methode zum Ändern der Anzahl der Rotoren
       if (newRotorCount > 0 && newRotorCount <= 10) {
         const currentRotorCount = this.rotors.length;
         if (newRotorCount > currentRotorCount) {
@@ -82,63 +50,65 @@ export default {
         console.error('Ungültige Anzahl von Rotoren.');
       }
     },
-    rotateRotorOnKey() {
-      for (let i = 0; i < this.rotorRotationCounts.length; i++) {
-        const rotor = this.rotors[this.rotors.length - 1 - i];
-        if (this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] === this.rotorTurnovers[this.rotorTurnovers.length - 1 - i]) {
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i] = 0;
-          this.rotorTurnovers[this.rotorTurnovers.length - 1 - i] = 25;
-        } else {
-          rotor.prev = rotor.current;
-          rotor.current = rotor.next;
-          rotor.next = String.fromCharCode(((rotor.next.charCodeAt(0) - 65 + 1) % 26) + 65);
-          this.rotorRotationCounts[this.rotorRotationCounts.length - 1 - i]++;
-          break;
-        }
-      }
-    },
-    async getStandardSettings() {
-      return axios.get(`/rotor/standard?variant=${this.enigmaVariant}`)
+    updateRotorsFromBackend() {
+      // Methode zum Aktualisieren der Rotoren mit Daten aus dem Backend
+      const auth = useAuthStore();
+      const user_id = auth.user.id;
+      axios.get(`/settings?user_id=${user_id}`)
           .then(response => {
-            console.log("Received data from backend: ", response.data);
-            this.turnovers = response.data.turnovers;
+            console.log("Data from Backend for updated key: ", response.data);
+            const rotor_positions = response.data.rotor_positions;
+            this.updateRotors(rotor_positions);
           })
           .catch(error => {
             console.error("Error while fetching data: ", error);
           });
     },
-    calculateRotorTurnover(index) {
-      const rotorVariant = this.rotorVariants[index + 1];
-      const turnoverLetter = this.turnovers[rotorVariant];
-      const turnoverPosition = turnoverLetter.charCodeAt(0) - 'A'.charCodeAt(0);
-      const rotorPosition = this.initialRotorsettings[index + 1].charCodeAt(0) - 'A'.charCodeAt(0);
-      this.rotorTurnovers[index] = (turnoverPosition) % 26;
-      this.rotorRotationCounts[index] = rotorPosition;
-    },
-
-    async getRotations() {
-      await this.getStandardSettings();
-      const rotorCount = Object.keys(this.initialRotorsettings).length;
-      for (let i = 0; i < rotorCount; i++) {
-        this.calculateRotorTurnover(i);
+    sendRotorsToBackend() {
+      // Methode zum Aktualisieren der Rotoren im Backend
+      const auth = useAuthStore();
+      const user_id = auth.user.id;
+      let rotor_positions = '';
+      for (let i = 0; i < this.rotors.length; i++) {
+        rotor_positions += this.rotors[i].current;
       }
-      console.log("Rotor Turnovers: ", this.rotorTurnovers);
-      console.log("Rotor Rotation Counts: ", this.rotorRotationCounts);
+      axios.post(`/rotor/position?user_id=${user_id}&position=${rotor_positions}`)
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
     },
-    async onSettingsChange() {
-      console.log(this.rotorVariants);
-      const length = Object.keys(this.initialRotorsettings).length;
-      for (let i = 0; i < length; i++) {
-        this.rotors[i].current = this.initialRotorsettings[i + 1];
-        this.rotors[i].next = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 1) % 26) + 65);
-        this.rotors[i].prev = String.fromCharCode(((this.initialRotorsettings[i + 1].charCodeAt(0) - 65 + 25) % 26) + 65);
+    updateRotors(rotor_positions) {
+      // Methode zum Aktualisieren der Rotoren
+      for (let i = 0; i < this.rotors.length; i++) {
+        const rotor = this.rotors[i];
+        const rotor_position = rotor_positions.charAt(i);
+        const rotor_position_index = rotor_position.charCodeAt(0) - 65;
+        rotor.next = String.fromCharCode((rotor_position_index + 1) % 26 + 65);
+        rotor.current = rotor_position;
+        rotor.prev = String.fromCharCode((rotor_position_index + 25) % 26 + 65);
       }
-      await this.getRotations();
     },
-
+    rotateRotor(rotor, direction) {
+      // Methode zum Rotieren eines Rotors
+      const rotorIndex = parseInt(rotor.slice(-1)) - 1;
+      const rotorPosition = this.rotors[rotorIndex].current;
+      const rotorPositionIndex = rotorPosition.charCodeAt(0) - 65;
+      let newRotorPositionIndex;
+      if (direction === 'next') {
+        newRotorPositionIndex = (rotorPositionIndex + 1) % 26;
+      } else if (direction === 'prev') {
+        newRotorPositionIndex = (rotorPositionIndex + 25) % 26;
+      } else {
+        return;
+      }
+      this.rotors[rotorIndex].next = String.fromCharCode((newRotorPositionIndex + 1) % 26 + 65);
+      this.rotors[rotorIndex].current = String.fromCharCode(newRotorPositionIndex + 65);
+      this.rotors[rotorIndex].prev = String.fromCharCode((newRotorPositionIndex + 25) % 26 + 65);
+      this.sendRotorsToBackend();
+    },
   },
   created() {
     const initialRotorCount = 3; // Anzahl der anfänglichen Rotoren
@@ -146,9 +116,6 @@ export default {
   },
   props: {
     newNumber: Number,
-    rotorVariants: Object,
-    initialRotorsettings: Object,
-    enigmaVariant: String,
   },
   watch: {
     newNumber(newVal) {

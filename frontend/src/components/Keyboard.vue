@@ -85,20 +85,20 @@ export default {
       axios.post(`/keyboard?key=${key}`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
-          this.$emit('key', key);
-          this.getEncryptedKey();
+          this.getEncryptedKey(key);
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);
         });
     },
-    async getEncryptedKey() {
+    async getEncryptedKey(key) {
       const auth = useAuthStore();
       const user_id = auth.currentUserID;
       axios.get(`/lamp?user_id=${user_id}`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
           this.highlightedKeyUpper = response.data.encrypted_key; // update upper keyboard with encrypted key
+          this.$emit('key', key);
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);

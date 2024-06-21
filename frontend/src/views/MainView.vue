@@ -9,14 +9,11 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @initialRotor="setInitialsRotor" @rotorVariants="setRotorVariants"
-          @toggle-plugboard="togglePlugboard" :plugs="plugs" ref="settings"/>
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs" ref="settings"/>
 
       </div>
       <div class="col-6">
-        <Rotorpanel :newNumber="newNumber" :rotorVariants="rotorVariants" :initialRotorsettings="initialRotorsettings"
-          :enigmaVariant="enigmaVariant" ref="rotorPanel" />
-
+        <Rotorpanel :newNumber="newNumber" ref="rotorPanel" />
       </div>
       <div class="col-3">
       </div>
@@ -86,27 +83,15 @@
     },
     methods: {
       update(key) {
+        // Methode die aufgerufen wird, wenn ein Key gedrückt wird
         this.currentKey = key;
-        this.$refs.rotorPanel.rotateRotorOnKey();
+        this.$refs.rotorPanel.updateRotorsFromBackend();
       },
 
       rotorNumber(count) {
         this.newNumber = count;
       },
 
-      setInitialsRotor(rotor) {
-        this.initialRotorsettings = rotor;
-        this.$nextTick(() => {
-          this.$refs.rotorPanel.onSettingsChange();
-        });
-      },
-      setRotorVariants(variants) {
-        console.log("Variants: ", variants);
-        this.rotorVariants = variants;
-        this.$nextTick(() => {
-          this.$refs.rotorPanel.onSettingsChange();
-        });
-      },
       togglePlugboard(show) {
         this.showPlugboard = show;
         if (!show) {
@@ -118,8 +103,10 @@
       updatePlugboard(plugs) {
         this.plugs = plugs;
         this.$refs.plugboard.updatePlugboardInDB();
+      },
+      updateRotors(rotor_positions) {
+        this.$refs.rotorPanel.updateRotorsFromBackend();
       }
-
     }
   };
 </script>
