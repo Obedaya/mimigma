@@ -25,6 +25,7 @@ class RotorSettings(Base):
     rotors = Column(JSON)
     rotor_positions = Column(String)
     ring_positions = Column(String)
+    plugboard = Column(JSON)
 
 
 class ReflectorSettings(Base):
