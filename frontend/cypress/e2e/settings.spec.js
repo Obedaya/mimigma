@@ -26,6 +26,7 @@ describe('Settings', () => {
     it('should display the correct amount of rotors, if the rotor count is changed', () => {
         cy.get('input[id=rotorCount]').clear().type('4');
         cy.get('button[id=modal-submit-button]').click();
+        cy.wait(200)
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').should('have.length', 4);
 

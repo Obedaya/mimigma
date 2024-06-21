@@ -9,7 +9,7 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" :plugs="plugs" ref="settings"/>
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs" ref="settings"/>
 
       </div>
       <div class="col-6">
@@ -103,8 +103,10 @@
       updatePlugboard(plugs) {
         this.plugs = plugs;
         this.$refs.plugboard.updatePlugboardInDB();
+      },
+      updateRotors(rotor_positions) {
+        this.$refs.rotorPanel.updateRotorsFromBackend();
       }
-
     }
   };
 </script>

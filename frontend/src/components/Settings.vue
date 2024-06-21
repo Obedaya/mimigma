@@ -191,7 +191,6 @@
           'N': 'Reflector N'
         }, // hier kann die Titel für Rotoren erweitert werden
 
-        selectedReflectorOption: 'UKW_B',
         dropdownReflectorOptions: {
           1: 'UKW_A',
           2: 'UKW_B',
@@ -226,10 +225,7 @@
         axios.post(`/rotor`, rotor)
           .then(response => {
             console.log("Received data from backend: ", response.data);
-            this.$emit('initialRotor', this.selectedInitialPositions);
-            this.$emit('rotorVariants', this.rotorHeaders);
-            this.$emit('ringstellung', this.selectedRingPositions);
-            this.$emit('rotorHeaders', this.rotorHeaders);
+            this.$emit('update-rotors');
           })
           .catch(error => {
             console.error("Error while fetching data: ", error);
