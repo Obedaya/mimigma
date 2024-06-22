@@ -36,6 +36,7 @@ export default {
   
   methods: {
     login() {
+      console.log('Attempting login with username:', this.username);
       axios.post(`/login?username=${this.username}&password=${this.password}`)
         .then(response => {
           console.log('Response:', response.data);
@@ -47,6 +48,7 @@ export default {
               token: response.data.access_token
             };
             auth.login(userData);
+            console.log('Login successful, navigating to main view');
             this.$router.push('/main');
           } else {
             console.log('Login failed: Invalid status code');
