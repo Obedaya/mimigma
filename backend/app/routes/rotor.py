@@ -67,6 +67,22 @@ async def update_rotor_setting(data: RotorSettingCreate):
     finally:
         db.close()
 
+@router.post("/rotor/position", tags=["Rotor"])
+async def update_rotor_position(user_id: int, position: str):
+    db = SessionLocal()
+    try:
+        # Logic to set rotor position
+        existing_setting = db.query(RotorSettings).filter_by(user_id=user_id).first()
+
+        existing_setting.rotor_positions = position
+        db.commit()
+        db.refresh(existing_setting)
+        return {"message": "Rotor position set successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    finally:
+        db.close()
+
 @router.post("/rotor/count", tags=["Rotor"])
 async def rotor_count(count: int):
     db = SessionLocal()
