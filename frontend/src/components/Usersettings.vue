@@ -16,22 +16,38 @@
                         bingbong
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="logout" data-bs-dismiss="modal">Log out</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button modalSendButton" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </template>
 
-
 <script>
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+
+export default {
+    setup() {
+        const auth = useAuthStore();
+        const router = useRouter();
+        
+        const logout = () => {
+            auth.logout();
+            console.log('User logged out');
+            router.push('/');
+        };
+
+        return { logout };
+    }
+};
 </script>
 
 <style>
-    #UserModal {
-        color: black;
-    }
+#UserModal {
+    color: black;
+}
 </style>
