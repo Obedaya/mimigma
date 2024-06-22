@@ -1,7 +1,7 @@
 <template>
     <div class="col-6" style='display: inline-block;'>
         <!-- Button trigger modal -->
-        <div data-bs-toggle="modal" data-bs-target="#UserModal">
+        <div data-bs-toggle="modal" data-bs-target="#UserModal" id="user-settings-btn">
             <img class="icons" src="../assets/nutzer.png">
         </div>
         <!-- Modal -->
