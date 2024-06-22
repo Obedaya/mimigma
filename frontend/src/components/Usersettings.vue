@@ -13,7 +13,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        bingbong
+                        {{ auth.user.username }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="logout" data-bs-dismiss="modal">Log out</button>
@@ -41,7 +41,7 @@ export default {
             router.push('/');
         };
 
-        return { logout };
+        return { auth, logout };
     }
 };
 </script>
