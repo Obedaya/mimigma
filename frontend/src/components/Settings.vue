@@ -23,7 +23,7 @@
               </select>
             </div>
             <!-- Anzeige Rotorenanzahl -->
-            <div data-mdb-input-init class="form-outline">
+            <div v-if="!['Enigma I', 'Enigma M3', 'Enigma Norway'].includes(enigmaVariant)"data-mdb-input-init class="form-outline">
               <label class="col-6" for="typeNumber">Rotorenanzahl</label>
               <!-- der Value Wert sollte dann durch die aktuelle Anzahl der Rotoren getauscht werden!!-->
               <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6"
@@ -217,32 +217,40 @@
     methods: {
       updateConfig(variant) {
         if (variant === 'Enigma I') {
+          this.rotorCount = "3";
           this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3' };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V'];
           this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_A";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C'];
+          this.changeRotorCount();
           
         } else if (variant === 'Enigma M3') {
+          this.rotorCount = "3";
           this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3', 4: 'Rotor 4' };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
           this.reflectorTitles = { B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_B', 'UKW_C'];
+          this.changeRotorCount();
           
         } else if (variant === 'Enigma Norway') {
+          this.rotorCount = "3";
           this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3', 4: 'Rotor 4', 5: 'Rotor 5' };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V'];
           this.reflectorTitles = { N: 'Reflector N'};
           this.selectedReflectorOption = "UKW_N";
           this.dropdownReflectorOptions = ['UKW_N'];
+          this.changeRotorCount();
           
         } else if (variant === 'Custom Enigma') {
+          //this.rotorCount = "3";
           this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3', 4: 'Rotor 4' };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
           this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C', N: 'Reflector N' };
           this.selectedReflectorOption = "UKW_A";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C', 'UKW_N'];
+          this.changeRotorCount();
         }
       },
       sendRotorCountToBackend(count) {
@@ -361,6 +369,7 @@
       },                    
 
     resetSettings() {
+      this.enigmaVariant = "Enigma I";
       this.rotorCount = 3;
       this.showPlugboard = true;
       this.RotorTitle = {
@@ -449,14 +458,14 @@
           ) {
             this.enigmaVariant = config.enigmaVariant;
             this.rotorCount = config.rotorCount;
-            this.srotorHeaders = Object.assign({}, this.rotorHeaders, config.rotorHeaders);
+            this.rotorHeaders = Object.assign({}, this.rotorHeaders, config.rotorHeaders);
             this.selectedInitialPositions = Object.assign({}, this.selectedInitialPositions, config.selectedInitialPositions);
             this.selectedRingPositions = Object.assign({}, this.selectedRingPositions, config.selectedRingPositions);
             this.selectedReflectorOption = config.selectedReflectorOption;
-            // Call updateConfig to reflect changes in the panel
-            this.updateConfig(this.enigmaVariant);
+
             // Call changeRotorCount to update the view
             this.changeRotorCount();
+
           } else {
             console.error('Invalid configuration file');
           }
@@ -465,6 +474,7 @@
         }
         // Reset file input value
         event.target.value = '';
+        this.changeRotorCount();
       };
       reader.readAsText(file);
     }
