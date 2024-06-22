@@ -6,7 +6,7 @@ import { createPinia } from 'pinia';
 import router from './router';
 import App from './App.vue';
 import axios from 'axios';
-// import App from './views/MainView.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
@@ -18,6 +18,11 @@ const app = createApp(App);
 // Pinia initialisieren
 const pinia = createPinia();
 app.use(pinia);
+
+// Check authentication status on app load
+const auth = useAuthStore();
+auth.checkAuth();
+console.log('Authentication check completed');
 
 // Router verwenden
 app.use(router);
