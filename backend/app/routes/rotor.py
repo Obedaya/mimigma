@@ -97,12 +97,14 @@ async def rotor_count(count: int):
 async def standard_rotor(variant: str):
     try:
         turnovers = {}
-        if variant == "M1":
+        if variant == "Enigma I":
             turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z"}
-        elif variant == "M3":
+        elif variant == "Enigma M3":
             turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z", "VI": "ZM", "VII": "ZM", "VIII": "ZM"}
-        elif variant == "Norway":
+        elif variant == "Enigma Norway":
             turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z"}
+        elif variant == "Custom Enigma":
+            turnovers = {"I": "Q", "II": "E", "III": "V", "IV": "J", "V": "Z", "VI": "ZM", "VII": "ZM", "VIII": "ZM"}
         else:
             raise HTTPException(status_code=400, detail="Invalid variant")
         return {"turnovers": turnovers}

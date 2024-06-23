@@ -16,7 +16,7 @@ def reset(user_id: int):
     try:
         default_rotor_settings = {
             "user_id": user_id,
-            "machine_type": "M3",
+            "machine_type": "Enigma I",
             "rotors": ["I", "II", "III"],
             "rotor_positions": "AAA",
             "ring_positions": "AAA",

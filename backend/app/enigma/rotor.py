@@ -39,12 +39,14 @@ class RotorMachine:
 
 
     def get_machine_class(self):
-        if self.machine_type == "M1":
+        if self.machine_type == "Enigma I":
             return EnigmaM1
-        elif self.machine_type == "M3":
+        elif self.machine_type == "Enigma M3":
             return EnigmaM3
-        elif self.machine_type == "NW":
+        elif self.machine_type == "Enigma Norway":
             return EnigmaNorway
+        elif self.machine_type == "Custom Enigma":
+            return EnigmaM3
         else:
             raise ValueError("Unknown machine type")
 

@@ -101,7 +101,7 @@ describe('Settings', () => {
             statusCode: 200,
             body: {
                 "user_id": 4,
-                "machine_type": "M3",
+                "machine_type": "Enigma I",
                 "rotors": ["I", "II", "III"],
                 "rotor_positions": "AAA",
                 "ring_positions": "AAA"
