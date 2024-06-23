@@ -273,7 +273,7 @@
             this.$emit('update-rotors');
           })
           .catch(error => {
-            console.error("Error while fetching data: ", error);
+            console.error("Error while fetching Rotor data: ", error);
           });
       },
       sendReflectorToBackend(selectedReflectorOption) {
@@ -343,7 +343,7 @@
         this.selectedReflectorOption = reflector;
       },
       sendSettingsToBackend() {
-        this.enigmaVariant = this.enigmaVariant; // Update enigmaVariant here
+        //this.enigmaVariant = this.enigmaVariant; // Update enigmaVariant here
         this.sendRotorCountToBackend(this.rotorCount);
         let rotors = this.createRotor();
         console.log(rotors)

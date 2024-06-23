@@ -31,12 +31,11 @@ class RotorMachine:
 
         # Initialize notches and turnovers for each rotor
         self.notches = []
-        # self.turnovers = []
         for rotor in self.rotors:
             rotor_method = self.get_rotor_method(rotor)
-            _, notch, _ = rotor_method('A')
-            self.notches.append(ord(notch) - ord('A'))
-
+            _, notches, _ = rotor_method('A')
+            # Convert notches to list of positions
+            self.notches.append([ord(n) - ord('A') for n in notches])
 
     def get_machine_class(self):
         if self.machine_type == "Enigma I":
@@ -53,26 +52,19 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    """def advance_rotors(self):
-        # Initial advancement (rightmost rotor always advances)
-        advance_next = True
-
-        for i in range(len(self.rotors)):
-            if advance_next:
-                self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
-                advance_next = self.rotor_positions[i] == self.notches[i]
-            else:
-                break"""
-
     def advance_rotors(self):
-        advance_next = True
+        # Determine which rotors need to be stepped
+        advance_next = [False] * len(self.rotors)
+        advance_next[-1] = True  # The rightmost rotor always advances
 
+        for i in reversed(range(len(self.rotors) - 1)):
+            if self.rotor_positions[i + 1] in self.notches[i + 1]:
+                advance_next[i] = True
+
+        # Perform the rotor advancement
         for i in reversed(range(len(self.rotors))):
-            if advance_next:
+            if advance_next[i]:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
-                advance_next = self.rotor_positions[i] == self.notches[i]
-            else:
-                break
     
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -108,7 +100,7 @@ class EnigmaM1:
     def rotor_I(letter, position=0, reverse=False):
         wiring = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "Y"
+        notches = "Y"
         turnover = "Q"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -116,13 +108,13 @@ class EnigmaM1:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_II(letter, position=0, reverse=False):
         wiring = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "M"
+        notches = "M"
         turnover = "E"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -130,13 +122,13 @@ class EnigmaM1:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_III(letter, position=0, reverse=False):
         wiring = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "D"
+        notches = "D"
         turnover = "V"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -144,13 +136,13 @@ class EnigmaM1:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_IV(letter, position=0, reverse=False):
         wiring = "ESOVPZJAYQUIRHXLNFTGKDCMWB"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "R"
+        notches = "R"
         turnover = "J"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -158,13 +150,13 @@ class EnigmaM1:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_V(letter, position=0, reverse=False):
         wiring = "VZBRGITYUPSDNHLXAWMJQOFECK"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "H"
+        notches = "H"
         turnover = "Z"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -172,7 +164,7 @@ class EnigmaM1:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
 class EnigmaM3:
     @staticmethod
@@ -199,7 +191,7 @@ class EnigmaM3:
     def rotor_VI(letter, position=0, reverse=False):
         wiring = "JPGVOUMFYQBENHZRDKASXLICTW"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "HU"
+        notches = "HU"
         turnover = "ZM"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -207,13 +199,13 @@ class EnigmaM3:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_VII(letter, position=0, reverse=False):
         wiring = "NZJHGRCXMYSWBOUFAIVLPEKQDT"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "HU"
+        notches = "HU"
         turnover = "ZM"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -221,13 +213,13 @@ class EnigmaM3:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_VIII(letter, position=0, reverse=False):
         wiring = "FKQHTLXOCBJSPDZRAMEWNIUYGV"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "HU"
+        notches = "HU"
         turnover = "ZM"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -235,14 +227,14 @@ class EnigmaM3:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
 class EnigmaNorway:
     @staticmethod
     def rotor_I(letter, position=0, reverse=False):
         wiring = "WTOKASUYVRBXJHQCPZEFMDINLG"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "Y"
+        notches = "Y"
         turnover = "Q"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -250,13 +242,13 @@ class EnigmaNorway:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_II(letter, position=0, reverse=False):
         wiring = "GJLPUBSWEMCTQVHXAOFZDRKYNI"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "M"
+        notches = "M"
         turnover = "E"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -264,13 +256,13 @@ class EnigmaNorway:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
     @staticmethod
     def rotor_III(letter, position=0, reverse=False):
         wiring = "JWFMHNBPUSDYTIXVZGRQLAOEKC"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "D"
+        notches = "D"
         turnover = "V"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -278,13 +270,13 @@ class EnigmaNorway:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
     
     @staticmethod
     def rotor_IV(letter, position=0, reverse=False):
         wiring = "FGZJMVXEPBWSHQTLIUDYKCNRAO"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "R"
+        notches = "R"
         turnover = "V"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -292,13 +284,13 @@ class EnigmaNorway:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
     
     @staticmethod
     def rotor_V(letter, position=0, reverse=False):
         wiring = "HEJXQOTZBVFDASCILWPGYNMURK"
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        notch = "H"
+        notches = "H"
         turnover = "Z"
         if reverse:
             index = (wiring.index(letter) - position) % 26
@@ -306,7 +298,7 @@ class EnigmaNorway:
         else:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
-        return encrypted_letter, notch, turnover
+        return encrypted_letter, notches, turnover
 
 def advance_rotor(position):
     new_position = (position + 1) % 26
