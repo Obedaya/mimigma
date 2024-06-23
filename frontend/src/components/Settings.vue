@@ -223,7 +223,7 @@
           this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_A";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C'];
-          this.resetRotorHeaders();
+          //this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Enigma M3') {
@@ -233,7 +233,7 @@
           this.reflectorTitles = { B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_B', 'UKW_C'];
-          this.resetRotorHeaders();
+          //this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Enigma Norway') {
@@ -243,7 +243,7 @@
           this.reflectorTitles = { N: 'Reflector N'};
           this.selectedReflectorOption = "UKW_N";
           this.dropdownReflectorOptions = ['UKW_N'];
-          this.resetRotorHeaders();
+          //this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Custom Enigma') {
@@ -343,7 +343,7 @@
         this.selectedReflectorOption = reflector;
       },
       sendSettingsToBackend() {
-        this.enigmaVariant = this.tempEnigmaVariant; // Update enigmaVariant here
+        this.enigmaVariant = this.enigmaVariant; // Update enigmaVariant here
         this.sendRotorCountToBackend(this.rotorCount);
         let rotors = this.createRotor();
         console.log(rotors)
@@ -504,7 +504,7 @@
         }
         // Reset file input value
         event.target.value = '';
-        this.changeRotorCount();
+        //this.changeRotorCount();
       };
       reader.readAsText(file);
     }
