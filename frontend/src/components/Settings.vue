@@ -223,6 +223,7 @@
           this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_A";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C'];
+          this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Enigma M3') {
@@ -232,6 +233,7 @@
           this.reflectorTitles = { B: 'Reflector B', C: 'Reflector C' };
           this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_B', 'UKW_C'];
+          this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Enigma Norway') {
@@ -241,6 +243,7 @@
           this.reflectorTitles = { N: 'Reflector N'};
           this.selectedReflectorOption = "UKW_N";
           this.dropdownReflectorOptions = ['UKW_N'];
+          this.resetRotorHeaders();
           this.changeRotorCount();
           
         } else if (variant === 'Custom Enigma') {
@@ -369,7 +372,7 @@
       },                    
 
     resetSettings() {
-      this.enigmaVariant = "Enigma I";
+      //this.enigmaVariant = "Enigma I";
       this.rotorCount = 3;
       this.showPlugboard = true;
       this.RotorTitle = {
@@ -402,6 +405,33 @@
           })
           .catch(error => {
             console.error("Error while resetting settings: ", error);
+          });
+    },
+    resetRotorHeaders() {
+      this.rotorHeaders = {
+        1: 'I',
+        2: 'II',
+        3: 'III'
+      };
+      this.selectedInitialPositions = {
+        1: 'A',
+        2: 'A',
+        3: 'A'
+      };
+      this.selectedRingPositions = {
+        1: '1',
+        2: '1',
+        3: '1'
+      };
+
+      // Send reset request to backend
+      const auth = useAuthStore();
+      axios.post(`/reset?user_id=${auth.currentUserID}`)
+          .then(response => {
+            console.log("Rotors headers Settings reset on backend: ", response.data);
+          })
+          .catch(error => {
+            console.error("Error while resetting Rotors headers settings: ", error);
           });
     },
       updateEnigmaVariant() {
