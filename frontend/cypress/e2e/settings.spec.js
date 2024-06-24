@@ -16,6 +16,7 @@ describe('Settings', () => {
     });
 
     it('should change rotor settings, when the rotor count is changed', () => {
+        cy.get('select[id=enigmavariants]').select('Custom Enigma');
         cy.get('input[id=rotorCount]').clear().type('4');
         cy.get('th').contains('Rotor 4').should('exist');
 
@@ -24,10 +25,11 @@ describe('Settings', () => {
     });
 
     it('should display the correct amount of rotors, if the rotor count is changed', () => {
+        cy.get('select[id=enigmavariants]').select('Custom Enigma');
         cy.get('input[id=rotorCount]').clear().type('4');
         cy.get('button[id=modal-submit-button]').click();
-        cy.wait(200)
-        cy.get('button[id=modal-close-button]').click();
+        //cy.wait(200)
+        //cy.get('button[id=modal-close-button]').click();
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').should('have.length', 4);
 
         cy.get('div[id="settings-button"]').click();
@@ -133,6 +135,7 @@ describe('Settings', () => {
     it('should change and then reset the enigma settings when the reset button is pressed', () => {
       
         // Change the rotor count to 5
+        cy.get('select[id=enigmavariants]').select('Custom Enigma');
         cy.get('input[id=rotorCount]').clear().type('5');
       
         // Change rotors to 'IV' for all 5 positions
