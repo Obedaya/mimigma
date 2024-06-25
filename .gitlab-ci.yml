@@ -5,8 +5,8 @@ include:
 stages:
   - build 
   - test
-  - cleanup
   - scan
+  - cleanup
 
 # Build and push the frontend image
 build_frontend:
