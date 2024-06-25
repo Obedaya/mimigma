@@ -55,14 +55,6 @@ unit-test:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
 
-cleanup:
-  stage: cleanup
-  image: docker:26.0.1
-  script:
-    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
-    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
-  when: always
-
 # Trivy Scans
 frontend_scan:
   stage: scan
@@ -81,3 +73,11 @@ backend_scan:
     GIT_STRATEGY: 'fetch'
   script:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
+
+cleanup:
+  stage: cleanup
+  image: docker:26.0.1
+  script:
+    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
+    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
+  when: always
