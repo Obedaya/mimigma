@@ -70,6 +70,8 @@ frontend_scan:
     SECURE_LOG_LEVEL: 'debug'
     CS_IMAGE: '$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME'
     GIT_STRATEGY: 'fetch'
+  script:
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
 
 backend_scan:
   stage: scan
@@ -77,3 +79,5 @@ backend_scan:
     SECURE_LOG_LEVEL: 'debug'
     CS_IMAGE: '$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME'
     GIT_STRATEGY: 'fetch'
+  script:
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
