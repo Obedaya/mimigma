@@ -1,7 +1,12 @@
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml
+
 stages:
   - build 
   - test
   - cleanup
+  - scan
 
 # Build and push the frontend image
 build_frontend:
@@ -58,3 +63,17 @@ cleanup:
     - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
   when: always
 
+# Trivy Scans
+frontend_scan:
+  stage: scan
+  variables:
+    SECURE_LOG_LEVEL: 'debug'
+    CS_IMAGE: '$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME'
+    GIT_STRATEGY: 'fetch'
+
+backend_scan:
+  stage: scan
+  variables:
+    SECURE_LOG_LEVEL: 'debug'
+    CS_IMAGE: '$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME'
+    GIT_STRATEGY: 'fetch'
