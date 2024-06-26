@@ -3,6 +3,7 @@
         <!-- Button trigger modal -->
         <div data-bs-toggle="modal" data-bs-target="#UserModal" id="user-settings-btn">
             <img class="icons" src="../assets/nutzer.png">
+
         </div>
         <!-- Modal -->
         <div class="modal fade" id="UserModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">
@@ -31,6 +32,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 
 export default {
+  
     setup() {
         const auth = useAuthStore();
         const router = useRouter();

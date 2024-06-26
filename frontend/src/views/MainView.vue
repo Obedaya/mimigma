@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col">
         <!--Mimigma-Bild-->
-        <img class="mimigma" src="../assets/mimigma.png">
+        <img class="mimigma" @click="toggleColor" src="../assets/mimigma.png">
       </div>
       <div class="col-6">
         <Keyboard @key="update" />
@@ -69,7 +69,7 @@
         enigmaVariant: "M3",
         rotorVariants: {},
         showPlugboard: true,
-        plugs: []
+        plugs: [],
 
       };
     },
@@ -108,7 +108,19 @@
       },
       updateRotors(rotor_positions) {
         this.$refs.rotorPanel.updateRotorsFromBackend();
+      },
+      toggleColor(){
+       
+
+// Zugriff auf das <body> Element und Toggeln des data-theme Attributs
+const body = document.body;
+const currentTheme = body.getAttribute('data-theme');
+body.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
+
+        
+
       }
+
     }
   };
 </script>

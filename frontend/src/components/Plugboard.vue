@@ -136,7 +136,7 @@ export default {
 .plug {
   width: 35px;
   height: 35px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   margin: 2.5px;
   display: flex;
   justify-content: center;

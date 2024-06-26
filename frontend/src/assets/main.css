@@ -42,6 +42,7 @@ section {
 }
 
 .border-white {
+  border-color: var(--color-border) !important;
   height: 100%;
 }
 
@@ -56,12 +57,15 @@ section {
 }
 
 .icons {
+    filter: invert(var(--filter-variable));
+
+  
   width: 50%;
   cursor: pointer;
   margin-left: 25%;
 
 }
 
-.modalbackground{
+.modalbackground {
   background-color: rgb(255, 255, 255);
 }
