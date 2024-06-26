@@ -50,7 +50,7 @@ def get_encrypted_key(user_id: int):
             new_history = History(plain=plain, encrypted=new_encrypted)
             db.add(new_history)
 
-        print(f"\t\t\t\t\tdatabase encrypted: {new_encrypted}")
+        # print(f"\t\t\t\t\tdatabase encrypted: {new_encrypted}")
         
         db.commit()
 

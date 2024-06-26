@@ -25,11 +25,12 @@ def delete_history():
     try:
         latest_history = db.query(History).order_by(desc(History.id)).first()
         if latest_history:
-            continue
-        else:
-            new_history = History(plain=plain, encrypted=new_encrypted)
+            new_history = History(plain="", encrypted="")
             db.add(new_history)
         db.commit()
+        return {"message": "History cleared."}
     finally:
         db.close()
+
+    
 

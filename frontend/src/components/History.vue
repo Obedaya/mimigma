@@ -1,7 +1,7 @@
 <template>
   <section>
     <div id="output">
-      <div class="overflow-scroll" v-html="output"></div>
+      <div v-html="output"></div>
       <!--<div :key="output"> {{ output }}</div>-->
     </div>
   </section>
