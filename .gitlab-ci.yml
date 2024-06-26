@@ -35,17 +35,14 @@ build_backend:
 # Trivy Scan mit defauls
 container_scanning:
   stage: scan
-  image: docker:26.0.1
-  services:
-    - docker:26.0.1-dind 
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend'
     CS_DOCKERFILE_PATH: './backend/Dockerfile'
+    GIT_STRATEGY: 'fetch'
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY 
-    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE 
-
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY  
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
 
 
 e2e-test:
