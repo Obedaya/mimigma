@@ -60,9 +60,9 @@ frontend_scan:
   stage: scan
   before_script:
     - echo $CI_REGISTRY
-    # - echo "CI_REGISTRY_USER: $CI_REGISTRY_USER"
-    # - echo "CI_REGISTRY_PASSWORD: $CI_REGISTRY_PASSWORD"
-    # - echo "CI_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE"
+    - echo $CI_REGISTRY_USER
+    - echo $CI_REGISTRY_PASSWORD
+    - echo $CI_REGISTRY_IMAGE
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - |
       if [ $? -ne 0 ]; then
@@ -75,7 +75,7 @@ frontend_scan:
     CS_DOCKERFILE_PATH: './frontend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
-    - echo "CS_IMAGE: $CS_IMAGE"
+    - echo $CS_IMAGE
     - docker pull $CS_IMAGE
     - |
       if [ $? -ne 0 ]; then
