@@ -9,7 +9,8 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs" ref="settings"/>
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs"
+          ref="settings" />
 
       </div>
       <div class="col-6">
@@ -30,9 +31,11 @@
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; " class="overflow-scroll border border-white">
+        <div
+          style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; "
+          class="overflow-scroll border border-white">
           <!--<History :current_key="currentKey" />-->
-          <History  ref="history"/>
+          <History ref="history" />
         </div>
       </div>
     </div>
@@ -42,7 +45,7 @@
 
       </div>
       <div class="col-6">
-        <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard"/>
+        <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard" />
 
       </div>
       <div class="col">
@@ -109,15 +112,15 @@
       updateRotors(rotor_positions) {
         this.$refs.rotorPanel.updateRotorsFromBackend();
       },
-      toggleColor(){
-       
+      toggleColor() {
 
-// Zugriff auf das <body> Element und Toggeln des data-theme Attributs
-const body = document.body;
-const currentTheme = body.getAttribute('data-theme');
-body.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
 
-        
+        // Zugriff auf das <body> Element und Toggeln des data-theme Attributs
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
+
+
 
       }
 
