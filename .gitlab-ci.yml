@@ -35,9 +35,6 @@ build_backend:
 # Trivy Scan mit defauls
 container_scanning:
   stage: scan
-  image: docker:26.0.1
-  services:
-    - docker:26.0.1-dind 
   variables:
     SECURE_LOG_LEVEL: 'debug'
     CS_IMAGE: '$CI_REGISTRY_IMAGE/backend'
