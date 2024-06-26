@@ -37,7 +37,7 @@ container_scanning:
   stage: scan
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
     CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
