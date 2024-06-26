@@ -38,7 +38,7 @@ container_scanning:
   variables:
     SECURE_LOG_LEVEL: 'debug'
     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend'
-    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
+    CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
