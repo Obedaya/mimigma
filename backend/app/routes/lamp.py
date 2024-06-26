@@ -39,18 +39,15 @@ def get_encrypted_key(user_id: int):
             new_encrypted = encrypted_key
             plain = ""
 
-        # Truncate the plain text if it exceeds 120 characters
         if len(new_encrypted) > 120:
             new_encrypted = new_encrypted[-120:]
 
-        # Update the History entry or create a new one
         if latest_history:
             latest_history.encrypted = new_encrypted
         else:
             new_history = History(plain=plain, encrypted=new_encrypted)
             db.add(new_history)
 
-        # print(f"\t\t\t\t\tdatabase encrypted: {new_encrypted}")
         
         db.commit()
 
