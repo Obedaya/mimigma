@@ -3,9 +3,9 @@ include:
   - template: Jobs/SAST.gitlab-ci.yml
 
 stages:
-  - build 
+  - build
+  - scan 
   - test
-  - scan
   - cleanup
 
 # Build and push the frontend image
