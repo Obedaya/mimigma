@@ -1,6 +1,9 @@
-FROM python:3.9
+FROM python:3.9.19-alpine3.20
 
 WORKDIR /code
+
+# Install build dependencies
+RUN apk add --no-cache gcc musl-dev libc-dev
 
 COPY ./requirements.txt /code/requirements.txt
 
