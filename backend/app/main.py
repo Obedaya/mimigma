@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import FastAPI
 from .database import engine, check_db_connection
-from .routes import users, login, general, items, rotor, ring, plugboard, lamp, reflector, keyboard, settings
+from .routes import users, login, general, items, rotor, ring, plugboard, lamp, reflector, keyboard, settings, history
 from .init_db import init_db, sync_db_with_json
 from fastapi.middleware.cors import CORSMiddleware
 from app.enigma.enigma import Enigma
@@ -36,6 +36,7 @@ app.include_router(lamp.router)
 app.include_router(reflector.router)
 app.include_router(keyboard.router)
 app.include_router(settings.router)
+app.include_router(history.router)
 
 @app.on_event("startup")
 async def startup_event():

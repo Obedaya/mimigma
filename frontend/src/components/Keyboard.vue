@@ -39,8 +39,6 @@
 import axios from "axios";
 import { useAuthStore } from '@/stores/auth';
 
-  //TODO EventBus 
-  //import { EventBus } from '@/EventBus.js'; //HERE
 export default {
   data() {
     return {
