@@ -58,9 +58,11 @@ unit-test:
 # Trivy Scans
 frontend_scan:
   stage: scan
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:$CI_COMMIT_REF_NAME'
+    CS_IMAGE: '$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME'
     CS_DOCKERFILE_PATH: './frontend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
@@ -68,9 +70,11 @@ frontend_scan:
 
 backend_scan:
   stage: scan
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:$CI_COMMIT_REF_NAME'
+    CS_IMAGE: '$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME'
     CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
