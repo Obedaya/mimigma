@@ -41,7 +41,7 @@ container_scanning:
     CS_DOCKERFILE_PATH: './frontend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
-    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
 
 
 e2e-test:
