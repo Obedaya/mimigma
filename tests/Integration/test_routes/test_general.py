@@ -1,4 +1,4 @@
-"""from backend.app.crud import create_or_update_rotor_settings, create_or_update_reflector_settings
+from backend.app.crud import create_or_update_rotor_settings, create_or_update_reflector_settings
 from backend.app.schemas import RotorSettingCreate, ReflectorSettingCreate
 from backend.app.database import check_db_connection, engine, get_db
 from backend.app.init_db import init_db
@@ -64,7 +64,7 @@ def test_reset_rotor_and_reflector_settings(db_session):
 
     assert updated_reflector_settings is not None
     assert updated_reflector_settings.reflector == "UKW_B"
-"""
+
 
 
 
