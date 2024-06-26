@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from ..database import get_db, SessionLocal
-from ..models import Key
+from ..models import Key, History
+from sqlalchemy import desc
 from ..enigma.enigma import Enigma
 from ..enigma.rotor import get_rotor_settings_from_db
 from ..crud import get_rotor_settings, get_reflector_settings
@@ -29,6 +30,27 @@ def get_encrypted_key(user_id: int):
         enigma_machine = Enigma(machine_type, rotors, rotor_positions, ring_positions, reflector_type, user_id, plugboard)
         encrypted_key = enigma_machine.encrypt_message(current_key_value.upper())
         print(f"Encrypted key: {encrypted_key}")
+        
+        latest_history = db.query(History).order_by(desc(History.id)).first()
+        if latest_history:
+            new_encrypted = latest_history.encrypted + encrypted_key
+            plain = latest_history.plain
+        else:
+            new_encrypted = encrypted_key
+            plain = ""
+
+        if len(new_encrypted) > 120:
+            new_encrypted = new_encrypted[-120:]
+
+        if latest_history:
+            latest_history.encrypted = new_encrypted
+        else:
+            new_history = History(plain=plain, encrypted=new_encrypted)
+            db.add(new_history)
+
+        
+        db.commit()
+
 
         return {"encrypted_key": encrypted_key}
     except Exception as e:

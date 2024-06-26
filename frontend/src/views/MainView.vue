@@ -30,8 +30,9 @@
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div class="border border-white">
-          <History :current_key="currentKey" />
+        <div style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; " class="overflow-scroll border border-white">
+          <!--<History :current_key="currentKey" />-->
+          <History  ref="history"/>
         </div>
       </div>
     </div>
@@ -86,6 +87,7 @@
         // Methode die aufgerufen wird, wenn ein Key gedrückt wird
         this.currentKey = key;
         this.$refs.rotorPanel.updateRotorsFromBackend();
+        this.$refs.history.getHistory();
       },
 
       rotorNumber(count) {

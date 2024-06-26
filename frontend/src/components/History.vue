@@ -1,27 +1,34 @@
 <template>
   <section>
     <div id="output">
-      <div :key="output">{{ current_key }}</div>
+      <div v-html="output"></div>
+      <!--<div :key="output"> {{ output }}</div>-->
     </div>
   </section>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
+  name: "History",
   data() {
     return {
       output: 'Backend not yet connected, please wait...',
-      connection: null, // Store the WebSocket connection object
     };
   },
   methods: {
-    // Send a key press event to the backend
-    getKey() {
-      axios.get("/keyboard")
+    // Fetch the history from the backend
+    getHistory() {
+      axios.get("/history")
         .then(response => {
           console.log("Received data from backend: ", response.data);
-          this.key = response.data;
+          const { plain, encrypted } = response.data;
+          let combinedOutput = "";
+          for (let i = 0; i < encrypted.length; i++) { 
+            combinedOutput += `${plain[i]} : ${encrypted[i]}<br>`;
+          }
+          this.output = combinedOutput;
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);
@@ -29,10 +36,10 @@ export default {
     }
   },
   updated() {
-    this.getKey();
+    this.getHistory();
   },
-  props: {
-    current_key: String,
+  mounted() {
+    this.getHistory();
   },
 };
 </script>

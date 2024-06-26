@@ -10,7 +10,6 @@ class Plugboard:
                 return plug[1] if input == plug[0] else plug[0]
         return input
 
-
 # Example usage:
 # p = Plugboard([["A", "B"], ["C", "D"]])
 # encrypted_letter = p.encrypt("D")  # "C"

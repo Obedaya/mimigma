@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session
-from ..database import SessionLocal
-from ..models import Key
+from sqlalchemy import desc
+from ..database import SessionLocal, get_db, engine
+from ..models import Key, History
 
 router = APIRouter()
 
@@ -12,8 +13,26 @@ def post_keyboard(key: str):
         db.query(Key).delete()
         db.add(Key(key=key))
         db.commit()
+        
+        latest_history = db.query(History).order_by(desc(History.id)).first()
+        if latest_history:
+            new_plain = latest_history.plain + key
+            encrypted = latest_history.encrypted
+        else:
+            new_plain = key
+            encrypted = ""
 
-        return {"status": "Key pressed: " + key}
+        if len(new_plain) > 120:
+            new_plain = new_plain[-120:]
+
+        if latest_history:
+            latest_history.plain = new_plain
+        else:
+            new_history = History(plain=new_plain, encrypted=encrypted)
+            db.add(new_history)
+
+        db.commit()
+        
     finally:
         db.close()
 
