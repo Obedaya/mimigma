@@ -17,23 +17,23 @@ describe('Virtual Keyboard Test', () => {
     it('should highlight the letter in the lamp panel when a keyboard button is pressed', () => {
         cy.get('body').trigger('keydown', {key: 'A'});
 
-        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('.lamp').contains('B').should('have.class', 'highlighted');
 
         cy.get('body').trigger('keyup', {key: 'A'});
 
-        cy.get('.lamp').contains('S').should('not.have.class', 'highlighted');
+        cy.get('.lamp').contains('B').should('not.have.class', 'highlighted');
     });
 
     it('should highlight a the right letter in the lamp panel when a keyboard button is pressed twice', () => {
         cy.get('body').trigger('keydown', {key: 'A'});
-        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('.lamp').contains('B').should('have.class', 'highlighted');
         cy.get('body').trigger('keyup', {key: 'A'});
-        cy.get('.lamp').contains('S').should('not.have.class', 'highlighted');
+        cy.get('.lamp').contains('B').should('not.have.class', 'highlighted');
 
         cy.get('body').trigger('keydown', {key: 'A'});
-        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('.lamp').contains('D').should('have.class', 'highlighted');
         cy.get('body').trigger('keyup', {key: 'A'});
-        cy.get('.lamp').contains('S').should('not.have.class', 'highlighted');
+        cy.get('.lamp').contains('D').should('not.have.class', 'highlighted');
     });
 
     it('should rotate the rotor when a keyboard button is pressed', () => {

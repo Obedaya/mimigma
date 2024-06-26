@@ -141,9 +141,7 @@ describe('Settings', () => {
         // Change rotors to 'IV' for all 5 positions
         for (let i = 1; i < 6; i++) {
             cy.get(`button[id=DropdownRotor${i}]`).click();
-            cy.wait(500);
             cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('IV').click();
-            cy.wait(500);
         }
 
         // Change initial positions to 'B' for all 5 positions
@@ -251,16 +249,19 @@ describe('Settings', () => {
         cy.get('button[id=DropdownReflector]').click();
         cy.get('.dropdown-reflector').contains('UKW_A').click();
         cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
 
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.wait(100);
         cy.get('.lamp').contains('S').should('have.class', 'highlighted');
         cy.get('body').trigger('keyup', {key: 'A'});
 
+        cy.get('div[id="settings-button"]').click();
         cy.get('select[id=enigmavariants]').select('Enigma M3');
         cy.get('button[id=DropdownRotor3]').click();
         cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('VIII').click();
         cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
 
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.wait(100);
@@ -270,6 +271,7 @@ describe('Settings', () => {
         cy.get('div[id="settings-button"]').click();
         cy.get('select[id=enigmavariants]').select('Enigma Norway');
         cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
 
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.get('.lamp').contains('Q').should('have.class', 'highlighted');
