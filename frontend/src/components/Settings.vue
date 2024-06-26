@@ -221,7 +221,7 @@
           this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3' };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V'];
           this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C' };
-          this.selectedReflectorOption = "UKW_A";
+          this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C'];
           this.resetRotorHeaders();
           this.changeRotorCount();
