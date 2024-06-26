@@ -60,7 +60,8 @@ frontend_scan:
   stage: scan
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:dev2'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:$CI_COMMIT_REF_NAME'
+    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
@@ -69,7 +70,8 @@ backend_scan:
   stage: scan
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:$CI_COMMIT_REF_NAME'
+    CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
