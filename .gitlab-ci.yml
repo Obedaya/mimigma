@@ -32,6 +32,18 @@ build_backend:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
+# Trivy Scan mit defauls
+container_scanning:
+  stage: scan
+  variables:
+    SECURE_LOG_LEVEL: 'debug'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend'
+    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
+    GIT_STRATEGY: 'fetch'
+  script:
+    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
+
+
 e2e-test:
   stage: test
   image: docker:26.0.1-dind  # Use the dind image for running Docker commands
@@ -54,15 +66,6 @@ unit-test:
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
-
-# Trivy Scan mit defauls
-container_scanning:
-  stage: scan
-  variables:
-    SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend'
-    CS_DOCKERFILE_PATH: './frontend/Dockerfile'
-    GIT_STRATEGY: 'fetch'
 
 # Trivy Scans
 # frontend_scan:
