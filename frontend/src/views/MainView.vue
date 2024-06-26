@@ -30,9 +30,9 @@
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div style="height: 412px;" class="overflow-scroll border border-white">
+        <div style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; " class="overflow-scroll border border-white">
           <!--<History :current_key="currentKey" />-->
-          <History ref="history"/>
+          <History  ref="history"/>
         </div>
       </div>
     </div>
