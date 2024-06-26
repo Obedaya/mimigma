@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"status": "ok"}
 
 @router.post("/reset")
 def reset(user_id: int):
@@ -36,5 +36,4 @@ def reset(user_id: int):
         raise HTTPException(status_code=400, detail=str(e))
     finally:
         db.close()
-
 
