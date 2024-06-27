@@ -32,8 +32,8 @@
       <div class="col">
         <!-- HISTORY-->
         <div
-          style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; "
-          class="overflow-scroll border border-white">
+          style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important;"
+          class="border border-white">
           <!--<History :current_key="currentKey" />-->
           <History ref="history" />
         </div>
@@ -48,8 +48,11 @@
         <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard" />
 
       </div>
-      <div class="col">
-      </div>
+        <div style="word-wrap: break-word; overflow: auto; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important;" class="col-3 border border-white">
+          <div>
+          <Output ref="output"/>
+            </div>
+        </div>
     </div>
   </div>
 
@@ -62,6 +65,7 @@
   import Usersettings from '../components/Usersettings.vue';
   import Settings from '../components/Settings.vue';
   import History from '../components/History.vue';
+  import Output from '../components/Output.vue';
 
   export default {
     data() {
@@ -83,7 +87,8 @@
       Rotorpanel,
       Usersettings,
       Settings,
-      History
+      History,
+      Output
     },
     methods: {
       update(key) {
@@ -91,6 +96,7 @@
         this.currentKey = key;
         this.$refs.rotorPanel.updateRotorsFromBackend();
         this.$refs.history.getHistory();
+        this.$refs.output.getHistory();
       },
 
       rotorNumber(count) {
