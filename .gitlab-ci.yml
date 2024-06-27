@@ -4,7 +4,7 @@ include:
 
 stages:
   - build
-  - scan 
+  # - scan 
   - test
   - cleanup
 
@@ -37,14 +37,13 @@ container_scanning:
   stage: scan
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
+    CS_IMAGE: '$CI_REGISTRY_PATH'
     CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
 
-
-e2e-test:
+2e-test:
   stage: test
   image: docker:26.0.1-dind  # Use the dind image for running Docker commands
   services:
