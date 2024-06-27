@@ -65,7 +65,10 @@ frontend_scan:
     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:dev2'
   script:
     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
-    - trivy image $CS_IMAGE
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
 
 2e-test:
   stage: test
