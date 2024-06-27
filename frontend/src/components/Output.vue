@@ -39,7 +39,10 @@
     updated() {
       this.getHistory();
     },
-    mounted() {
+    async mounted() {
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      this.getHistory();
+      await delay(6969);
       this.getHistory();
     },
   };

@@ -38,8 +38,11 @@ export default {
   updated() {
     this.getHistory();
   },
-  mounted() {
-    this.getHistory();
+  async mounted() {
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+  this.getHistory();
+  await delay(6969);
+  this.getHistory();
   },
 };
 </script>
