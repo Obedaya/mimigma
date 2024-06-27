@@ -1,9 +1,5 @@
 FROM python:3.9.19-alpine3.20
 
-## Section to remove CVEs ##
-RUN pip install --upgrade pip setuptools
-#########
-
 WORKDIR /code
 
 # Install build dependencies
