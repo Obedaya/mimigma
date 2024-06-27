@@ -1,43 +1,46 @@
 <template>
   <section>
     <div id="output">
-      <div v-html="output"></div>
+      <div v-html="output" style="font-size: 90%;"></div>
       <!--<div :key="output"> {{ output }}</div>-->
     </div>
   </section>
 </template>
 
 <script>
-import axios from "axios";
+  import axios from "axios";
 
-export default {
-  name: "History",
-  data() {
-    return {
-      output: 'Backend not yet connected, please wait...',
-    };
-  },
-  methods: {
-    // Fetch the history from the backend
-    getHistory() {
-      axios.get("/history")
-        .then(response => {
-          console.log("Received data from backend: ", response.data);
-          const { plain, encrypted } = response.data;
-          let combinedOutput = "";
-          combinedOutput += encrypted;
-          this.output = combinedOutput;
-        })
-        .catch(error => {
-          console.error("Error while fetching data: ", error);
-        });
-    }
-  },
-  updated() {
-    this.getHistory();
-  },
-  mounted() {
-    this.getHistory();
-  },
-};
+  export default {
+    name: "History",
+    data() {
+      return {
+        output: 'Backend not yet connected, please wait...',
+      };
+    },
+    methods: {
+      // Fetch the history from the backend
+      getHistory() {
+        axios.get("/history")
+          .then(response => {
+            console.log("Received data from backend: ", response.data);
+            const {
+              plain,
+              encrypted
+            } = response.data;
+            let combinedOutput = "";
+            combinedOutput += encrypted;
+            this.output = combinedOutput;
+          })
+          .catch(error => {
+            console.error("Error while fetching data: ", error);
+          });
+      }
+    },
+    updated() {
+      this.getHistory();
+    },
+    mounted() {
+      this.getHistory();
+    },
+  };
 </script>

@@ -48,11 +48,13 @@
         <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard" />
 
       </div>
-        <div style="word-wrap: break-word; overflow: auto; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important;" class="col-3 border border-white">
-          <div>
-          <Output ref="output"/>
-            </div>
+      <div class="col-3" style="padding: 1rem;">
+
+        <div style="word-wrap: break-word; overflow: auto; overflow-anchor: auto !important;"
+          class="border border-white">
+          <Output ref="output" />
         </div>
+      </div>
     </div>
   </div>
 
