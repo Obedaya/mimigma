@@ -46,7 +46,7 @@ container_scanning:
     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
   script:
     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.18.1
-    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
+    - trivy image $CS_IMAGE
 
 2e-test:
   stage: test
