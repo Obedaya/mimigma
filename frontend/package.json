@@ -30,7 +30,8 @@
     "prettier": "^3.2.5",
     "start-server-and-test": "^2.0.3",
     "vite": "^5.2.8",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "npm-force-resolutions": "0.0.7"
   },
    "resolutions": {
     "ws": "8.17.1",
