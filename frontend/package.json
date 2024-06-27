@@ -35,6 +35,6 @@
   },
    "resolutions": {
     "ws": "8.17.1",
-    "esbuild": "latest"
+    "esbuild": "0.21.5"
   }
 }
