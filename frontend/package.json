@@ -31,5 +31,9 @@
     "start-server-and-test": "^2.0.3",
     "vite": "^5.2.8",
     "vitest": "^1.4.0"
+  },
+   "resolutions": {
+    "ws": "8.17.1",
+    "esbuild": "latest"
   }
 }
