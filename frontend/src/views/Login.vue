@@ -150,7 +150,7 @@
     border: 1px solid var(--color-border);
     border-radius: 5px;
     background-color: var(--color-background);
-    color: #ffffff;
+    color: var(--color-highlighted);
     width: -moz-available;
     /* WebKit-based browsers will ignore this. */
     width: -webkit-fill-available;

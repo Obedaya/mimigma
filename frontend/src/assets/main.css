@@ -57,9 +57,9 @@ section {
 }
 
 .icons {
-    filter: invert(var(--filter-variable));
+  filter: invert(var(--filter-variable));
 
-  
+
   width: 50%;
   cursor: pointer;
   margin-left: 25%;
