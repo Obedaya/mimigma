@@ -469,7 +469,8 @@
               }
 
               // Directly emit update events or update components
-              this.$emit('update-rotors'); // Example emit for rotor update
+              // this.$emit('update-rotors'); // Example emit for rotor update
+              this.sendSettingsToBackend();
 
               console.log("Loaded user settings: ", data);
             } else {
