@@ -14,7 +14,7 @@ export default {
   name: "History",
   data() {
     return {
-      output: 'Backend not yet connected, please wait...',
+      output: '',
     };
   },
   methods: {
