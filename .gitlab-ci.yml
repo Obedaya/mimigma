@@ -1,5 +1,9 @@
+variables:
+  CS_DEFAULT_BRANCH: "dev2"
+  CS_DEFAULT_BRANCH_IMAGE: "registry.mygit.th-deg.de/mimigma/mimigma/backend:$CS_DEFAULT_BRANCH"
+
 include:
-  - template: Jobs/Container-Scanning.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
   - template: Jobs/SAST.gitlab-ci.yml
 
 stages:
@@ -32,16 +36,15 @@ build_backend:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
-# Trivy Scan mit defauls
+# Trivy Scan with defaults
 container_scanning:
   stage: scan
+  # image: aquasec/trivy:latest
   variables:
     SECURE_LOG_LEVEL: 'debug'
-    CS_IMAGE: '$CI_REGISTRY_PATH'
-    CS_DOCKERFILE_PATH: './backend/Dockerfile'
     GIT_STRATEGY: 'fetch'
   script:
-    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_DEFAULT_BRANCH_IMAGE
 
 2e-test:
   stage: test
