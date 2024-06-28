@@ -350,7 +350,8 @@
         console.log(`Selected ring position for rotor ${index}: ${letter}`);
       },
       selectReflectorOption(index, reflector) {
-        this.selectedReflectorOption[index] = reflector;
+        //this.selectedReflectorOption[index] = reflector;
+        this.selectedReflectorOption = reflector;
         console.log(`Selected reflector option: ${reflector}`);
       },
       sendSettingsToBackend() {
