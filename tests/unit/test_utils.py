@@ -1,5 +1,5 @@
 import pytest
-from backend.app.utils import *
+from app.utils import *
 import hashlib
 import json
 from unittest.mock import mock_open, patch

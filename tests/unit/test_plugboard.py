@@ -1,5 +1,5 @@
 import pytest
-from backend.app.enigma.plugboard import Plugboard
+from app.enigma.plugboard import Plugboard
 
 @pytest.fixture
 def input_plugs():

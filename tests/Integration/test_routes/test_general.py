@@ -1,13 +1,13 @@
-from backend.app.crud import create_or_update_rotor_settings, create_or_update_reflector_settings
-from backend.app.schemas import RotorSettingCreate, ReflectorSettingCreate
-from backend.app.database import check_db_connection, engine, get_db
-from backend.app.init_db import init_db
-from backend.app.models import RotorSettings, ReflectorSettings
+from app.crud import create_or_update_rotor_settings, create_or_update_reflector_settings
+from app.schemas import RotorSettingCreate, ReflectorSettingCreate
+from app.database import check_db_connection, engine, get_db, SessionLocal
+from app.init_db import init_db
+from app.models import RotorSettings, ReflectorSettings
 import requests
 import pytest
 
 
-BASE_URL = "http://localhost:8080"
+BASE_URL = "http://backend:9000"
 
 @pytest.fixture(scope="function")
 def db_session():
@@ -16,22 +16,23 @@ def db_session():
     get_db()
 
 def test_read_root():
-
     response = requests.get(f"{BASE_URL}/")
-    expected_response = {"Hello": "World"}
+    expected_response = {"status": "ok"}
     assert response.status_code == 200
     assert response.json() == expected_response
 
 
 def test_reset_rotor_and_reflector_settings(db_session):
     # Test: Rotor- und Reflektor-Einstellungen zurücksetzen
+    db_session = SessionLocal()
     user_id = 1  # Beispiel-Wert für user_id
+
     rotor_settings = RotorSettingCreate(
         user_id=user_id,
-        machine_type="Enigma I",
-        rotors=["I", "II", "III"],
-        rotor_positions="AAA",
-        ring_positions="AAA",
+        machine_type="Enigma M3",
+        rotors=["II", "III", "II"],
+        rotor_positions="AAB",
+        ring_positions="ABA",
         plugboard=[]
     )
     reflector_settings = ReflectorSettingCreate(
@@ -43,13 +44,12 @@ def test_reset_rotor_and_reflector_settings(db_session):
     create_or_update_rotor_settings(db_session, rotor_settings)
     create_or_update_reflector_settings(db_session, reflector_settings)
 
-    """def test_reset_http_request():
-        user_id = 1
+    user_id = 1
 
-        response = requests.get(f"{BASE_URL}/rest", json={"user_id": user_id})
-        expected_response = {"message": "Reset successful"}
-        assert response.status_code == 200
-        assert response.json() == expected_response"""
+    response = requests.post(f"{BASE_URL}/reset?user_id={user_id}")
+    expected_response = {"message": "Reset successful"}
+    assert response.status_code == 200
+    assert response.json() == expected_response
 
     # Überprüfen, ob die Daten zurückgesetzt wurden
     updated_rotor_settings = db_session.query(RotorSettings).filter_by(user_id=user_id).first()

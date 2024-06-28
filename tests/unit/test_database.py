@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from backend.app.database import check_db_connection, get_db, engine
+from app.database import check_db_connection, get_db, engine
 
 def test_check_db_connection():
     with patch("backend.app.database.engine.connect") as mock_connect:

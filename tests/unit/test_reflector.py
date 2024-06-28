@@ -1,5 +1,5 @@
 import pytest
-from backend.app.enigma.reflector import Reflector
+from app.enigma.reflector import Reflector
 
 @pytest.mark.parametrize("variant", ["UKW_A", "UKW_B", "UKW_C", "UKW_N"])
 
