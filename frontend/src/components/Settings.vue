@@ -277,7 +277,7 @@
             3: 'Rotor 3',
             4: 'Rotor 4'
           };
-          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV', 'N_V'];
           this.reflectorTitles = {
             A: 'Reflector A',
             B: 'Reflector B',
