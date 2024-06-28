@@ -1,11 +1,11 @@
-from .database import engine, check_db_connection
-from .init_db import init_db, sync_db_with_json, remove_user_from_db
+from app.database import engine, check_db_connection
+from app.init_db import init_db, sync_db_with_json, remove_user_from_db
 import pytest
 import json
 import requests
 import time
-from .add_user import add_default_test_user, delete_default_test_user
-from .config import file_path
+from app.add_user import add_default_test_user, delete_default_test_user
+from app.config import file_path
 
 def get_users():
     """Helper function to fetch users from the backend."""
