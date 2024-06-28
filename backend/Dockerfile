@@ -8,9 +8,12 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
  
 COPY ./app /code/app
 
+COPY ../tests /code/tests
+
 EXPOSE 9000
 
 ENV DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
+ENV PYTHONPATH=/code
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
 
