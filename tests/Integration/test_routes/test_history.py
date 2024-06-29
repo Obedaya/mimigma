@@ -8,7 +8,8 @@ def base_url():
     return BASE_URL
 
 def test_get_history(base_url):
-    response = requests.get(f"{base_url}/history")
+    user_id = 200
+    response = requests.get(f"{base_url}/history?user_id={user_id}")
     assert response.status_code == 200
 
     data = response.json()
@@ -16,7 +17,8 @@ def test_get_history(base_url):
     assert "encrypted" in data
 
 def test_delete_history(base_url):
-    response = requests.get(f"{base_url}/deletehistory")
+    user_id = 200
+    response = requests.get(f"{base_url}/deletehistory?user_id={user_id}")
     assert response.status_code == 200
 
     data = response.json()
