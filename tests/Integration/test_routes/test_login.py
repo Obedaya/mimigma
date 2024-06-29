@@ -29,7 +29,7 @@ def test_login_success(base_url):
 
 
 def test_login_failure(base_url):
-    response = requests.post(f"{base_url}/login?username=testuser&password=wrongpassword")
+    response = requests.post(f"{base_url}/login?username=user_test_2&password=wrongpassword")
     assert response.status_code == 401
 
     data = response.json()
