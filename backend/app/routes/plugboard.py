@@ -24,7 +24,5 @@ def update_plugboard_setting(data: PlugboardSettingCreate):
         db.refresh(existing_settings)
 
         return {"setting": "Plugboard setting updated successfully"}
-    except Exception:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
     finally:
         db.close()
