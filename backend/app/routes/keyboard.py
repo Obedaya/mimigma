@@ -7,14 +7,15 @@ from ..models import Key, History
 router = APIRouter()
 
 @router.post("/keyboard", tags=["Keyboard"])
-def post_keyboard(key: str):
+def post_keyboard(key: str, user_id: int):
     db = SessionLocal()
     try:
         db.query(Key).delete()
         db.add(Key(key=key))
         db.commit()
         
-        latest_history = db.query(History).order_by(desc(History.id)).first()
+        # latest_history = db.query(History).order_by(desc(History.id)).first()
+        latest_history = db.query(History).filter(History.user_id == user_id).first()
         if latest_history:
             new_plain = latest_history.plain + key
             encrypted = latest_history.encrypted
@@ -28,7 +29,7 @@ def post_keyboard(key: str):
         if latest_history:
             latest_history.plain = new_plain
         else:
-            new_history = History(plain=new_plain, encrypted=encrypted)
+            new_history = History(user_id=user_id, plain=new_plain, encrypted=encrypted)
             db.add(new_history)
 
         db.commit()

@@ -73,7 +73,7 @@ class RotorMachine:
 
         # Iterate through rotors in reverse order
         for i in reversed(range(len(self.rotors))):
-            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
+            shift = (self.rotor_positions[i] - self.ring_positions[i]) % 26
             rotor_method = self.get_rotor_method(self.rotors[i])
             index = (index + shift) % 26
             print(f"Letter before rotor {self.rotors[i]}: {alphabet[index]}")
@@ -90,7 +90,7 @@ class RotorMachine:
 
         # Iterate through rotors in forward order
         for i in range(len(self.rotors)):
-            shift = (self.rotor_positions[i] + self.ring_positions[i]) % 26
+            shift = (self.rotor_positions[i] - self.ring_positions[i]) % 26
             rotor_method = self.get_rotor_method(self.rotors[i])
             index = (index + shift) % 26
             print(f"Letter before rotor {self.rotors[i]}: {alphabet[index]}")
