@@ -9,15 +9,6 @@ def base_url():
     return BASE_URL
 
 
-def test_read_plugboard_setting(base_url):
-    response = requests.get(f"{base_url}/plugboard")
-    assert response.status_code == 200
-
-    data = response.json()
-    assert "message" in data
-    assert data["message"] == "Plugboard setting retrieved successfully"
-
-
 def test_update_plugboard_setting(base_url):
     payload = {
         "user_id": 1,

@@ -23,12 +23,6 @@
             "username": "admin",
             "email": "admin@example.com",
             "password": "password"
-        },
-        {
-            "name": "Test User",
-            "username": "testuser",
-            "email": "test@example.com",
-            "password": "password123"
         }
     ]
 }

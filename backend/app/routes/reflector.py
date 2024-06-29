@@ -11,15 +11,6 @@ router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
 
-@router.get("/reflector", tags=["Reflector"])
-def read_reflector_setting():
-    db = SessionLocal()
-    try:
-        # Logic to set the reflector setting
-        return {"message": "Reflector setting retrieved successfully"}
-    finally:
-        db.close()
-
 # axios.post(`/reflector?uid=${auth.currentUserID}?reflector={selectedReflectorOption}`)
 @router.post("/reflector", tags=["Reflector"])
 def update_reflector_setting(user_id: int, reflector: str):

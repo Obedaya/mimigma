@@ -7,12 +7,6 @@ BASE_URL = "http://backend:9000"
 def base_url():
     return BASE_URL
 
-def test_read_reflector_setting(base_url):
-    response = requests.get(f"{base_url}/reflector")
-    assert response.status_code == 200
-    data = response.json()
-    assert "message" in data
-    assert data["message"] == "Reflector setting retrieved successfully"
 
 def test_update_reflector_setting(base_url):
     payload = {

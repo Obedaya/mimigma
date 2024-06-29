@@ -1,39 +1,27 @@
+import pytest
+import app.routes.general as general
+from fastapi import HTTPException
 from app.crud import create_or_update_rotor_settings, create_or_update_reflector_settings
 from app.schemas import RotorSettingCreate, ReflectorSettingCreate
 from app.database import check_db_connection, engine, get_db, SessionLocal
-from app.init_db import init_db
 from app.models import RotorSettings, ReflectorSettings
-import requests
-import pytest
 
-
-BASE_URL = "http://backend:9000"
-
-@pytest.fixture(scope="function")
-def db_session():
-    check_db_connection(engine)
-    init_db()
-    get_db()
 
 def test_read_root():
-    response = requests.get(f"{BASE_URL}/")
-    expected_response = {"status": "ok"}
-    assert response.status_code == 200
-    assert response.json() == expected_response
+    assert general.read_root() == {"status": "ok"}
 
 
-def test_reset_rotor_and_reflector_settings():
-    # Test: Rotor- und Reflektor-Einstellungen zurücksetzen
+def test_reset():
     db_session = SessionLocal()
     user_id = 200
 
     rotor_settings = RotorSettingCreate(
         user_id=user_id,
         machine_type="Enigma M3",
-        rotors=["II", "III", "II"],
-        rotor_positions="AAB",
-        ring_positions="ABA",
-        plugboard=[]
+        rotors=["II", "IV", "II"],
+        rotor_positions="CFB",
+        ring_positions="GBD",
+        plugboard=[["A", "B"], ["C", "D"]]
     )
     reflector_settings = ReflectorSettingCreate(
         user_id=user_id,
@@ -44,12 +32,7 @@ def test_reset_rotor_and_reflector_settings():
     create_or_update_rotor_settings(db_session, rotor_settings)
     create_or_update_reflector_settings(db_session, reflector_settings)
 
-    user_id = 200
-
-    response = requests.post(f"{BASE_URL}/reset?user_id={user_id}")
-    expected_response = {"message": "Reset successful"}
-    assert response.status_code == 200
-    assert response.json() == expected_response
+    assert general.reset(user_id) == {"message": "Reset successful"}
 
     # Überprüfen, ob die Daten zurückgesetzt wurden
     updated_rotor_settings = db_session.query(RotorSettings).filter_by(user_id=user_id).first()
@@ -64,15 +47,4 @@ def test_reset_rotor_and_reflector_settings():
 
     assert updated_reflector_settings is not None
     assert updated_reflector_settings.reflector == "UKW_B"
-
-
-
-
-
-
-
-
-
-
-
-
+    db_session.close()

@@ -8,7 +8,7 @@ def base_url():
     return BASE_URL
 
 def test_get_encrypted_key(base_url):
-    user_id = 1
+    user_id = 200
     response = requests.get(f"{base_url}/lamp?user_id={user_id}")
     assert response.status_code == 200
 
