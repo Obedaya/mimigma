@@ -22,8 +22,8 @@ def post_keyboard(key: str):
             new_plain = key
             encrypted = ""
 
-        if len(new_plain) > 120:
-            new_plain = new_plain[-120:]
+        if len(new_plain) > 140:
+            new_plain = new_plain[-140:]
 
         if latest_history:
             latest_history.plain = new_plain
