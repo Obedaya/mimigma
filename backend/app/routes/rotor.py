@@ -26,7 +26,7 @@ def read_rotor_setting(user_id: int, db: Session = Depends(get_db)):
 """
 
 @router.post("/rotor", tags=["Rotor"])
-async def update_rotor_setting(data: RotorSettingCreate):
+def update_rotor_setting(data: RotorSettingCreate):
     db = SessionLocal()
     try:
         existing_setting = db.query(RotorSettings).filter_by(user_id=data.user_id).first()
@@ -68,7 +68,7 @@ async def update_rotor_setting(data: RotorSettingCreate):
         db.close()
 
 @router.post("/rotor/position", tags=["Rotor"])
-async def update_rotor_position(user_id: int, position: str):
+def update_rotor_position(user_id: int, position: str):
     db = SessionLocal()
     try:
         # Logic to set rotor position
@@ -78,13 +78,11 @@ async def update_rotor_position(user_id: int, position: str):
         db.commit()
         db.refresh(existing_setting)
         return {"message": "Rotor position set successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
     finally:
         db.close()
 
 @router.post("/rotor/count", tags=["Rotor"])
-async def rotor_count(count: int):
+def rotor_count(count: int):
     db = SessionLocal()
     try:
         print(f"Rotor count: {count}")
@@ -94,7 +92,7 @@ async def rotor_count(count: int):
         db.close()
 
 @router.get("/rotor/standard", tags=["Rotor"])
-async def standard_rotor(variant: str):
+def standard_rotor(variant: str):
     try:
         turnovers = {}
         if variant == "Enigma I":
@@ -108,5 +106,5 @@ async def standard_rotor(variant: str):
         else:
             raise HTTPException(status_code=400, detail="Invalid variant")
         return {"turnovers": turnovers}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+    finally:
+        pass
