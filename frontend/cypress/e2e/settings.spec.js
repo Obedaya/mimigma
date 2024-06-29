@@ -112,7 +112,7 @@ describe('Settings', () => {
     });
     it('should change the reflector, depending on the initial reflector setting', () => {
         cy.get('button[id=DropdownReflector]').click();
-        cy.get('.dropdown-item.dropdown-reflector').contains('B').click();
+        cy.get('.dropdown-item.dropdown-reflector').contains('UKW_B').click();
         cy.get('button[id=modal-submit-button]').click();
         // cy.get('button[id=modal-close-button]').click();
     });
@@ -133,70 +133,150 @@ describe('Settings', () => {
     });
 
     it('should change and then reset the enigma settings when the reset button is pressed', () => {
-      
+
         // Change the rotor count to 5
         cy.get('select[id=enigmavariants]').select('Custom Enigma');
         cy.get('input[id=rotorCount]').clear().type('5');
-      
+
         // Change rotors to 'IV' for all 5 positions
         for (let i = 1; i < 6; i++) {
-          cy.get(`button[id=DropdownRotor${i}]`).click();
-          cy.wait(500);
-          cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('IV').click();
-          cy.wait(500);
+            cy.get(`button[id=DropdownRotor${i}]`).click();
+            cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('IV').click();
         }
-      
+
         // Change initial positions to 'B' for all 5 positions
         for (let i = 1; i < 6; i++) {
-          cy.get(`button[id=DropdownPosition${i}]`).click();
-          cy.get('.initial-menu.show .dropdown-item.dropdown-initial').contains('B').click();
+            cy.get(`button[id=DropdownPosition${i}]`).click();
+            cy.get('.initial-menu.show .dropdown-item.dropdown-initial').contains('B').click();
 
         }
-      
+
         // Change ring positions to '2' for all 5 positions
         for (let i = 1; i < 6; i++) {
-          cy.get(`button[id=DropdownRing${i}]`).click();
-          cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
+            cy.get(`button[id=DropdownRing${i}]`).click();
+            cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
         }
-      
+
         // Change the reflector to 'UKW_C'
         cy.get('button[id=DropdownReflector]').click();
         cy.get('.dropdown-reflector').contains('UKW_C').click();
-      
+
         // Uncheck the plugboard
         cy.get('input[id=plugboardCheckbox]').uncheck();
-      
+
         // Save the changes
         cy.get('button[id=modal-submit-button]').click();
         cy.wait(200)
-      
+
         // Reopen the settings modal to verify changes
         cy.get('div[id="settings-button"]').click();
-      
+
         // Verify the changes were applied
         cy.get('input[id=rotorCount]').should('have.value', '5');
         cy.get('button[id=DropdownReflector]').should('contain', 'UKW_C');
-        
+
         for (let i = 1; i < 6; i++) {
-          cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'IV');
-          cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'B');
-          cy.get(`button[id=DropdownRing${i}`).should('contain', '2');
+            cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'IV');
+            cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'B');
+            cy.get(`button[id=DropdownRing${i}`).should('contain', '2');
         }
         cy.get('input[id=plugboardCheckbox]').should('not.be.checked');
-      
+
         // Click the reset button
         cy.get('button.btn-secondary').contains('Reset').click();
-      
+
         // Verify the settings were reset to defaults
         cy.get('input[id=rotorCount]').should('have.value', '3');
         cy.get('button[id=DropdownReflector]').should('contain', 'UKW_B');
         for (let i = 1; i < 3; i++) {
-          cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'I');
-          cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'A');
-          cy.get(`button[id=DropdownRing${i}`).should('contain', '1');
+            cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'I');
+            cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'A');
+            cy.get(`button[id=DropdownRing${i}`).should('contain', '1');
         }
         cy.get('input[id=plugboardCheckbox]').should('be.checked');
-      });
-      
-      
+    });
+
+    it('should change settings for every enigma variant', () => {
+        // Enigma I
+        cy.get('select[id=enigmavariants]').select('Enigma I');
+        cy.get('button[id=DropdownRotor3]').click();
+        let rotorVariantsM1 = ['I', 'II', 'III', 'IV', 'V'];
+        let reflectorVariantsM1 = ['UKW_A', 'UKW_B', 'UKW_C'];
+        for (let i = 0; i < 5; i++) {
+            cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains(rotorVariantsM1[i]);
+        }
+        for (let i = 0; i < 3; i++) {
+            cy.get('.dropdown-item.dropdown-reflector').contains(reflectorVariantsM1[i]);
+        }
+
+        // Enigma M3
+        cy.get('select[id=enigmavariants]').select('Enigma M3');
+        cy.get('button[id=DropdownRotor3]').click();
+        let rotorVariantsM3 = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+        let reflectorVariantsM3 = ['UKW_B', 'UKW_C'];
+        for (let i = 0; i < 8; i++) {
+            cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains(rotorVariantsM3[i]);
+        }
+        for (let i = 0; i < 2; i++) {
+            cy.get('.dropdown-item.dropdown-reflector').contains(reflectorVariantsM3[i]);
+        }
+
+        // Norway Enigma
+        cy.get('select[id=enigmavariants]').select('Enigma Norway');
+        cy.get('button[id=DropdownRotor3]').click();
+        let rotorVariantsNorway = ['I', 'II', 'III', 'IV', 'V'];
+        for (let i = 0; i < 3; i++) {
+            cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains(rotorVariantsNorway[i]);
+        }
+        cy.get('.dropdown-item.dropdown-reflector').contains('UKW_N');
+
+        // Custom Enigma
+        cy.get('select[id=enigmavariants]').select('Custom Enigma');
+        cy.get('button[id=DropdownRotor3]').click();
+        let rotorVariantsCustom = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+        let reflectorVariantsCustom = ['UKW_A', 'UKW_B', 'UKW_C', 'UKW_N'];
+        for (let i = 0; i < 8; i++) {
+            cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains(rotorVariantsCustom[i]);
+        }
+        for (let i = 0; i < 4; i++) {
+            cy.get('.dropdown-item.dropdown-reflector').contains(reflectorVariantsCustom[i]);
+        }
+        cy.get('input[id=rotorCount]').should('exist');
+    });
+
+    it('should encrypt correctly with different enigma variants', () => {
+        cy.get('select[id=enigmavariants]').select('Enigma I');
+        cy.get('button[id=DropdownReflector]').click();
+        cy.get('.dropdown-reflector').contains('UKW_A').click();
+        cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
+
+        cy.get('body').trigger('keydown', {key: 'A'});
+        cy.wait(100);
+        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'A'});
+
+        cy.get('div[id="settings-button"]').click();
+        cy.get('select[id=enigmavariants]').select('Enigma M3');
+        cy.get('button[id=DropdownRotor3]').click();
+        cy.get('.variant-menu.show .dropdown-item.dropdown-variant').contains('VIII').click();
+        cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
+
+        cy.get('body').trigger('keydown', {key: 'A'});
+        cy.wait(100);
+        cy.get('.lamp').contains('R').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'A'});
+
+        cy.get('div[id="settings-button"]').click();
+        cy.get('select[id=enigmavariants]').select('Enigma Norway');
+        cy.get('button[id=modal-submit-button]').click();
+        cy.get('button[id=modal-close-button]').click();
+
+        cy.get('body').trigger('keydown', {key: 'A'});
+        cy.get('.lamp').contains('Q').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'A'});
+    });
+
+
 });

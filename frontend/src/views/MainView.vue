@@ -9,7 +9,8 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs" ref="settings"/>
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs"
+          ref="settings" />
 
       </div>
       <div class="col-6">
@@ -22,7 +23,7 @@
     <div class="row">
       <div class="col">
         <!--Mimigma-Bild-->
-        <img class="mimigma" src="../assets/mimigma.png">
+        <img class="mimigma" @click="toggleColor" src="../assets/mimigma.png">
       </div>
       <div class="col-6">
         <Keyboard @key="update" />
@@ -30,9 +31,11 @@
       </div>
       <div class="col">
         <!-- HISTORY-->
-        <div style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important; " class="overflow-scroll border border-white">
+        <div
+          style="overflow: auto; height: 412px; display: flex; flex-direction: column-reverse; overflow-anchor: auto !important;"
+          class="border border-white">
           <!--<History :current_key="currentKey" />-->
-          <History  ref="history"/>
+          <History ref="history" />
         </div>
       </div>
     </div>
@@ -42,10 +45,15 @@
 
       </div>
       <div class="col-6">
-        <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard"/>
+        <Plugboard v-if="showPlugboard" @updatePlugboard="updatePlugboard" ref="plugboard" />
 
       </div>
-      <div class="col">
+      <div class="col-3" style="padding: 1rem;">
+
+        <div style="word-wrap: break-word; overflow: auto; overflow-anchor: auto !important;"
+          class="border border-white">
+          <Output ref="output" />
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +67,7 @@
   import Usersettings from '../components/Usersettings.vue';
   import Settings from '../components/Settings.vue';
   import History from '../components/History.vue';
+  import Output from '../components/Output.vue';
 
   export default {
     data() {
@@ -69,7 +78,7 @@
         enigmaVariant: "M3",
         rotorVariants: {},
         showPlugboard: true,
-        plugs: []
+        plugs: [],
 
       };
     },
@@ -80,7 +89,8 @@
       Rotorpanel,
       Usersettings,
       Settings,
-      History
+      History,
+      Output
     },
     methods: {
       update(key) {
@@ -88,6 +98,7 @@
         this.currentKey = key;
         this.$refs.rotorPanel.updateRotorsFromBackend();
         this.$refs.history.getHistory();
+        this.$refs.output.getHistory();
       },
 
       rotorNumber(count) {
@@ -108,7 +119,19 @@
       },
       updateRotors(rotor_positions) {
         this.$refs.rotorPanel.updateRotorsFromBackend();
+      },
+      toggleColor() {
+
+
+        // Zugriff auf das <body> Element und Toggeln des data-theme Attributs
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
+
+
+
       }
+
     }
   };
 </script>

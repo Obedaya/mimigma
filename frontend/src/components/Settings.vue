@@ -23,7 +23,8 @@
               </select>
             </div>
             <!-- Anzeige Rotorenanzahl -->
-            <div v-if="!['Enigma I', 'Enigma M3', 'Enigma Norway'].includes(enigmaVariant)"data-mdb-input-init class="form-outline">
+            <div v-if="!['Enigma I', 'Enigma M3', 'Enigma Norway'].includes(enigmaVariant)" data-mdb-input-init
+              class="form-outline">
               <label class="col-6" for="typeNumber">Rotorenanzahl</label>
               <!-- der Value Wert sollte dann durch die aktuelle Anzahl der Rotoren getauscht werden!!-->
               <input value="3" min="3" max="10" type="number" v-model="rotorCount" id="rotorCount" class="col-6"
@@ -123,11 +124,12 @@
           <div class="modal-footer">
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal"
-              class="btn btn-primary" id="modal-submit-button">Apply Changes
+            <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal" class="btn btn-primary"
+              id="modal-submit-button">Apply Changes
             </button>
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Save Config</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">Load Config</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">Load
+              Config</button>
             <input type="file" ref="fileInput" @change="loadConfig" style="display: none" />
           </div>
         </div>
@@ -197,7 +199,7 @@
           3: 'UKW_C'
         },
         selectedReflectorOption: "UKW_B",
-        
+
       };
     },
     props: {
@@ -216,39 +218,70 @@
       updateConfig(variant) {
         if (variant === 'Enigma I') {
           this.rotorCount = "3";
-          this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3' };
+          this.rotorTitles = {
+            1: 'Rotor 1',
+            2: 'Rotor 2',
+            3: 'Rotor 3'
+          };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V'];
-          this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C' };
-          this.selectedReflectorOption = "UKW_A";
+          this.reflectorTitles = {
+            A: 'Reflector A',
+            B: 'Reflector B',
+            C: 'Reflector C'
+          };
+          this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C'];
           this.resetRotorHeaders();
           this.changeRotorCount();
-          
+
         } else if (variant === 'Enigma M3') {
           this.rotorCount = "3";
-          this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3' };
+          this.rotorTitles = {
+            1: 'Rotor 1',
+            2: 'Rotor 2',
+            3: 'Rotor 3'
+          };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
-          this.reflectorTitles = { B: 'Reflector B', C: 'Reflector C' };
+          this.reflectorTitles = {
+            B: 'Reflector B',
+            C: 'Reflector C'
+          };
           this.selectedReflectorOption = "UKW_B";
           this.dropdownReflectorOptions = ['UKW_B', 'UKW_C'];
           this.resetRotorHeaders();
           this.changeRotorCount();
-          
+
         } else if (variant === 'Enigma Norway') {
           this.rotorCount = "3";
-          this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3' };
+          this.rotorTitles = {
+            1: 'Rotor 1',
+            2: 'Rotor 2',
+            3: 'Rotor 3'
+          };
           this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V'];
-          this.reflectorTitles = { N: 'Reflector N'};
+          this.reflectorTitles = {
+            N: 'Reflector N'
+          };
           this.selectedReflectorOption = "UKW_N";
           this.dropdownReflectorOptions = ['UKW_N'];
           this.resetRotorHeaders();
           this.changeRotorCount();
-          
+
         } else if (variant === 'Custom Enigma') {
           //this.rotorCount = "3";
-          this.rotorTitles = { 1: 'Rotor 1', 2: 'Rotor 2', 3: 'Rotor 3', 4: 'Rotor 4' };
-          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
-          this.reflectorTitles = { A: 'Reflector A', B: 'Reflector B', C: 'Reflector C', N: 'Reflector N' };
+          this.rotorTitles = {
+            1: 'Rotor 1',
+            2: 'Rotor 2',
+            3: 'Rotor 3',
+            4: 'Rotor 4'
+          };
+          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV', 'N_V'];
+          this.reflectorTitles = {
+            A: 'Reflector A',
+            B: 'Reflector B',
+            C: 'Reflector C',
+            N: 'Reflector N'
+          };
           this.selectedReflectorOption = "UKW_A";
           this.dropdownReflectorOptions = ['UKW_A', 'UKW_B', 'UKW_C', 'UKW_N'];
           this.changeRotorCount();
@@ -380,34 +413,37 @@
         } else {
           console.error('Ungültige Anzahl von Rotoren.');
         }
+<<<<<<< HEAD
         console.log("Changed rotor count to:", this.rotorCount);
+=======
+>>>>>>> 8ef63648c42ac59a7d0d8dec212e576f9cb8716e
       },
 
-    resetSettings() {
-      //this.enigmaVariant = "Enigma I";
-      this.rotorCount = 3;
-      this.showPlugboard = true;
-      this.RotorTitle = {
-        1: 'Rotor 1',
-        2: 'Rotor 2',
-        3: 'Rotor 3'
-      };
-      this.rotorHeaders = {
-        1: 'I',
-        2: 'II',
-        3: 'III'
-      };
-      this.selectedInitialPositions = {
-        1: 'A',
-        2: 'A',
-        3: 'A'
-      };
-      this.selectedRingPositions = {
-        1: '1',
-        2: '1',
-        3: '1'
-      };
-      this.selectedReflectorOption = "UKW_B";
+      resetSettings() {
+        //this.enigmaVariant = "Enigma I";
+        this.rotorCount = 3;
+        this.showPlugboard = true;
+        this.RotorTitle = {
+          1: 'Rotor 1',
+          2: 'Rotor 2',
+          3: 'Rotor 3'
+        };
+        this.rotorHeaders = {
+          1: 'I',
+          2: 'II',
+          3: 'III'
+        };
+        this.selectedInitialPositions = {
+          1: 'A',
+          2: 'A',
+          3: 'A'
+        };
+        this.selectedRingPositions = {
+          1: '1',
+          2: '1',
+          3: '1'
+        };
+        this.selectedReflectorOption = "UKW_B";
 
         // Send reset request to backend
         const auth = useAuthStore();
@@ -418,6 +454,7 @@
           .catch(error => {
             console.error("Error while resetting settings: ", error);
           });
+<<<<<<< HEAD
 
         console.log("Reset settings to default.");
       },
@@ -437,17 +474,36 @@
         2: '1',
         3: '1'
       };
+=======
+      },
+      resetRotorHeaders() {
+        this.rotorHeaders = {
+          1: 'I',
+          2: 'II',
+          3: 'III'
+        };
+        this.selectedInitialPositions = {
+          1: 'A',
+          2: 'A',
+          3: 'A'
+        };
+        this.selectedRingPositions = {
+          1: '1',
+          2: '1',
+          3: '1'
+        };
+>>>>>>> 8ef63648c42ac59a7d0d8dec212e576f9cb8716e
 
-      // Send reset request to backend
-      const auth = useAuthStore();
-      axios.post(`/reset?user_id=${auth.currentUserID}`)
+        // Send reset request to backend
+        const auth = useAuthStore();
+        axios.post(`/reset?user_id=${auth.currentUserID}`)
           .then(response => {
             console.log("Rotors headers Settings reset on backend: ", response.data);
           })
           .catch(error => {
             console.error("Error while resetting Rotors headers settings: ", error);
           });
-    },
+      },
       updateEnigmaVariant() {
         console.log("Selected Enigma Variant: ", this.tempEnigmaVariant);
         // Additional logic to fetch the contents of the variant from the backend if needed.
@@ -493,9 +549,11 @@
           selectedReflectorOption: this.selectedReflectorOption
         };
         const configJSON = JSON.stringify(config);
-        const blob = new Blob([configJSON], { type: 'application/json' });
+        const blob = new Blob([configJSON], {
+          type: 'application/json'
+        });
         const url = URL.createObjectURL(blob);
-        
+
         // Prompt the user for a filename
         const filename = prompt("Enter the filename to save the configuration:", "enigma_config.json");
         if (!filename) {
@@ -503,7 +561,7 @@
           console.error('Save cancelled or invalid filename');
           return;
         }
-        
+
         const link = document.createElement('a');
         link.href = url;
         link.download = filename;
@@ -514,45 +572,47 @@
         this.$refs.fileInput.click();
       },
       loadConfig(event) {
-      const file = event.target.files[0];
-      if (!file) {
-        console.error('No file selected');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const config = JSON.parse(e.target.result);
-          console.log('Loaded configuration:', config);
-          if (
-            config.enigmaVariant &&
-            config.rotorHeaders &&
-            config.selectedInitialPositions &&
-            config.selectedRingPositions &&
-            config.selectedReflectorOption
-          ) {
-            this.enigmaVariant = config.enigmaVariant;
-            this.rotorCount = config.rotorCount;
-            this.rotorHeaders = Object.assign({}, this.rotorHeaders, config.rotorHeaders);
-            this.selectedInitialPositions = Object.assign({}, this.selectedInitialPositions, config.selectedInitialPositions);
-            this.selectedRingPositions = Object.assign({}, this.selectedRingPositions, config.selectedRingPositions);
-            this.selectedReflectorOption = config.selectedReflectorOption;
-
-            // Call changeRotorCount to update the view
-            this.changeRotorCount();
-
-          } else {
-            console.error('Invalid configuration file');
-          }
-        } catch (error) {
-          console.error('Error parsing configuration file', error);
+        const file = event.target.files[0];
+        if (!file) {
+          console.error('No file selected');
+          return;
         }
-        // Reset file input value
-        event.target.value = '';
-        //this.changeRotorCount();
-      };
-      reader.readAsText(file);
-    }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const config = JSON.parse(e.target.result);
+            console.log('Loaded configuration:', config);
+            if (
+              config.enigmaVariant &&
+              config.rotorHeaders &&
+              config.selectedInitialPositions &&
+              config.selectedRingPositions &&
+              config.selectedReflectorOption
+            ) {
+              this.enigmaVariant = config.enigmaVariant;
+              this.rotorCount = config.rotorCount;
+              this.rotorHeaders = Object.assign({}, this.rotorHeaders, config.rotorHeaders);
+              this.selectedInitialPositions = Object.assign({}, this.selectedInitialPositions, config
+                .selectedInitialPositions);
+              this.selectedRingPositions = Object.assign({}, this.selectedRingPositions, config
+              .selectedRingPositions);
+              this.selectedReflectorOption = config.selectedReflectorOption;
+
+              // Call changeRotorCount to update the view
+              this.changeRotorCount();
+
+            } else {
+              console.error('Invalid configuration file');
+            }
+          } catch (error) {
+            console.error('Error parsing configuration file', error);
+          }
+          // Reset file input value
+          event.target.value = '';
+          //this.changeRotorCount();
+        };
+        reader.readAsText(file);
+      }
     },
     created() {
       this.updateConfig(this.enigmaVariant);

@@ -13,3 +13,7 @@ EXPOSE 9000
 ENV DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
+
+# Healthcheck
+
+HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1

@@ -31,7 +31,8 @@ def get_encrypted_key(user_id: int):
         encrypted_key = enigma_machine.encrypt_message(current_key_value.upper())
         print(f"Encrypted key: {encrypted_key}")
         
-        latest_history = db.query(History).order_by(desc(History.id)).first()
+        # latest_history = db.query(History).order_by(desc(History.id)).first()
+        latest_history = db.query(History).filter(History.user_id == user_id).first()
         if latest_history:
             new_encrypted = latest_history.encrypted + encrypted_key
             plain = latest_history.plain
@@ -45,7 +46,7 @@ def get_encrypted_key(user_id: int):
         if latest_history:
             latest_history.encrypted = new_encrypted
         else:
-            new_history = History(plain=plain, encrypted=new_encrypted)
+            new_history = History(user_id=user_id, plain=plain, encrypted=new_encrypted)
             db.add(new_history)
 
         
