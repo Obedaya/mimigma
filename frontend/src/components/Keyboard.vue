@@ -88,7 +88,9 @@
         this.resetHighlight();
       },
       async sendKeyToBackend(key) {
-        axios.post(`/keyboard?key=${key}`)
+      const auth = useAuthStore();
+      const user_id = auth.user.id;
+        axios.post(`/keyboard?key=${key}&user_id=${user_id}`)
           .then(response => {
             console.log("Received data from backend: ", response.data);
             this.getEncryptedKey(key);

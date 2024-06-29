@@ -9,6 +9,10 @@
 
 <script>
 import axios from "axios";
+import {
+    useAuthStore
+  } from "@/stores/auth.js";
+
 
 export default {
   name: "History",
@@ -20,7 +24,9 @@ export default {
   methods: {
     // Fetch the history from the backend
     getHistory() {
-      axios.get("/history")
+      const auth = useAuthStore();
+      const user_id = auth.user.id;
+      axios.get(`/history?user_id=${user_id}`)
         .then(response => {
           console.log("Received data from backend: ", response.data);
           const { plain, encrypted } = response.data;
