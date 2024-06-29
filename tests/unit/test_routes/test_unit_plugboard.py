@@ -50,3 +50,5 @@ def test_update_plugboard_setting():
     db_session.refresh(current_settings)
 
     assert current_settings.plugboard == [["A", "B"]]
+
+    db_session.close()

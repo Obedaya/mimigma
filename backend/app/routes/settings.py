@@ -23,8 +23,5 @@ def get_current_settings(user_id: int):
         print(f"Machine type: {machine_type}, Rotors: {rotors}, Rotor positions: {rotor_positions}, Ring positions: {ring_positions}, Reflector type: {reflector_type}, Plugboard: {plugboard}")
 
         return {"machine_type": machine_type, "rotors": rotors, "rotor_positions": rotor_positions, "ring_positions": ring_positions, "reflector_type": reflector_type, "plugboard": plugboard}
-    except Exception as e:
-        print(f"Exception: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
     finally:
         db.close()
