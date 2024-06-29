@@ -8,7 +8,7 @@ from app.add_user import add_default_test_user, delete_default_test_user
 from app.config import file_path
 
 def get_users():
-    """Helper function to fetch users from the backend."""
+    #Helper function to fetch users from the backend
     try:
         response = requests.get("http://backend:9000/users")
         print("Users from backend:", response.json())
@@ -16,7 +16,7 @@ def get_users():
         print(f"Error fetching users from backend: {e}")
 
 def read_users_from_json():
-    """Helper function to read users from the JSON file."""
+    #Helper function to read users from the JSON file
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)

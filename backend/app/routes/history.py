@@ -19,7 +19,7 @@ def get_history():
 
 @router.get("/deletehistory", tags=["History"])
 def delete_history():
-    db = SessionLocal();
+    db = SessionLocal()
     try:
         latest_history = db.query(History).order_by(desc(History.id)).first()
         if latest_history:

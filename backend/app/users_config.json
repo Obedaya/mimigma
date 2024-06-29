@@ -25,10 +25,10 @@
             "password": "password"
         },
         {
-            "name": "Test User",
-            "username": "testuser",
-            "email": "test@example.com",
-            "password": "password123"
+            "name": "user",
+            "username": "user_test_2",
+            "email": "user_test_2@example.com",
+            "password": "password100"
         }
     ]
 }
