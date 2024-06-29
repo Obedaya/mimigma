@@ -413,10 +413,7 @@
         } else {
           console.error('Ungültige Anzahl von Rotoren.');
         }
-<<<<<<< HEAD
         console.log("Changed rotor count to:", this.rotorCount);
-=======
->>>>>>> 8ef63648c42ac59a7d0d8dec212e576f9cb8716e
       },
 
       resetSettings() {
@@ -454,27 +451,6 @@
           .catch(error => {
             console.error("Error while resetting settings: ", error);
           });
-<<<<<<< HEAD
-
-        console.log("Reset settings to default.");
-      },
-    resetRotorHeaders() {
-      this.rotorHeaders = {
-        1: 'I',
-        2: 'II',
-        3: 'III'
-      };
-      this.selectedInitialPositions = {
-        1: 'A',
-        2: 'A',
-        3: 'A'
-      };
-      this.selectedRingPositions = {
-        1: '1',
-        2: '1',
-        3: '1'
-      };
-=======
       },
       resetRotorHeaders() {
         this.rotorHeaders = {
@@ -492,7 +468,6 @@
           2: '1',
           3: '1'
         };
->>>>>>> 8ef63648c42ac59a7d0d8dec212e576f9cb8716e
 
         // Send reset request to backend
         const auth = useAuthStore();
