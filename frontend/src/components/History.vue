@@ -24,6 +24,7 @@ export default {
   methods: {
     // Fetch the history from the backend
     getHistory() {
+      console.log("Fetching history...");
       const auth = useAuthStore();
       const user_id = auth.user.id;
       axios.get(`/history?user_id=${user_id}`)
@@ -35,6 +36,7 @@ export default {
             combinedOutput += `${plain[i]} : ${encrypted[i]}<br>`;
           }
           this.output = combinedOutput;
+          console.log("History updated.");
         })
         .catch(error => {
           console.error("Error while fetching data: ", error);
@@ -42,9 +44,11 @@ export default {
     }
   },
   updated() {
+    console.log("History component updated.");
     this.getHistory();
   },
   async mounted() {
+  console.log("History component mounted.");
   const delay = ms => new Promise(res => setTimeout(res, ms));
   this.getHistory();
   await delay(6969);
