@@ -39,15 +39,17 @@ def get_current_settings(user_id: int, db: Session = Depends(get_db)):
         rotor_positions = rotor_settings.rotor_positions
         ring_positions = rotor_settings.ring_positions
         reflector_type = reflector_settings.reflector
+        plugboard = rotor_settings.plugboard
 
-        print(f"Machine type: {machine_type}, Rotors: {rotors}, Rotor positions: {rotor_positions}, Ring positions: {ring_positions}, Reflector type: {reflector_type}")
+        print(f"Machine type: {machine_type}, Rotors: {rotors}, Rotor positions: {rotor_positions}, Ring positions: {ring_positions}, Reflector type: {reflector_type}, Plugboard: {plugboard}")
 
         return {
             "machine_type": machine_type,
             "rotors": rotors,
             "rotor_positions": rotor_positions,
             "ring_positions": ring_positions,
-            "reflector_type": reflector_type
+            "reflector_type": reflector_type,
+            "plugboard": plugboard
         }
     except Exception as e:
         print(f"Exception: {str(e)}")

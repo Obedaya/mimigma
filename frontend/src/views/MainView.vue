@@ -9,7 +9,7 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" @update-output="updateOutput" :plugs="plugs"
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" @update-output="updateOutput" @update-plugs="updatePlugs" :plugs="plugs"
           ref="settings" />
 
       </div>
@@ -140,6 +140,11 @@
         this.$refs.output.getHistory();
         this.plugs = [];
         this.$refs.plugboard.updatePlugboardInDB(true);
+      },
+      updatePlugs(plugs) {
+        console.log("Updating plugs:", plugs);
+        this.plugs = plugs;
+        this.$refs.plugboard.updatePlugs(plugs);
       }
     }
   };

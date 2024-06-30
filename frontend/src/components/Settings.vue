@@ -522,6 +522,7 @@
                 // Convert ring_positions correctly and update frontend
                 this.selectedRingPositions[i + 1] = String(data.ring_positions.charCodeAt(i) - 64);
               }
+              this.$emit('update-plugs', data.plugboard);
 
               // Directly emit update events or update components
               // this.$emit('update-rotors'); // Example emit for rotor update
