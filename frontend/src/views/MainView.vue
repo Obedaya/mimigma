@@ -9,7 +9,7 @@
 
         <!-- Test-->
         <!-- Enigma Settings Icon + Modal-->
-        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" :plugs="plugs"
+        <Settings @count="rotorNumber" @toggle-plugboard="togglePlugboard" @update-rotors="updateRotors" @update-output="updateOutput" @update-plugs="updatePlugs" :plugs="plugs"
           ref="settings" />
 
       </div>
@@ -95,6 +95,7 @@
     methods: {
       update(key) {
         // Methode die aufgerufen wird, wenn ein Key gedrückt wird
+        console.log("Key pressed:", key);
         this.currentKey = key;
         this.$refs.rotorPanel.updateRotorsFromBackend();
         this.$refs.history.getHistory();
@@ -102,10 +103,12 @@
       },
 
       rotorNumber(count) {
+        console.log("Rotor count updated:", count);
         this.newNumber = count;
       },
 
       togglePlugboard(show) {
+        console.log("Toggle plugboard:", show);
         this.showPlugboard = show;
         if (!show) {
 
@@ -114,10 +117,12 @@
         }
       },
       updatePlugboard(plugs) {
+        console.log("Plugboard updated:", plugs);
         this.plugs = plugs;
         this.$refs.plugboard.updatePlugboardInDB();
       },
       updateRotors(rotor_positions) {
+        console.log("Update rotors:", rotor_positions);
         this.$refs.rotorPanel.updateRotorsFromBackend();
       },
       toggleColor() {
@@ -127,11 +132,20 @@
         const body = document.body;
         const currentTheme = body.getAttribute('data-theme');
         body.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
-
-
-
+        console.log("Toggled color theme to:", currentTheme === 'light' ? 'dark' : 'light');
+      },
+      updateOutput() {
+        console.log("Updating output...");
+        this.$refs.history.getHistory();
+        this.$refs.output.getHistory();
+        this.plugs = [];
+        this.$refs.plugboard.updatePlugboardInDB(true);
+      },
+      updatePlugs(plugs) {
+        console.log("Updating plugs:", plugs);
+        this.plugs = plugs;
+        this.$refs.plugboard.updatePlugs(plugs);
       }
-
     }
   };
 </script>

@@ -120,6 +120,13 @@
           .catch(error => {
             console.error("Error while fetching data: ", error);
           });
+      },
+      updatePlugs(plugs) {
+        for (let i = 0; i < plugs.length; i++) {
+          for (let j = 0; j < plugs[i].length; j++) {
+            this.handlePlugClick(plugs[i][j]);
+          }
+        }
       }
     },
   };

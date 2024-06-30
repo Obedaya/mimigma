@@ -48,7 +48,7 @@
               <thead>
                 <tr>
                   <div class="dropdown">
-                    Reflector
+                    Reflektor
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="DropdownReflector"
                       data-bs-toggle="dropdown">
                       {{ selectedReflectorOption }}
@@ -123,13 +123,14 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Konfiguration
+              speichern</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">
+              Konfiguration laden</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
             <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal" class="btn btn-primary"
-              id="modal-submit-button">Apply Changes
+              id="modal-submit-button">Speichern
             </button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Save Config</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">Load
-              Config</button>
             <input type="file" ref="fileInput" @change="loadConfig" style="display: none" />
           </div>
         </div>
@@ -159,13 +160,12 @@
           1: 'Rotor 1',
           2: 'Rotor 2',
           3: 'Rotor 3'
-        }, //hier kann die Titel für Rotoren erweitert werden
-
+        },
         rotorHeaders: {
           1: 'I',
           2: 'II',
           3: 'III'
-        }, //Titel der Dropdowns for Rotoren. hier kann man die Spalten der Rotoren erweitern
+        },
         dropdownRotorOptions: {
           1: 'I',
           2: 'II',
@@ -181,20 +181,19 @@
           1: 'A',
           2: 'A',
           3: 'A'
-        }, // Hier werden die ausgewählten AusgangsPositionen gespeichert
+        },
         selectedRingPositions: {
           1: '1',
           2: '1',
           3: '1'
-        }, // Hier werden die ausgewählten RingPositionen gespeichert
+        },
 
         ReflectorTitle: {
           'A': 'Reflector A',
           'B': 'Reflector B',
           'C': 'Reflector C',
           'N': 'Reflector N'
-        }, // hier kann die Titel für Rotoren erweitert werden
-
+        },
         dropdownReflectorOptions: {
           1: 'UKW_A',
           2: 'UKW_B',
@@ -207,7 +206,7 @@
     props: {
       plugs: Array,
     },
-    //Watcher, ob das Plugboard angezeigt wird oder nicht
+    // Watcher, ob das Plugboard angezeigt wird oder nicht
     watch: {
       showPlugboard(newVal) {
         this.$emit('toggle-plugboard', newVal);
@@ -277,7 +276,9 @@
             3: 'Rotor 3',
             4: 'Rotor 4'
           };
-          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV', 'N_V'];
+          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV',
+            'N_V'
+          ];
           this.reflectorTitles = {
             A: 'Reflector A',
             B: 'Reflector B',
@@ -292,17 +293,21 @@
       sendRotorCountToBackend(count) {
         axios.post(`/rotor/count?count=${count}`)
           .then(response => {
-            console.log("Received data from backend: ", response.data);
+            console.log("Received data from backend for rotor count: ", response.data);
             this.$emit('count', count);
           })
           .catch(error => {
-            console.error("Error while fetching data: ", error);
+            console.error("Error while fetching rotor count data: ", error);
           });
       },
       sendRotorToBackend(rotor) {
+        // remove
+        rotor.rotor_positions = rotor.rotor_positions.replace(/\0/g, '');
+        rotor.ring_positions = rotor.ring_positions.replace(/\0/g, '');
+
         axios.post(`/rotor`, rotor)
           .then(response => {
-            console.log("Received data from backend: ", response.data);
+            console.log("Received data from backend for rotor settings: ", response.data);
             this.$emit('update-rotors');
           })
           .catch(error => {
@@ -313,10 +318,10 @@
         const auth = useAuthStore();
         axios.post(`/reflector?user_id=${auth.currentUserID}&reflector=${selectedReflectorOption}`)
           .then(response => {
-            console.log("Received data from backend: ", response.data);
+            console.log("Received data from backend for reflector settings: ", response.data);
           })
           .catch(error => {
-            console.error("Error while fetching data: ", error);
+            console.error("Error while fetching reflector settings data: ", error);
           });
       },
 
@@ -335,52 +340,61 @@
           // Add ring position to the array and convert to corresponding letter
           ring_positions.push(String.fromCharCode(parseInt(this.selectedRingPositions[i]) + 64));
         }
+        // Check for null characters in rotor_positions and ring_positions
+        rotor_positions = rotor_positions.join('').replace(/\0/g, '');
+        ring_positions = ring_positions.join('').replace(/\0/g, '');
 
         // Create the initialRotor object
         let initialRotor = {
           user_id: auth.currentUserID,
           machine_type: this.enigmaVariant,
           rotors: rotors,
-          rotor_positions: rotor_positions.join(''),
-          ring_positions: ring_positions.join(''),
+          rotor_positions: rotor_positions,
+          ring_positions: ring_positions,
           plugboard: this.plugs,
         };
         return initialRotor;
       },
       addRotor(number) {
-        // Add new rotor to the settings
-        this.RotorTitle[number] = 'Rotor ' + number;
+        // Add new rotor to the settings        
+        this.RotorTitle[number] = `Rotor ${number}`;
         this.rotorHeaders[number] = 'I';
         this.selectedInitialPositions[number] = 'A';
         this.selectedRingPositions[number] = '1';
+        console.log(`Added rotor ${number}`);
       },
       removeRotor(number) {
-        // Remove rotor from the settings
+        // Remove rotor from the settings        
         delete this.RotorTitle[number];
         delete this.rotorHeaders[number];
         delete this.selectedInitialPositions[number];
         delete this.selectedRingPositions[number];
+        console.log(`Removed rotor ${number}`);
       },
       selectRotorOption(index, rotor) {
         this.rotorHeaders[index] = rotor;
+        console.log(`Selected rotor option for index ${index}: ${rotor}`);
       },
 
       selectInitialPosition(index, letter) {
         this.selectedInitialPositions[index] = letter;
+        console.log(`Selected initial position for rotor ${index}: ${letter}`);
       },
 
       selectRingPosition(index, letter) {
         this.selectedRingPositions[index] = letter;
+        console.log(`Selected ring position for rotor ${index}: ${letter}`);
       },
       selectReflectorOption(index, reflector) {
+        //this.selectedReflectorOption[index] = reflector;
         this.selectedReflectorOption = reflector;
+        console.log(`Selected reflector option: ${reflector}`);
       },
       sendSettingsToBackend() {
         //this.enigmaVariant = this.enigmaVariant; // Update enigmaVariant here
         this.sendRotorCountToBackend(this.rotorCount);
         let rotors = this.createRotor();
-        console.log(rotors)
-        // Send rotor as json to backend
+        console.log("Sending settings to backend:", rotors);
         this.sendRotorToBackend(rotors);
         this.sendReflectorToBackend(this.selectedReflectorOption);
       },
@@ -402,10 +416,11 @@
         } else {
           console.error('Ungültige Anzahl von Rotoren.');
         }
+        console.log("Changed rotor count to:", this.rotorCount);
       },
 
       resetSettings() {
-        //this.enigmaVariant = "Enigma I";
+        this.enigmaVariant = "Enigma I";
         this.rotorCount = 3;
         this.showPlugboard = true;
         this.RotorTitle = {
@@ -435,9 +450,32 @@
         axios.post(`/reset?user_id=${auth.currentUserID}`)
           .then(response => {
             console.log("Settings reset on backend: ", response.data);
+            // Clear history
+            return axios.get(`/deletehistory?user_id=${auth.currentUserID}`);
+          })
+          .then(response => {
+            console.log("History cleared: ", response.data.message);
+            // Fetch updated history
+            return this.fetchHistory();
+          })
+          .then(() => {
+            console.log("History successfully fetched and updated.");
+            this.$emit('updateOutput');
           })
           .catch(error => {
-            console.error("Error while resetting settings: ", error);
+            console.error("Error while resetting settings or clearing history: ", error);
+          });
+
+      },
+      fetchHistory() {
+        const auth = useAuthStore();
+        return axios.get(`/history?user_id=${auth.currentUserID}`)
+          .then(response => {
+            console.log('Received data from backend: ', response.data);
+            this.history = response.data.history;
+          })
+          .catch(error => {
+            console.error('Error fetching history:', error);
           });
       },
       resetRotorHeaders() {
@@ -470,6 +508,38 @@
       updateEnigmaVariant() {
         console.log("Selected Enigma Variant: ", this.tempEnigmaVariant);
         // Additional logic to fetch the contents of the variant from the backend if needed.
+      },
+      loadUserSettings() {
+        const auth = useAuthStore();
+        axios.get(`/settings/login?user_id=${auth.currentUserID}`)
+          .then(response => {
+            const data = response.data;
+            if (data) {
+              this.enigmaVariant = data.machine_type;
+              this.rotorCount = data.rotors.length;
+              this.selectedReflectorOption = data.reflector_type;
+
+              for (let i = 0; i < data.rotors.length; i++) {
+                this.rotorHeaders[i + 1] = data.rotors[i];
+                this.selectedInitialPositions[i + 1] = data.rotor_positions[i];
+                // Convert ring_positions correctly and update frontend
+                this.selectedRingPositions[i + 1] = String(data.ring_positions.charCodeAt(i) - 64);
+              }
+              this.$emit('update-plugs', data.plugboard);
+
+              // Directly emit update events or update components
+              // this.$emit('update-rotors'); // Example emit for rotor update
+              this.sendSettingsToBackend();
+
+              console.log("Loaded user settings: ", data);
+            } else {
+              this.sendSettingsToBackend();
+            }
+          })
+          .catch(error => {
+            console.error("Error while loading user settings: ", error);
+            this.sendSettingsToBackend();
+          });
       },
       saveConfig() {
         const config = {
@@ -527,7 +597,7 @@
               this.selectedInitialPositions = Object.assign({}, this.selectedInitialPositions, config
                 .selectedInitialPositions);
               this.selectedRingPositions = Object.assign({}, this.selectedRingPositions, config
-              .selectedRingPositions);
+                .selectedRingPositions);
               this.selectedReflectorOption = config.selectedReflectorOption;
 
               // Call changeRotorCount to update the view
@@ -548,7 +618,7 @@
     },
     created() {
       this.updateConfig(this.enigmaVariant);
-      this.sendSettingsToBackend();
+      this.loadUserSettings();
     },
   };
 </script>
