@@ -41,10 +41,9 @@ services:
 
   test:
     build: ./backend
-    volumes:
-        - ./backend:/code
-        - ./tests:/code/tests
-    command: sh -c "sleep 5 && coverage run -m pytest /code/tests --disable-warnings && coverage report -m"
+    
+    command: sh -c "sleep 5 && coverage run --rcfile=.coveragerc -m pytest /code/tests --disable-warnings && coverage report -m"
+
     depends_on:
         - backend
         - db
