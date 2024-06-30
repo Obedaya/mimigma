@@ -417,7 +417,7 @@
       },
 
       resetSettings() {
-        //this.enigmaVariant = "Enigma I";
+        this.enigmaVariant = "Enigma I";
         this.rotorCount = 3;
         this.showPlugboard = true;
         this.RotorTitle = {
@@ -447,11 +447,34 @@
         axios.post(`/reset?user_id=${auth.currentUserID}`)
           .then(response => {
             console.log("Settings reset on backend: ", response.data);
+            // Clear history
+            return axios.get(`/deletehistory?user_id=${auth.currentUserID}`);
+          })
+          .then(response => {
+            console.log("History cleared: ", response.data.message);
+            // Fetch updated history
+            return this.fetchHistory();
+          })
+          .then(() => {
+            console.log("History successfully fetched and updated.");
+            this.$emit('updateOutput');
           })
           .catch(error => {
-            console.error("Error while resetting settings: ", error);
+            console.error("Error while resetting settings or clearing history: ", error);
           });
-      },
+
+    },
+    fetchHistory() {
+        const auth = useAuthStore();
+        return axios.get(`/history?user_id=${auth.currentUserID}`)
+            .then(response => {
+                console.log('Received data from backend: ', response.data);
+                this.history = response.data.history;
+            })
+            .catch(error => {
+                console.error('Error fetching history:', error);
+          });
+    },
       resetRotorHeaders() {
         this.rotorHeaders = {
           1: 'I',
