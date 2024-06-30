@@ -2,12 +2,13 @@ FROM python:3.9
 
 WORKDIR /code
 
-COPY backend/requirements.txt /code/requirements.txt
+COPY requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
  
-COPY backend/app /code/app
+COPY app /code/app
 COPY tests /code/tests
+COPY .coveragerc /code/.coveragerc
 
 EXPOSE 9000
 

@@ -2,3 +2,5 @@
 branch = True
 source = app
 concurrency = thread, gevent
+omit =
+    tests/*

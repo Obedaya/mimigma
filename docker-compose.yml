@@ -10,9 +10,7 @@ services:
       - .env
 
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: ./backend
     ports:
       - 9000:9000
     environment:
@@ -55,12 +53,11 @@ services:
 
   test:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./backend
 #    volumes:
 #      - ./backend:/code
 #      - ./tests:/code/tests
-    command: sh -c "ls -al ./tests && sleep 5 && coverage run -m pytest /code/tests --disable-warnings && coverage report -m"
+    command: sh -c "sleep 5 && coverage run --rcfile=.coveragerc -m pytest /code/tests --disable-warnings && coverage report -m"
     depends_on:
       - backend
       - db
