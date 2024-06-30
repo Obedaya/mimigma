@@ -48,7 +48,7 @@
               <thead>
                 <tr>
                   <div class="dropdown">
-                    Reflector
+                    Reflektor
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="DropdownReflector"
                       data-bs-toggle="dropdown">
                       {{ selectedReflectorOption }}
@@ -123,13 +123,14 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Konfiguration
+              speichern</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">
+              Konfiguration laden</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
             <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal" class="btn btn-primary"
-              id="modal-submit-button">Apply Changes
+              id="modal-submit-button">Speichern
             </button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Save Config</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">Load
-              Config</button>
             <input type="file" ref="fileInput" @change="loadConfig" style="display: none" />
           </div>
         </div>
@@ -275,7 +276,9 @@
             3: 'Rotor 3',
             4: 'Rotor 4'
           };
-          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV', 'N_V'];
+          this.dropdownRotorOptions = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'N_I', 'N_II', 'N_III', 'N_IV',
+            'N_V'
+          ];
           this.reflectorTitles = {
             A: 'Reflector A',
             B: 'Reflector B',
@@ -377,7 +380,7 @@
         this.selectedInitialPositions[index] = letter;
         console.log(`Selected initial position for rotor ${index}: ${letter}`);
       },
-      
+
       selectRingPosition(index, letter) {
         this.selectedRingPositions[index] = letter;
         console.log(`Selected ring position for rotor ${index}: ${letter}`);
@@ -463,18 +466,18 @@
             console.error("Error while resetting settings or clearing history: ", error);
           });
 
-    },
-    fetchHistory() {
+      },
+      fetchHistory() {
         const auth = useAuthStore();
         return axios.get(`/history?user_id=${auth.currentUserID}`)
-            .then(response => {
-                console.log('Received data from backend: ', response.data);
-                this.history = response.data.history;
-            })
-            .catch(error => {
-                console.error('Error fetching history:', error);
+          .then(response => {
+            console.log('Received data from backend: ', response.data);
+            this.history = response.data.history;
+          })
+          .catch(error => {
+            console.error('Error fetching history:', error);
           });
-    },
+      },
       resetRotorHeaders() {
         this.rotorHeaders = {
           1: 'I',
@@ -594,7 +597,7 @@
               this.selectedInitialPositions = Object.assign({}, this.selectedInitialPositions, config
                 .selectedInitialPositions);
               this.selectedRingPositions = Object.assign({}, this.selectedRingPositions, config
-              .selectedRingPositions);
+                .selectedRingPositions);
               this.selectedReflectorOption = config.selectedReflectorOption;
 
               // Call changeRotorCount to update the view
