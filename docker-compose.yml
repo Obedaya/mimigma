@@ -52,10 +52,12 @@ services:
       - e2etest
 
   test:
-    build: ./backend
+    build:
+      context: ./backend
 #    volumes:
-#      - ./backend/app:/code/app  # Mount to reflect changes in tests immediately
-    command: sh -c 'sleep 3 && pytest -s /code/app/user_tests.py'
+#      - ./backend:/code
+#      - ./tests:/code/tests
+    command: sh -c "sleep 5 && coverage run --rcfile=.coveragerc -m pytest /code/tests --disable-warnings && coverage report -m"
     depends_on:
       - backend
       - db
@@ -64,4 +66,5 @@ services:
       - unittest
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
+      - PYTHONPATH=/code
 

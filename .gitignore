@@ -39,3 +39,7 @@ Thumbs.db
 frontend/cypress/screenshots/*
 frontend/cypress/videos/*
 *.mp4
+
+.pytest_cache
+.coverage
+.coverage.*

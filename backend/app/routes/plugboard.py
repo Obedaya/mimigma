@@ -8,14 +8,6 @@ from ..schemas import PlugboardSettingCreate
 
 router = APIRouter()
 
-@router.get("/plugboard", tags=["Plugboard"])
-def read_plugboard_setting():
-    db = SessionLocal()
-    try:
-        # Logic to set the plugboard setting
-        return {"message": "Plugboard setting retrieved successfully"}
-    finally:
-        db.close()
 
 @router.post("/plugboard", tags=["Plugboard"])
 def update_plugboard_setting(data: PlugboardSettingCreate):
@@ -27,6 +19,7 @@ def update_plugboard_setting(data: PlugboardSettingCreate):
         # Update plugboard
         existing_settings.plugboard = data.plugboard
         print(f"Plugboard setting: {existing_settings.plugboard}")
+
         db.commit()
         db.refresh(existing_settings)
 

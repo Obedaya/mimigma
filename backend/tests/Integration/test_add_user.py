@@ -1,14 +1,14 @@
-f"""rom backend.app.database import engine, check_db_connection
-from backend.app.init_db import init_db, sync_db_with_json, remove_user_from_db
+from app.database import engine, check_db_connection
+from app.init_db import init_db, sync_db_with_json, remove_user_from_db
 import pytest
 import json
 import requests
 import time
-from backend.app.add_user import add_default_test_user, delete_default_test_user
-from backend.app.config import file_path
+from app.add_user import add_default_test_user, delete_default_test_user
+from app.config import file_path
 
 def get_users():
-    """Helper function to fetch users from the backend."""
+    #Helper function to fetch users from the backend
     try:
         response = requests.get("http://backend:9000/users")
         print("Users from backend:", response.json())
@@ -16,7 +16,7 @@ def get_users():
         print(f"Error fetching users from backend: {e}")
 
 def read_users_from_json():
-    """Helper function to read users from the JSON file."""
+    #Helper function to read users from the JSON file
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)
@@ -75,4 +75,4 @@ def check_user_exists(file_path, username):
         print(f"An error occurred when checking user existence: {e}")
     print(f"User {username} not found.")
     return False
-"""
+
