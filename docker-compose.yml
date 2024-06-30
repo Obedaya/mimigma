@@ -10,7 +10,9 @@ services:
       - .env
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 9000:9000
     environment:
@@ -52,11 +54,13 @@ services:
       - e2etest
 
   test:
-    build: ./backend
-    volumes:
-      - ./backend:/code
-      - ./tests:/code/tests
-    command: sh -c "sleep 5 && coverage run -m pytest /code/tests --disable-warnings && coverage report -m"
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    volumes:
+#      - ./backend:/code
+#      - ./tests:/code/tests
+    command: sh -c "ls -al ./tests && sleep 5 && coverage run -m pytest /code/tests --disable-warnings && coverage report -m"
     depends_on:
       - backend
       - db
