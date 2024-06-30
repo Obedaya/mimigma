@@ -127,7 +127,7 @@
               speichern</button>
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">
               Konfiguration laden</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_button">Schließen</button>
             <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal" class="btn btn-primary"
               id="modal-submit-button">Speichern
             </button>
@@ -511,7 +511,7 @@
       },
       loadUserSettings() {
         const auth = useAuthStore();
-        axios.get(`/settings/login?user_id=${auth.currentUserID}`)
+        axios.get(`/settings?user_id=${auth.currentUserID}`)
           .then(response => {
             const data = response.data;
             if (data) {

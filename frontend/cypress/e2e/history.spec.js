@@ -13,10 +13,14 @@ describe('History', () => {
             req.continue();
         }).as('dynamicRedirect');
     });
+    afterEach(() => {
+        cy.resetsettings();
+    });
 
     it('should display the letter and encrypted letter in the output field when a keyboard button is pressed', () => {
+        cy.wait(1000);
         cy.get('body').type('A');
 
-        cy.get('#output').contains('A : B');
+        cy.get('#history').contains('A : B');
     });
 });

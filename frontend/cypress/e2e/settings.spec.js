@@ -14,6 +14,9 @@ describe('Settings', () => {
             req.continue();
         }).as('dynamicRedirect');
     });
+    afterEach(() => {
+        cy.resetsettings();
+    });
 
     it('should change rotor settings, when the rotor count is changed', () => {
         cy.get('select[id=enigmavariants]').select('Custom Enigma');
@@ -22,6 +25,7 @@ describe('Settings', () => {
 
         cy.get('input[id=rotorCount]').clear().type('3');
         cy.get('th').contains('Rotor 4').should('not.exist');
+        cy.get('button[id=modal-close-button]').click();
     });
 
     it('should display the correct amount of rotors, if the rotor count is changed', () => {
@@ -47,6 +51,7 @@ describe('Settings', () => {
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
         cy.get('.dropdown-menu.variant-menu').contains('II').should('exist');
+        cy.get('button[id=modal-close-button]').click();
     });
 
     it('should change the rotor rotation, depending on the initial rotor setting', () => {
@@ -78,6 +83,18 @@ describe('Settings', () => {
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
         cy.get('.dropdown-menu.ring-menu').contains('2').should('exist');
+        cy.get('button[id=modal-close-button]').click();
+    });
+    it('should change the encrypted letter, depending on the ring setting', () => {
+        cy.get('button[id=DropdownRing3]').click();
+        cy.get('.ring-menu.show .dropdown-item.dropdown-ring').contains('2').click();
+        cy.get('button[id=modal-submit-button]').click();
+        cy.wait(500)
+        cy.get('button[id=modal-close-button]').click();
+        cy.get('body').trigger('keydown', {key: 'A'});
+        cy.wait(100);
+        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'U'});
     });
 
     it('should change the rotor turnover, depending on the initial rotor variant', () => {

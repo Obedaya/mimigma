@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div id="output">
+    <div id="history">
       <div v-html="output"></div>
       <!--<div :key="output"> {{ output }}</div>-->
     </div>

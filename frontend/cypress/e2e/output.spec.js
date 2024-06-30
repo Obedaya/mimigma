@@ -3,6 +3,9 @@ describe('Output test', () => {
         cy.visit('/main');
         cy.login('admin', 'password');
     });
+    afterEach(() => {
+        cy.resetsettings();
+    });
 
     it('should display the letter in the output field when a keyboard button is pressed', () => {
         cy.intercept({
@@ -18,6 +21,6 @@ describe('Output test', () => {
 
         cy.get('body').type('A');
 
-        cy.get('#output').contains('A');
+        cy.get('#output').contains('B');
     });
 });

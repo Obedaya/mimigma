@@ -13,6 +13,9 @@ describe('Plugboard Test', () => {
             req.continue();
         }).as('dynamicRedirect');
     });
+    afterEach(() => {
+        cy.resetsettings();
+    });
 
     it('should highlight and connect two letters in the plugboard when two plugboard button are selected', () => {
         cy.get('.plugboard .plug').contains('A').click();

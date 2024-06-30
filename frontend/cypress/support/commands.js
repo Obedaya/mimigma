@@ -26,11 +26,16 @@ Cypress.Commands.add('clickKeyAndWait', (key) => {
         // Continue with the modified request
         req.continue();
     }).as('dynamicRedirect');
-    cy.intercept('POST', `/keyboard?key=${key}`).as(`keyPress${key}`);
+    cy.intercept('POST', `/keyboard?key=${key}&user_id=4`).as(`keyPress${key}`);
     cy.wait(1000);
     cy.get('.lower .key').contains(key).click();
     cy.wait(`@keyPress${key}`, {timeout: 10000}).then((interception) => {
         cy.log(`Intercepted URL for ${key}: ${interception.request.url}`);
         expect(interception.request.url).to.include(`key=${key}`);
     });
+});
+
+Cypress.Commands.add('resetsettings', () =>{
+    cy.get('div[id="settings-button"]').click();
+    cy.get('button[id="reset-btn"]').contains('Reset').click();
 });
