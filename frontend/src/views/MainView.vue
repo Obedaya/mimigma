@@ -138,6 +138,8 @@
         console.log("Updating output...");
         this.$refs.history.getHistory();
         this.$refs.output.getHistory();
+        this.plugs = [];
+        this.$refs.plugboard.updatePlugboardInDB(true);
       }
     }
   };
