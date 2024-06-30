@@ -10,7 +10,7 @@ def base_url():
 
 def test_update_reflector_setting(base_url):
     payload = {
-        "user_id": 1,
+        "user_id": 200,
         "reflector": "UKW_B"
     }
     response = requests.post(f"{base_url}/reflector", params=payload)

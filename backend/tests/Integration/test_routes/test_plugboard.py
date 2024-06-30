@@ -11,11 +11,12 @@ def base_url():
 
 def test_update_plugboard_setting(base_url):
     payload = {
-        "user_id": 1,
+        "user_id": 200,
         "plugboard": [["A", "H"], ["B", "I"], ["C", "J"]]
     }
 
     response = requests.post(f"{base_url}/plugboard", json=payload)
+    print(response.json())
     assert response.status_code == 200
 
     data = response.json()
