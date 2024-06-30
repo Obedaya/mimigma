@@ -28,7 +28,7 @@ def get_history(user_id: int):
 
 @router.get("/deletehistory", tags=["History"])
 def delete_history(user_id: int):
-    db = SessionLocal();
+    db = SessionLocal()
     try:
         # latest_history = db.query(History).order_by(desc(History.id)).first()
         latest_history = db.query(History).filter(History.user_id == user_id).first()
