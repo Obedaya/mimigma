@@ -40,8 +40,8 @@ def get_encrypted_key(user_id: int):
             new_encrypted = encrypted_key
             plain = ""
 
-        if len(new_encrypted) > 120:
-            new_encrypted = new_encrypted[-120:]
+        if len(new_encrypted) > 140:
+            new_encrypted = new_encrypted[-140:]
 
         if latest_history:
             latest_history.encrypted = new_encrypted
