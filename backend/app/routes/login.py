@@ -22,7 +22,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 # Endpoint to check user login
 @router.post("/login", tags=["User Management"])
-async def login(username: str, password: str):
+def login(username: str, password: str):
     db = SessionLocal()
     try:
         hashed_password = hash_password(password)

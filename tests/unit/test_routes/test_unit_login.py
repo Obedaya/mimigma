@@ -21,7 +21,7 @@ async def test_login():
         db_session.add(User(id=200, name="Test User", username="testuser", email="testuser@email.com", password=hashed_password))
         db_session.commit()
 
-    response = await login.login("testuser", "testpassword")
+    response = login.login("testuser", "testpassword")
     assert response == {
         "message": "Login successful",
         "user": {
