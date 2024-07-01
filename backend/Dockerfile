@@ -25,5 +25,5 @@ ENV PYTHONPATH=/code
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
 
 # Healthcheck
-HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1
+# HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1
 
