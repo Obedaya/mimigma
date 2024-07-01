@@ -43,7 +43,7 @@ backend_scan:
   variables:
     SECURE_LOG_LEVEL: 'debug'
     GIT_STRATEGY: 'fetch'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:test_development'
   script:
     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
     - trivy image $CS_IMAGE | tee scanning-report.txt
@@ -62,7 +62,7 @@ frontend_scan:
   variables:
     SECURE_LOG_LEVEL: 'debug'
     GIT_STRATEGY: 'fetch'
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:dev2'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:test_development'
   script:
     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
     - trivy image $CS_IMAGE | tee scanning-report.txt
