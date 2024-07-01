@@ -2,13 +2,10 @@ FROM python:3.9.19-alpine3.20
 
 WORKDIR /code
 
-# Install build dependencies and curl
+# Install build dependencies
 RUN apk add --no-cache gcc musl-dev libc-dev curl
 
-# Install build dependencies
-RUN apk add --no-cache gcc musl-dev libc-dev
-
-# Upgrade vulnerable packages
+# Upgrade vulnerable package
 RUN apk add --no-cache libcrypto3=3.3.1-r1
 
 COPY requirements.txt /code/requirements.txt
@@ -28,5 +25,5 @@ ENV PYTHONPATH=/code
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
 
 # Healthcheck
-# HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1
 
