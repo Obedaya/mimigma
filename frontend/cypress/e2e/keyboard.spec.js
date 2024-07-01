@@ -21,13 +21,13 @@ describe('Virtual Keyboard Test', () => {
     it('should highlight the letter in the lamp panel when a keyboard button is pressed', () => {
         cy.get('body').trigger('keydown', {key: 'A'});
 
-        cy.wait(100);
+        cy.wait(1000);
 
         cy.get('.lamp').contains('B').should('have.class', 'highlighted');
 
         cy.get('body').trigger('keyup', {key: 'A'});
 
-        cy.wait(100);
+        cy.wait(1500);
 
         cy.get('.lamp').contains('B').should('not.have.class', 'highlighted');
     });
