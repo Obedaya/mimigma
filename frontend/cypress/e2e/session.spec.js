@@ -66,10 +66,11 @@ describe('Session Test', () => {
             cy.get(`button[id=DropdownRing${i}`).should('contain', '2');
         }
         cy.get('input[id=plugboardCheckbox]').should('not.be.checked');
+        cy.get('button[id="reset-btn"]').contains('Reset').click();
     });
 
     it('should save the plugboard settings, after reload', () => {
-        wait(100);
+        cy.wait(100);
         cy.get('.plugboard .plug').contains('A').click();
         cy.get('.plugboard .plug').contains('B').click();
         cy.get('.plugboard .plug').contains('B').should('have.class', 'red');
@@ -78,25 +79,28 @@ describe('Session Test', () => {
         cy.wait(5000);
         cy.get('.plugboard .plug').contains('B').should('have.class', 'red');
         cy.get('.plugboard .plug').contains('A').should('have.class', 'red');
+        cy.resetsettings();
     });
 
     it('should save the history, after reload', () => {
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.wait(100);
         cy.get('body').trigger('keyup', {key: 'A'});
-        cy.get('#history').contains('B');
+        cy.get('#history').contains('A : B');
         cy.reload();
         cy.wait(5000);
-        cy.get('#history').contains('B');
+        cy.get('#history').contains('A : B');
+        cy.resetsettings();
     });
 
     it('should save the output, after reload', () => {
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.wait(100);
         cy.get('body').trigger('keyup', {key: 'A'});
-        cy.get('#output').contains('A : B');
+        cy.get('#output').contains('B');
         cy.reload();
         cy.wait(5000);
-        cy.get('#output').contains('A : B');
+        cy.get('#output').contains('B');
+        cy.resetsettings();
     });
 });

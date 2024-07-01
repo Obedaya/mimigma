@@ -2,6 +2,7 @@ describe('Virtual Keyboard Test', () => {
     beforeEach(() => {
         cy.visit('/main');
         cy.login('admin', 'password');
+        cy.wait(1000);
         cy.intercept({
             method: '*', // You can also use '*' to match all methods if needed
             url: /^http:\/\/localhost:([0-9]+)\/(.*)$/

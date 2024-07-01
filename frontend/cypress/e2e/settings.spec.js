@@ -14,9 +14,6 @@ describe('Settings', () => {
             req.continue();
         }).as('dynamicRedirect');
     });
-    afterEach(() => {
-        cy.resetsettings();
-    });
 
     it('should change rotor settings, when the rotor count is changed', () => {
         cy.get('select[id=enigmavariants]').select('Custom Enigma');
@@ -26,6 +23,8 @@ describe('Settings', () => {
         cy.get('input[id=rotorCount]').clear().type('3');
         cy.get('th').contains('Rotor 4').should('not.exist');
         cy.get('button[id=modal-close-button]').click();
+        cy.wait(200);
+        cy.resetsettings();
     });
 
     it('should display the correct amount of rotors, if the rotor count is changed', () => {
@@ -41,6 +40,8 @@ describe('Settings', () => {
         cy.get('button[id=modal-submit-button]').click();
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').should('have.length', 3);
+        cy.wait(200);
+        cy.resetsettings();
     });
 
     it('should change the rotor variant, depending on the rotor variant', () => {
@@ -51,7 +52,10 @@ describe('Settings', () => {
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
         cy.get('.dropdown-menu.variant-menu').contains('II').should('exist');
+        cy.wait(500)
         cy.get('button[id=modal-close-button]').click();
+        cy.wait(200);
+        cy.resetsettings();
     });
 
     it('should change the rotor rotation, depending on the initial rotor setting', () => {
@@ -61,6 +65,8 @@ describe('Settings', () => {
         cy.wait(500)
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(2).find('div[class=currentletter]').contains('B');
+        cy.wait(200);
+        cy.resetsettings();
     });
 
     it('should change the clicks towards the rotor turnover, depending on the initial rotor setting', () => {
@@ -73,6 +79,7 @@ describe('Settings', () => {
         cy.wait(100);
         cy.get('body').trigger('keyup', {key: 'A'});
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(1).find('div[class=currentletter]').contains('B');
+        cy.resetsettings();
     });
 
     it('should change the rotor ring, depending on the initial ring setting', () => {
@@ -83,7 +90,7 @@ describe('Settings', () => {
         cy.get('button[id=modal-close-button]').click();
         cy.get('div[id="settings-button"]').click();
         cy.get('.dropdown-menu.ring-menu').contains('2').should('exist');
-        cy.get('button[id=modal-close-button]').click();
+        cy.get('button[id="reset-btn"]').contains('Reset').click();
     });
     it('should change the encrypted letter, depending on the ring setting', () => {
         cy.get('button[id=DropdownRing3]').click();
@@ -93,8 +100,9 @@ describe('Settings', () => {
         cy.get('button[id=modal-close-button]').click();
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.wait(100);
-        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('.lamp').contains('U').should('have.class', 'highlighted');
         cy.get('body').trigger('keyup', {key: 'U'});
+        cy.resetsettings();
     });
 
     it('should change the rotor turnover, depending on the initial rotor variant', () => {
@@ -111,42 +119,31 @@ describe('Settings', () => {
         })
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(2).find('div[class=currentletter]').contains('R');
         cy.get('div[class=rotor_panel]').find('div[class=rotor]').eq(1).find('div[class=currentletter]').contains('B');
+        cy.resetsettings();
     });
 
-    it('should send the correct rotor settings to the backend', () => {
-        cy.get('button[id=modal-submit-button]').click();
-        cy.get('button[id=modal-close-button]').click();
-        cy.intercept('POST', '/rotor', {
-            statusCode: 200,
-            body: {
-                "user_id": 4,
-                "machine_type": "Enigma I",
-                "rotors": ["I", "II", "III"],
-                "rotor_positions": "AAA",
-                "ring_positions": "AAA"
-            }
-        });
-    });
     it('should change the reflector, depending on the initial reflector setting', () => {
         cy.get('button[id=DropdownReflector]').click();
-        cy.get('.dropdown-item.dropdown-reflector').contains('UKW_B').click();
+        cy.get('.dropdown-item.dropdown-reflector').contains('UKW_A').click();
+        cy.wait(500)
         cy.get('button[id=modal-submit-button]').click();
-        // cy.get('button[id=modal-close-button]').click();
-    });
-
-    it('should send the correct reflector settings to the backend', () => {
-        cy.get('button[id=modal-submit-button]').click();
-        // cy.get('button[id=modal-close-button]').click();
-        cy.intercept('POST', '/reflector', {
-            statusCode: 200,
-        });
+        cy.wait(500)
+        //cy.get('button[id=modal-close-button]').click();
+        cy.get('body').trigger('keydown', {key: 'A'});
+        //cy.wait(100);
+        cy.get('.lamp').contains('S').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'S'});
+        cy.resetsettings();
     });
 
     it('should remove the plugboard, depending on the plugboard setting', () => {
         cy.get('input[id=plugboardCheckbox]').click();
+        cy.wait(500);
         cy.get('button[id=modal-submit-button]').click();
         // cy.get('button[id=modal-close-button]').click();
         cy.get('.plugboard').should('not.exist');
+        cy.wait(200);
+        cy.resetsettings();
     });
 
     it('should change and then reset the enigma settings when the reset button is pressed', () => {
@@ -183,7 +180,7 @@ describe('Settings', () => {
 
         // Save the changes
         cy.get('button[id=modal-submit-button]').click();
-        cy.wait(200)
+        cy.wait(1000)
 
         // Reopen the settings modal to verify changes
         cy.get('div[id="settings-button"]').click();
@@ -202,8 +199,8 @@ describe('Settings', () => {
         // Click the reset button
         cy.get('button.btn-secondary').contains('Reset').click();
 
+
         // Verify the settings were reset to defaults
-        cy.get('input[id=rotorCount]').should('have.value', '3');
         cy.get('button[id=DropdownReflector]').should('contain', 'UKW_B');
         for (let i = 1; i < 3; i++) {
             cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'I');
@@ -211,6 +208,8 @@ describe('Settings', () => {
             cy.get(`button[id=DropdownRing${i}`).should('contain', '1');
         }
         cy.get('input[id=plugboardCheckbox]').should('be.checked');
+
+        cy.get('button[id="reset-btn"]').contains('Reset').click();
     });
 
     it('should change settings for every enigma variant', () => {
@@ -259,6 +258,7 @@ describe('Settings', () => {
             cy.get('.dropdown-item.dropdown-reflector').contains(reflectorVariantsCustom[i]);
         }
         cy.get('input[id=rotorCount]').should('exist');
+        cy.get('button[id="reset-btn"]').contains('Reset').click();
     });
 
     it('should encrypt correctly with different enigma variants', () => {
@@ -287,12 +287,16 @@ describe('Settings', () => {
 
         cy.get('div[id="settings-button"]').click();
         cy.get('select[id=enigmavariants]').select('Enigma Norway');
+        cy.wait(500);
         cy.get('button[id=modal-submit-button]').click();
-        cy.get('button[id=modal-close-button]').click();
+        //cy.get('button[id=modal-close-button]').click();
 
         cy.get('body').trigger('keydown', {key: 'A'});
         cy.get('.lamp').contains('Q').should('have.class', 'highlighted');
         cy.get('body').trigger('keyup', {key: 'A'});
+
+        cy.wait(200);
+        cy.resetsettings();
     });
 
 

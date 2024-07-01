@@ -35,7 +35,7 @@ Cypress.Commands.add('clickKeyAndWait', (key) => {
     });
 });
 
-Cypress.Commands.add('resetsettings', () =>{
+Cypress.Commands.add('resetsettings', () => {
     cy.get('div[id="settings-button"]').click();
     cy.get('button[id="reset-btn"]').contains('Reset').click();
 });
