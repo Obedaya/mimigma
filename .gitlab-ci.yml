@@ -8,6 +8,10 @@ default:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
+.build_test_scan_defaults:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 stages:
   - build
   - test
@@ -17,6 +21,7 @@ stages:
 # Build and push the frontend image
 build_frontend:
   stage: build
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME -f ./frontend/Dockerfile ./frontend
     - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
@@ -24,12 +29,14 @@ build_frontend:
 # Build and push the backend image
 build_backend:
   stage: build
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
 e2e_test:
   stage: test
+  extends: .build_test_scan_defaults
   script:
     - docker-compose rm -f
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
@@ -37,6 +44,7 @@ e2e_test:
 
 unit_test:
   stage: test
+  extends: .build_test_scan_defaults
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
@@ -44,6 +52,7 @@ unit_test:
 # Trivy Scan - modify CS_IMAGE depending which image you want to scan
 backend_scan:
   stage: scan
+  extends: .build_test_scan_defaults
   variables:
     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
   script:
@@ -56,6 +65,7 @@ backend_scan:
 
 frontend_scan:
   stage: scan
+  extends: .build_test_scan_defaults
   variables:
     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:dev2'
   script:
