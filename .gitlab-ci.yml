@@ -12,8 +12,8 @@ default:
 
 stages:
   - build
-  - test
   - scan
+  - test
   - cleanup
 
 # Build and push the frontend image
@@ -31,21 +31,6 @@ build_backend:
   script:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
-
-e2e_test:
-  stage: test
-  extends: .build_test_scan_defaults
-  script:
-    - docker-compose rm -f
-    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    - docker-compose --profile e2etest up --build --abort-on-container-exit
-
-unit_test:
-  stage: test
-  extends: .build_test_scan_defaults
-  script:
-    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    - docker-compose --profile unittest up --build --abort-on-container-exit
 
 # Trivy Scan - modify CS_IMAGE depending which image you want to scan
 backend_scan:
@@ -73,6 +58,21 @@ frontend_scan:
   artifacts:
     reports:
       container_scanning: scanning-report.txt
+
+e2e_test:
+  stage: test
+  extends: .build_test_scan_defaults
+  script:
+    - docker-compose rm -f
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker-compose --profile e2etest up --build --abort-on-container-exit
+
+unit_test:
+  stage: test
+  extends: .build_test_scan_defaults
+  script:
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker-compose --profile unittest up --build --abort-on-container-exit
 
 cleanup:
   stage: cleanup
