@@ -1,5 +1,9 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
 stages:
-  - build 
+  - build
+  - scan 
   - test
   - cleanup
 
@@ -27,7 +31,46 @@ build_backend:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
-e2e-test:
+# Trivy Scan - modify CS_IMAGE depending which image you want to scan
+backend_scan:
+  stage: scan
+  image: docker:26.0.1
+  services:
+    - docker:26.0.1-dind
+  before_script:
+    - apk add curl
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  variables:
+    SECURE_LOG_LEVEL: 'debug'
+    GIT_STRATEGY: 'fetch'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:dev2'
+  script:
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+frontend_scan:
+  stage: scan
+  image: docker:26.0.1
+  services:
+    - docker:26.0.1-dind
+  before_script:
+    - apk add curl
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  variables:
+    SECURE_LOG_LEVEL: 'debug'
+    GIT_STRATEGY: 'fetch'
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:dev2'
+  script:
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+2e-test:
   stage: test
   image: docker:26.0.1-dind  # Use the dind image for running Docker commands
   services:
@@ -50,11 +93,53 @@ unit-test:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
 
-cleanup:
-  stage: cleanup
-  image: docker:26.0.1
-  script:
-    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
-    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
-  when: always
-
+# Trivy Scans
+# frontend_scan:
+#   stage: scan
+#   before_script:
+#     - echo "does this work?" 
+#     - echo $CI_REGISTRY_USER
+#     - echo $CI_REGISTRY_PASSWORD
+#     - echo $CI_REGISTRY_IMAGE
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - |
+#       if [ $? -ne 0 ]; then
+#         echo "Docker login failed"
+#         exit 1
+#       fi
+#   variables:
+#     SECURE_LOG_LEVEL: 'debug'
+#     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:$CI_COMMIT_REF_NAME'
+#     CS_DOCKERFILE_PATH: './frontend/Dockerfile'
+#     GIT_STRATEGY: 'fetch'
+#   script:
+#     - echo $CS_IMAGE
+#     - docker pull $CS_IMAGE
+#     - |
+#       if [ $? -ne 0 ]; then
+#         echo "Docker pull failed"
+#         exit 1
+#       fi
+#     - docker images
+#     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
+# 
+# # backend_scan:
+# #   stage: scan
+# #   before_script:
+# #   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+# #   variables:
+# #     SECURE_LOG_LEVEL: 'debug'
+# #     CS_IMAGE: '$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME'
+# #     CS_DOCKERFILE_PATH: './backend/Dockerfile'
+# #     GIT_STRATEGY: 'fetch'
+# #   script:
+# #     - trivy image --exit-code 1 --severity HIGH,CRITICAL $CS_IMAGE
+# # 
+# cleanup:
+#   stage: cleanup
+#   image: docker:26.0.1
+#   script:
+#     - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
+#     - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
+#   when: always
+# 
