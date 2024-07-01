@@ -515,8 +515,12 @@
           .then(response => {
             const data = response.data;
             if (data) {
+              console.log("Loaded user settings: ", data);
               this.enigmaVariant = data.machine_type;
-              this.rotorCount = data.rotors.length;
+              if (data.machine_type === 'Custom Enigma') {
+                this.rotorCount = data.rotors.length;
+                this.changeRotorCount();
+              }
               this.selectedReflectorOption = data.reflector_type;
 
               for (let i = 0; i < data.rotors.length; i++) {
