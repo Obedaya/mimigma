@@ -14,8 +14,6 @@ COPY bun.lockb ./
 COPY vite.config.js ./
 COPY index.html ./
 
-RUN bun install esbuild@0.22.0
-
 # RUN bun install
 
 COPY src ./src
