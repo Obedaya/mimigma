@@ -2,6 +2,9 @@ FROM python:3.9.19-alpine3.20
 
 WORKDIR /code
 
+# Install build dependencies and curl
+RUN apk add --no-cache gcc musl-dev libc-dev curl
+
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev libc-dev
 
