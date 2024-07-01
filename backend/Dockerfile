@@ -5,10 +5,14 @@ WORKDIR /code
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev libc-dev
 
+# Upgrade vulnerable packages
+RUN apk add --no-cache libcrypto3=3.3.1-r1 libssl3=3.3.1-r1
+
 COPY requirements.txt /code/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
- 
+RUN pip install --no-cache-dir --upgrade pip setuptools && \
+    pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
 COPY app /code/app
 COPY tests /code/tests
 COPY .coveragerc /code/.coveragerc
@@ -21,5 +25,5 @@ ENV PYTHONPATH=/code
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
 
 # Healthcheck
-
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --fail http://localhost:9000/ || exit 1
+
