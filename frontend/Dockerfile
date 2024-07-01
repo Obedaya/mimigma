@@ -1,36 +1,28 @@
-# Use the oven/bun image as a base
-FROM oven/bun:alpine AS builder
+FROM oven/bun:alpine
 
 WORKDIR /app
 
-# Install build dependencies
-COPY package.json ./
-COPY bun.lockb ./
-COPY vite.config.js ./
-COPY index.html ./
-
+# Update the package list and upgrade packages to fix vulnerabilities
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache \
     libcrypto3=3.1.6-r0 \
     libssl3=3.1.6-r0
 
-# Install dependencies
-RUN bun install
+COPY package.json ./
+COPY bun.lockb ./
+COPY vite.config.js ./
+COPY index.html ./
 
-# Remove esbuild from node_modules 
-RUN rm -rf node_modules/esbuild
+RUN bun install esbuild@0.22.0
+
+# RUN bun install
 
 COPY src ./src
 
-# Create a smaller final image without build dependencies
-FROM oven/bun:alpine
-
-WORKDIR /app
-
-# Copy only the necessary files from the builder stage
-COPY --from=builder /app /app
-
 EXPOSE 8080
 
+RUN bun install
+
 CMD ["bun", "dev", "--port", "8080", "--host"]
+
