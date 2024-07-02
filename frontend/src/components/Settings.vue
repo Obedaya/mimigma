@@ -123,9 +123,9 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="reset-btn" class="btn btn-secondary" @click="resetSettings">Reset</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="saveConfig">Konfiguration
+            <button type="button" id="save-config-btn" class="btn btn-secondary" @click="saveConfig">Konfiguration
               speichern</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary" @click="triggerFileInput">
+            <button type="button" id="file-input-btn" class="btn btn-secondary" @click="triggerFileInput">
               Konfiguration laden</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_button">Schließen</button>
             <button @click="saveChanges" type="button modalSendButton" data-bs-dismiss="modal" class="btn btn-primary"
@@ -496,14 +496,14 @@
         };
 
         // Send reset request to backend
-        const auth = useAuthStore();
-        axios.post(`/reset?user_id=${auth.currentUserID}`)
-          .then(response => {
-            console.log("Rotors headers Settings reset on backend: ", response.data);
-          })
-          .catch(error => {
-            console.error("Error while resetting Rotors headers settings: ", error);
-          });
+      //   const auth = useAuthStore();
+      //   axios.post(`/reset?user_id=${auth.currentUserID}`)
+      //     .then(response => {
+      //       console.log("Rotors headers Settings reset on backend: ", response.data);
+      //     })
+      //     .catch(error => {
+      //       console.error("Error while resetting Rotors headers settings: ", error);
+      //     });
       },
       updateEnigmaVariant() {
         console.log("Selected Enigma Variant: ", this.tempEnigmaVariant);

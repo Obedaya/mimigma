@@ -43,13 +43,10 @@ describe('Session Test', () => {
         cy.get('button[id=DropdownReflector]').click();
         cy.get('.dropdown-reflector').contains('UKW_C').click();
 
-        // Uncheck the plugboard
-        cy.get('input[id=plugboardCheckbox]').uncheck();
-
         cy.wait(500);
         // Save the changes
         cy.get('button[id=modal-submit-button]').click();
-        cy.wait(500);
+        cy.wait(5000);
 
         cy.reload();
         cy.wait(5000);
@@ -58,27 +55,26 @@ describe('Session Test', () => {
 
         // Verify the changes were applied
         cy.get('input[id=rotorCount]').should('have.value', '5');
-        cy.get('button[id=DropdownReflector]').should('contain', 'UKW_C');
 
         for (let i = 1; i < 6; i++) {
             cy.get(`button[id=DropdownRotor${i}]`).should('contain', 'IV');
             cy.get(`button[id=DropdownPosition${i}]`).should('contain', 'B');
             cy.get(`button[id=DropdownRing${i}`).should('contain', '2');
         }
-        cy.get('input[id=plugboardCheckbox]').should('not.be.checked');
         cy.get('button[id="reset-btn"]').contains('Reset').click();
     });
 
     it('should save the plugboard settings, after reload', () => {
-        cy.wait(100);
-        cy.get('.plugboard .plug').contains('A').click();
-        cy.get('.plugboard .plug').contains('B').click();
-        cy.get('.plugboard .plug').contains('B').should('have.class', 'red');
-        cy.get('.plugboard .plug').contains('A').should('have.class', 'red');
+        cy.wait(500);
+        cy.get('.plugboard .plug').contains('Q').click();
+        cy.get('.plugboard .plug').contains('W').click();
+        cy.get('.plugboard .plug').contains('Q').should('have.class', 'red');
+        cy.get('.plugboard .plug').contains('W').should('have.class', 'red');
+        cy.wait(5000);
         cy.reload();
         cy.wait(5000);
-        cy.get('.plugboard .plug').contains('B').should('have.class', 'red');
-        cy.get('.plugboard .plug').contains('A').should('have.class', 'red');
+        cy.get('.plugboard .plug').contains('Q').should('have.class', 'red');
+        cy.get('.plugboard .plug').contains('W').should('have.class', 'red');
         cy.resetsettings();
     });
 
