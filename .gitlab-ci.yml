@@ -1,16 +1,25 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
+default:
+  image: docker:26.0.1
+  services:
+    - docker:26.0.1-dind
+
+.build_test_scan_defaults:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 stages:
-  - build 
+  - build
+  - scan
   - test
   - cleanup
 
 # Build and push the frontend image
 build_frontend:
   stage: build
-  image: docker:26.0.1
-  services:
-    - docker:26.0.1-dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME -f ./frontend/Dockerfile ./frontend
     - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
@@ -18,43 +27,56 @@ build_frontend:
 # Build and push the backend image
 build_backend:
   stage: build
-  image: docker:26.0.1
-  services:
-    - docker:26.0.1-dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
-e2e-test:
+# Trivy Scan - modify CS_IMAGE depending which image you want to scan
+backend_scan:
+  stage: scan
+  extends: .build_test_scan_defaults
+  variables:
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:test_development'
+  script:
+    - apk add curl
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+frontend_scan:
+  stage: scan
+  extends: .build_test_scan_defaults
+  variables:
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:test_development'
+  script:
+    - apk add curl
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+e2e_test:
   stage: test
-  image: docker:26.0.1-dind  # Use the dind image for running Docker commands
-  services:
-    - docker:26.0.1-dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker-compose rm -f
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile e2etest up --build --abort-on-container-exit
 
-unit-test:
+unit_test:
   stage: test
-  image: docker:26.0.1-dind  # Use the dind image for running Docker commands
-  services:
-    - docker:26.0.1-dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
 
 cleanup:
   stage: cleanup
-  image: docker:26.0.1
   script:
-    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
-    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
+    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
   when: always
-
