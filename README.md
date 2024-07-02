@@ -32,6 +32,9 @@ With testing enabled:
 ```bash
 docker-compose --profile testing up --build
 ```
+
+Then visit `http://localhost:8081` in your browser or the network address of your docker host.
+
 ## CI/CD Pipeline
 
 ### Triggering Deployments with Git Tags

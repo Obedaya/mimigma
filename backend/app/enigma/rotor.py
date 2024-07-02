@@ -3,6 +3,7 @@ from ..crud import get_rotor_settings
 from fastapi import HTTPException
 from ..models import RotorSettings
 
+
 def get_rotor_settings_from_db(user_id: int, db: Session) -> tuple:
     settings = db.query(RotorSettings).filter(RotorSettings.user_id == user_id).first()
     if settings is None:
@@ -54,18 +55,20 @@ class RotorMachine:
         return getattr(self.machine, f"rotor_{rotor}")
 
     def advance_rotors(self):
-        # Determine which rotors need to be stepped
-        advance_next = [False] * len(self.rotors)
+        num_rotors = len(self.rotors)
+        advance_next = [False] * num_rotors
         advance_next[-1] = True  # The rightmost rotor always advances
 
-        for i in reversed(range(len(self.rotors) - 1)):
-            if self.rotor_positions[i + 1] in self.turnovers[i + 1]:
+        # Determine which rotors need to be stepped
+        for i in reversed(range(num_rotors - 1)):
+            if advance_next[i + 1] and self.rotor_positions[i + 1] in self.turnovers[i + 1]:
                 advance_next[i] = True
 
         # Perform the rotor advancement
-        for i in reversed(range(len(self.rotors))):
+        for i in range(num_rotors):
             if advance_next[i]:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
+
 
     def encrypt_letter(self, letter):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -441,6 +444,7 @@ class CustomEnigma:
             index = (alphabet.index(letter) + position) % 26
             encrypted_letter = wiring[index]
         return encrypted_letter, notches, turnover
+
 
 def advance_rotor(position):
     new_position = (position + 1) % 26
