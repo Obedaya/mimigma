@@ -34,3 +34,12 @@ yarn-error.log*
 # Misc
 .DS_Store
 Thumbs.db
+
+# Test results
+frontend/cypress/screenshots/*
+frontend/cypress/videos/*
+*.mp4
+
+.pytest_cache
+.coverage
+.coverage.*

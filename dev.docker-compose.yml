@@ -1,0 +1,57 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+
+  backend:
+    build: ./backend
+    ports:
+      - 9000:9000
+    environment:
+      - DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_pass
+      - POSTGRES_DB=enigma_db
+
+  cypress:
+    build:
+      context: ./frontend
+      dockerfile: Cypress.Dockerfile
+    depends_on:
+      - frontend
+    environment:
+      - CYPRESS_baseUrl=http://frontend:8080
+    volumes:
+      - ./frontend/cypress:/app/cypress
+    profiles:
+      - testing
+      - e2etest
+
+  test:
+    build: ./backend
+    
+    command: sh -c "sleep 5 && coverage run --rcfile=.coveragerc -m pytest /code/tests --disable-warnings && coverage report -m"
+
+    depends_on:
+        - backend
+        - db
+    profiles:
+      - testing
+      - unittest
+    environment:
+      - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
+      - DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
+      - PYTHONPATH=/code
+

@@ -1,61 +1,82 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
+default:
+  image: docker:26.0.1
+  services:
+    - docker:26.0.1-dind
+
+.build_test_scan_defaults:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 stages:
-  - test
   - build
+  - scan
+  - test
   - cleanup
 
-unit-test:
-  stage: test
-  image: python:3.10.4-alpine
-  script:
-    - pip install pipenv
-    - pipenv install --dev
-    - pipenv run coverage run -m pytest --junitxml=report.xml tests/unit  
-    - pipenv run coverage report
-    - pipenv run coverage xml
-  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
-  artifacts:
-    reports:
-      junit: report.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage.xml
-
+# Build and push the frontend image
 build_frontend:
   stage: build
-  image: docker:26.0.1
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME -f ./frontend/Dockerfile ./frontend
-    - if [[ "$CI_COMMIT_TAG" =~ ^release- ]]; then
-        docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_TAG;
-      fi
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
 
+# Build and push the backend image
 build_backend:
   stage: build
-  image: docker:26.0.1
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  extends: .build_test_scan_defaults
   script:
     - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME -f ./backend/Dockerfile ./backend
-    - if [[ "$CI_COMMIT_TAG" =~ ^release- ]]; then
-        docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_TAG;
-      fi
+    - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
+
+# Trivy Scan - modify CS_IMAGE depending which image you want to scan
+backend_scan:
+  stage: scan
+  extends: .build_test_scan_defaults
+  variables:
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:development'
+  script:
+    - apk add curl
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+frontend_scan:
+  stage: scan
+  extends: .build_test_scan_defaults
+  variables:
+    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:development'
+  script:
+    - apk add curl
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+    - trivy image $CS_IMAGE | tee scanning-report.txt
+  artifacts:
+    reports:
+      container_scanning: scanning-report.txt
+
+e2e_test:
+  stage: test
+  extends: .build_test_scan_defaults
+  script:
+    - docker-compose rm -f
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker-compose --profile e2etest up --build --abort-on-container-exit
+
+unit_test:
+  stage: test
+  extends: .build_test_scan_defaults
+  script:
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker-compose --profile unittest up --build --abort-on-container-exit
 
 cleanup:
   stage: cleanup
-  image: docker:26.0.1
-  services:
-    - docker:dind
   script:
-    - if docker images $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME | grep -q $CI_COMMIT_REF_NAME; then
-        docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME;
-      fi
-    - if docker images $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME | grep -q $CI_COMMIT_REF_NAME; then
-        docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME;
-      fi
+    - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+    - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
   when: always

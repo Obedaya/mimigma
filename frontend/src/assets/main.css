@@ -1,8 +1,7 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
   padding: 2rem;
   font-weight: normal;
 }
@@ -32,4 +31,41 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
+}
+
+#app {
+  display: block;
+}
+
+section {
+  padding: 1rem;
+}
+
+.border-white {
+  border-color: var(--color-border) !important;
+  height: 100%;
+}
+
+.col {
+  padding: 1rem;
+  align-content: center;
+}
+
+.mimigma {
+  width: 100%;
+
+}
+
+.icons {
+  filter: invert(var(--filter-variable));
+
+
+  width: 50%;
+  cursor: pointer;
+  margin-left: 25%;
+
+}
+
+.modalbackground {
+  background-color: rgb(255, 255, 255);
 }

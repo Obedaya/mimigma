@@ -1,3 +1,15 @@
-fastapi>=0.68.0,<0.69.0
+requests>2.25.1
+pytest
+coverage
+gevent
+asyncio
+fastapi==0.111.0
 pydantic>=1.8.0,<2.0.0
 uvicorn>=0.15.0,<0.16.0
+uvicorn[standard]>=0.15.0,<0.16.0
+sqlalchemy>=1.4.0,<1.5.0
+psycopg2-binary>=2.8
+starlette>=0.36.2 
+selenium
+webdriver-manager
+pyjwt

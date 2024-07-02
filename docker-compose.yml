@@ -1,9 +1,14 @@
-version: '3'
 services:
   frontend:
     build: ./frontend
     ports:
-      - 8080:8080
+      - 8081:8080
+        #    volumes:
+      #       - ./frontend:/app
+      #  - /app/node_modules
+    env_file:
+      - .env
+
   backend:
     build: ./backend
     ports:
@@ -11,10 +16,55 @@ services:
     environment:
       - DATABASE_URL=postgresql://db_user:db_pass@db/enigma_db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://localhost:9000/ || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
   db:
     image: postgres:alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U db_user -d enigma_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       - POSTGRES_USER=db_user
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
+
+  cypress:
+    build:
+      context: ./frontend
+      dockerfile: Cypress.Dockerfile
+    depends_on:
+      backend:
+          condition: service_healthy
+    environment:
+      - CYPRESS_baseUrl=http://frontend:8080
+#    volumes:
+#      - ./frontend/cypress:/app/cypress
+    profiles:
+      - testing
+      - e2etest
+
+  test:
+    build:
+      context: ./backend
+#    volumes:
+#      - ./backend:/code
+#      - ./tests:/code/tests
+    command: sh -c "sleep 5 && coverage run --rcfile=.coveragerc -m pytest /code/tests --disable-warnings && coverage report -m"
+    depends_on:
+      - backend
+      - db
+    profiles:
+      - testing
+      - unittest
+    environment:
+      - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
+      - PYTHONPATH=/code
+
