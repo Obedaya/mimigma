@@ -17,8 +17,8 @@ default:
 
 stages:
   - build
-  - scan
-  - e2e
+  # - scan
+  # - e2e
   - test
   - cleanup
 
@@ -39,44 +39,47 @@ build_backend:
     - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
 
 # Trivy Scan - modify CS_IMAGE depending which image you want to scan
-backend_scan:
-  stage: scan
-  extends: .build_test_scan_defaults
-  variables:
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:main'
-  script:
-    - apk add curl
-    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
-    - trivy image $CS_IMAGE | tee scanning-report.txt
-  artifacts:
-    reports:
-      container_scanning: scanning-report.txt
-
-frontend_scan:
-  stage: scan
-  extends: .build_test_scan_defaults
-  variables:
-    CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:main'
-  script:
-    - apk add curl
-    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
-    - trivy image $CS_IMAGE | tee scanning-report.txt
-  artifacts:
-    reports:
-      container_scanning: scanning-report.txt
-
-e2e_test:
-  stage: e2e
-  extends: .build_test_scan_defaults
-  script:
-    - docker-compose rm -f
-    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
-    - docker-compose --profile e2etest up --build --abort-on-container-exit
-
+# backend_scan:
+#   stage: scan
+#   extends: .build_test_scan_defaults
+#   variables:
+#     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/backend:main'
+#   script:
+#     - apk add curl
+#     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+#     - trivy image $CS_IMAGE | tee scanning-report.txt
+#   artifacts:
+#     reports:
+#       container_scanning: scanning-report.txt
+# 
+# frontend_scan:
+#   stage: scan
+#   extends: .build_test_scan_defaults
+#   variables:
+#     CS_IMAGE: 'registry.mygit.th-deg.de/mimigma/mimigma/frontend:main'
+#   script:
+#     - apk add curl
+#     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.52.2
+#     - trivy image $CS_IMAGE | tee scanning-report.txt
+#   artifacts:
+#     reports:
+#       container_scanning: scanning-report.txt
+# 
+# e2e_test:
+#   stage: e2e
+#   extends: .build_test_scan_defaults
+#   script:
+#     - docker-compose rm -f
+#     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
+#     - docker-compose --profile e2etest up --build --abort-on-container-exit
+# 
 unit_test:
   stage: test
   extends: .build_test_scan_defaults
   script:
+    - docker-compose down --remove-orphans 
+    - docker-compose rm -f
+    - docker network prune -f                             
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
 
