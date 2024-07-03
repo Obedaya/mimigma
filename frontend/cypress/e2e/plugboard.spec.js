@@ -58,11 +58,11 @@ describe('Plugboard Test', () => {
     });
 
     it('should change the encrypted letter, when a plug pair is selected', () => {
-        cy.get('.plugboard .plug').contains('A').click();
-        cy.get('.plugboard .plug').contains('B').click();
-        cy.get('body').trigger('keydown', {key: 'A'});
-        cy.get('.lamp').contains('B').should('have.class', 'highlighted');
-        cy.get('body').trigger('keyup', {key: 'A'});
-        cy.get('.lamp').contains('B').should('not.have.class', 'highlighted');
+        cy.get('.plugboard .plug').contains('Q').click();
+        cy.get('.plugboard .plug').contains('W').click();
+        cy.get('body').trigger('keydown', {key: 'Q'});
+        cy.get('.lamp').contains('K').should('have.class', 'highlighted');
+        cy.get('body').trigger('keyup', {key: 'Q'});
+        cy.get('.lamp').contains('K').should('not.have.class', 'highlighted');
     });
 });
