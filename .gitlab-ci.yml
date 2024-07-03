@@ -9,9 +9,11 @@ default:
 .build_test_scan_defaults:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker-compose down --remove-orphans
-    - docker container prune -f 
-    - docker ps -a
+    # Debugging commands:
+    - echo "=== Before docker-compose rm -f ==="
+    - docker ps -a                                     
+    - docker inspect mimigma-db-1 || true                # Inspect the conflicting container (if it exists)
+    - docker-compose ps                                  # List containers managed by Compose
 
 stages:
   - build
