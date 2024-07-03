@@ -28,4 +28,13 @@ describe('History', () => {
 
         cy.get('#history').contains('A : B');
     });
+    it('should only display 140 encrypted letter - key pairs', () => {
+       var genArr = Array.from({length: 140}, (v, k) => k + 1)
+        cy.wrap(genArr).each((index) => {
+            cy.get('body').trigger('keydown', {key: 'A'});
+            cy.wait(100);
+            cy.get('body').trigger('keyup', {key: 'A'});
+        })
+        cy.get('#history').find('br').should('have.length', 140);
+    });
 });
