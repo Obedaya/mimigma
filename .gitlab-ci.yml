@@ -81,8 +81,6 @@ unit_test:
     - docker-compose down --remove-orphans 
     - docker-compose rm -f
     - docker network prune -f
-    - docker network ls
-    - docker network create mimigma_default || true
     - docker network ls             
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
