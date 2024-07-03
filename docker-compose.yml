@@ -1,3 +1,6 @@
+networks:
+  mimigma_network
+  
 services:
   frontend:
     build: ./frontend
@@ -8,6 +11,8 @@ services:
       #  - /app/node_modules
     env_file:
       - .env
+    networks:
+      - mimigma_network
 
   backend:
     build: ./backend
@@ -23,6 +28,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - mimigma_network
 
   db:
     image: postgres:alpine
@@ -35,6 +42,8 @@ services:
       - POSTGRES_USER=db_user
       - POSTGRES_PASSWORD=db_pass
       - POSTGRES_DB=enigma_db
+    networks:
+      - mimigma_network
 
   cypress:
     build:
@@ -50,6 +59,8 @@ services:
     profiles:
       - testing
       - e2etest
+    networks:
+      - mimigma_network
 
   test:
     build:
@@ -67,4 +78,6 @@ services:
     environment:
       - SQLALCHEMY_SILENCE_UBER_WARNING=1  # Silence SQLAlchemy 2.0 compatibility warning
       - PYTHONPATH=/code
+    networks:
+      - mimigma_network
 
