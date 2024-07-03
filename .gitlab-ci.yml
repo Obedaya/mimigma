@@ -20,6 +20,7 @@ stages:
   - build
   # - scan
   # - e2e
+  - unit
   - test
   - cleanup
 
@@ -75,7 +76,7 @@ build_backend:
 #     - docker-compose --profile e2etest up --build --abort-on-container-exit
 # 
 unit_test:
-  stage: test
+  stage: unit
   extends: .build_test_scan_defaults
   script:
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
