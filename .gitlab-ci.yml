@@ -8,6 +8,7 @@ default:
 
 .build_test_scan_defaults:
   before_script:
+    - if [ -S /var/run/docker.sock ]; then rm /var/run/docker.sock; fi
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker-compose down --remove-orphans
     - docker container prune -f 
@@ -65,7 +66,9 @@ e2e_test:
   stage: test
   extends: .build_test_scan_defaults
   script:
+    - docker-compose down --remove-orphans
     - docker-compose rm -f
+    - docker ps -a
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile e2etest up --build --abort-on-container-exit
 
