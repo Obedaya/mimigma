@@ -79,6 +79,8 @@ unit_test:
   stage: unit
   extends: .build_test_scan_defaults
   script:
+    - docker network ls
+    - docker ps -a
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile unittest up --build --abort-on-container-exit
 
