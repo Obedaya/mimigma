@@ -54,7 +54,7 @@ class RotorMachine:
     def get_rotor_method(self, rotor):
         return getattr(self.machine, f"rotor_{rotor}")
 
-    def advance_rotors(self):
+    """def advance_rotors(self):
         num_rotors = len(self.rotors)
         advance_next = [False] * num_rotors
         advance_next[-1] = True  # The rightmost rotor always advances
@@ -67,7 +67,35 @@ class RotorMachine:
         # Perform the rotor advancement
         for i in range(num_rotors):
             if advance_next[i]:
+                self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26"""
+    def advance_rotors(self):
+        num_rotors = len(self.rotors)
+        advance_next = [False] * num_rotors
+        advance_next[-1] = True  # The rightmost rotor always advances
+
+        # Determine which rotors need to be stepped
+        for i in reversed(range(num_rotors - 1)):
+            if advance_next[i + 1] and self.rotor_positions[i + 1] in self.turnovers[i + 1]:
+                advance_next[i] = True
+
+        # Implement double-stepping feature
+        if num_rotors > 1 and self.rotor_positions[-1] in self.turnovers[-1]:
+            advance_next[-2] = True
+
+        if num_rotors > 2 and self.rotor_positions[-2] in self.turnovers[-2] and advance_next[-2]:
+            advance_next[-3] = True
+
+        # Check if the notches of the two rotors on the left are aligned
+        if num_rotors > 2 and self.rotor_positions[-2] in self.turnovers[-2] and self.rotor_positions[-3] in self.turnovers[-3]:
+            advance_next[-2] = True
+            advance_next[-3] = True
+
+        # Perform the rotor advancement
+        for i in range(num_rotors):
+            if advance_next[i]:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
+
+
 
 
     def encrypt_letter(self, letter):
