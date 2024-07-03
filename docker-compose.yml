@@ -80,3 +80,7 @@ services:
 
 networks:
   mimigma_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
