@@ -70,7 +70,6 @@ e2e_test:
   extends: .build_test_scan_defaults
   script:
     - docker-compose rm -f
-    - docker network prune -f
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile e2etest up --build --abort-on-container-exit
 
