@@ -19,7 +19,6 @@ default:
 stages:
   - build
   - scan
-  - e2e
   - test
   - cleanup
 
@@ -67,7 +66,7 @@ frontend_scan:
       container_scanning: scanning-report.txt
 
 e2e_test:
-  stage: e2e
+  stage: test
   extends: .build_test_scan_defaults
   script:
     - docker-compose rm -f
