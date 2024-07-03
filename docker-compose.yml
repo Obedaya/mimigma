@@ -1,14 +1,11 @@
-networks:
-  mimigma_network
-  
 services:
   frontend:
     build: ./frontend
     ports:
       - 8081:8080
-        #    volumes:
-      #       - ./frontend:/app
-      #  - /app/node_modules
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
     env_file:
       - .env
     networks:
@@ -51,7 +48,7 @@ services:
       dockerfile: Cypress.Dockerfile
     depends_on:
       backend:
-          condition: service_healthy
+        condition: service_healthy
     environment:
       - CYPRESS_baseUrl=http://frontend:8080
 #    volumes:
@@ -81,3 +78,5 @@ services:
     networks:
       - mimigma_network
 
+networks:
+  mimigma_network:
