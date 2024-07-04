@@ -68,6 +68,7 @@ class RotorMachine:
         for i in range(num_rotors):
             if advance_next[i]:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26"""
+    
     def advance_rotors(self):
         num_rotors = len(self.rotors)
         advance_next = [False] * num_rotors
@@ -90,10 +91,16 @@ class RotorMachine:
             advance_next[-2] = True
             advance_next[-3] = True
 
+        # Additional double-stepping condition for middle rotor
+        if num_rotors > 2 and self.rotor_positions[-2] in self.turnovers[-2]:
+            advance_next[-2] = True
+            advance_next[-3] = True
+
         # Perform the rotor advancement
         for i in range(num_rotors):
             if advance_next[i]:
                 self.rotor_positions[i] = (self.rotor_positions[i] + 1) % 26
+
 
 
 
