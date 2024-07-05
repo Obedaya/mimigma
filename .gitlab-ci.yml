@@ -88,3 +88,6 @@ cleanup:
     - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
   when: always
+  needs:V
+   - e2e_test
+   - unit_test
