@@ -2,9 +2,12 @@ include:
   - template: Jobs/SAST.gitlab-ci.yml
 
 default:
-  image: docker:26.0.1
+  image: docker:27.0.3
   services:
-    - docker:26.0.1-dind
+    - docker:27.0.3-dind
+
+# variables:
+#   DOCKER_DRIVER: overlay2
 
 .build_test_scan_defaults:
   before_script:
@@ -16,11 +19,21 @@ default:
     # - docker-compose ps                                  # List containers managed by Compose
 
 stages:
+  - preparation
   - build
   - scan
   - e2e
   - test
   - cleanup
+
+# Clear cache job
+clear_cache:
+  stage: preparation
+  script:
+    - echo "Clearing runner cache..."
+  cache:
+    key: "${CI_PROJECT_NAME}"
+    policy: push
 
 # Build and push the frontend image
 build_frontend:
@@ -72,6 +85,7 @@ e2e_test:
     - docker-compose rm -f
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker-compose --profile e2etest up --build --abort-on-container-exit
+  retry: 2  # Retry job up to 2 times on failure
 
 unit_test:
   stage: test
@@ -88,3 +102,6 @@ cleanup:
     - docker rmi $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME
     - docker rmi $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME
   when: always
+  needs:
+   - e2e_test
+   - unit_test

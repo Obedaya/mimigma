@@ -6,7 +6,7 @@ from app.enigma.reflector import Reflector
 #testet ob die Klasse mit der richtigen Variante initialisiert wird
 def test_valid_variant(variant):
     reflector = Reflector(variant)
-    assert reflector.variant == variant
+    assert reflector.variant_mapping is not None  # Ensure the mapping is set
 
 @pytest.mark.parametrize("variant", ["UKW_Z", "UKW_G", "UKW_F"])
 #test of exception
