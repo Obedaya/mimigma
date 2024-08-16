@@ -6,7 +6,7 @@ WORKDIR /code
 RUN apk add --no-cache gcc musl-dev libc-dev curl
 
 # Upgrade vulnerable package
-RUN apk add --no-cache libcrypto3=3.3.1-r1
+#RUN apk add --no-cache libcrypto3=3.3.1-r1
 
 COPY requirements.txt /code/requirements.txt
 
